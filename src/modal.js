@@ -60,14 +60,11 @@ class Modal {
         if (!this._open) {            
             //Calculate & display statistics
             if (msg === 'stats' && this.puzzle) {
-                const stats = this.puzzle.stats;
-                const won = Object.values(stats.dist).reduce((t, v) => t + v, 0);
-                const maxWin = Object.values(stats.dist).reduce((t, v) => v > t ? v : t, 0);
-                this._playedCount.innerHTML = stats.played;
-                this._wonCount.innerHTML = won;
+                this._playedCount.innerHTML = this.puzzle.stats.played;
+                this._wonCount.innerHTML = this.puzzle.wonCount;
                 this._scoreBins.forEach((bin, i) => {
-                    const count = parseInt(stats.dist[i]) || 0;
-                    const width = count === 0 ? 'fit-content' : count / maxWin * 100 + '%';
+                    const count = this.puzzle.stats.dist[i] || 0;
+                    const width = count === 0 ? 'fit-content' : count / this.puzzle.maxWin * 100 + '%';
                     bin.style.width = width;
                     bin.innerHTML = count;                    
                 })

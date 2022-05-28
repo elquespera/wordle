@@ -28,26 +28,54 @@ class Puzzle {
         return this._solution;
     }
 
-    get stats() {
-        return this._stats;
-    }
-
     get modal() {
         return this._modal;
     }
 
+    // Current matrix operations
+    get matrix() {
+        return this._currentSolution;
+    }
+    get lastRowNumber() {
+        return this.matrix.length-1;
+    }
+    get lastRow() {
+        return this.matrix[this.lastRowNumber];
+    }
+
+
+    // Statistics
+    get stats() {
+        Object.keys(this._stats.dist).forEach(key => {
+            this._stats.dist[key] = parseInt(this._stats.dist[key]);
+        });
+        return this._stats;
+    }
+    get wonCount() {
+        return Object.values(this.stats.dist).reduce((t, v) => t + v, 0);
+    }
+    get maxWin() {
+        return Object.values(this.stats.dist).reduce((t, v) => v > t ? v : t, 0);
+    }    
+    addWin(bin) {
+        this.stats.dist[bin] = (this.stats.dist[bin] || 0) + 1;
+    }
+
+    // Reset & update letters
     reset() {
         this._currentSolution = [];
         this.update();
+        this._cardDivs.flat().forEach(card => {
+            card.classList.remove('not-preset', 'present', 'unique', 'current')
+        })
     }
 
     update() {
-        const matrix = this._currentSolution;
         this._cardDivs.forEach((row, i) => row.forEach((div, j) => {
-            div.innerHTML = matrix[i] ? matrix[i][j] || '' : '';
+            div.innerHTML = this.matrix[i] ? this.matrix[i][j] || '' : '';
         }));
-        if (matrix.length > 0 && this._cardDivs[matrix.length-1]) {
-            this._cardDivs[matrix.length-1].forEach(card => {
+        if (this.matrix.length > 0 && this._cardDivs[this.lastRowNumber]) {
+            this._cardDivs[this.lastRowNumber].forEach(card => {
                 if (card.innerHTML === '') {
                     card.classList.remove('current');
                 } else {
@@ -62,7 +90,7 @@ class Puzzle {
     }
 
     checkLetters(row) {
-        this._currentSolution[row].forEach((letter, i) => {
+        this.matrix[row].forEach((letter, i) => {
             let className = 'not-present';
             if (this.solution.includes(letter)) {
                 if (this.solution[i] === letter) {
@@ -80,7 +108,9 @@ class Puzzle {
         const lastRow = this._currentSolution[this._currentSolution.length - 1];
         console.log(lastRow);
         if (lastRow && lastRow.join('') === this.solution) {
-            modal.show();
+            this.addWin(this._currentSolution.length - 1);
+            this.reset();
+            modal.show('stats');
         }
     }
 
@@ -122,44 +152,42 @@ class Puzzle {
 
     set keyboard(k) {
         const keyPressed = (key) => {
-            const matrix = this._currentSolution; 
-            const lastRow = matrix[matrix.length - 1];
             switch (key) {
                 case 'enter': 
-                    if (lastRow && lastRow.length === 5) {
-                        if (this.isWordValid(lastRow.join(''))) {
-                            if (matrix.length < 6) {
-                                this.checkLetters(matrix.length - 1);
+                    if (this.lastRow && this.lastRow.length === 5) {
+                        if (this.isWordValid(this.lastRow.join(''))) {
+                            if (this.matrix.length < 6) {
+                                this.checkLetters(this.lastRowNumber);
                                 this.checkStatus();                                
-                                matrix.push([]);
+                                this.matrix.push([]);
                                 this.update();            
                             }
                         }
                     } else {
-                        this.shakeRow(matrix.length - 1);
+                        this.shakeRow(this.lastRowNumber);
                         modal.showError('Not enough letters');
                     }
                     break;
                 case 'return':
-                    if (lastRow && lastRow.length > 0) {
-                        lastRow.pop();
+                    if (this.lastRow && this.lastRow.length > 0) {
+                        this.lastRow.pop();
                         this.update();
                     } else {
-                        this.shakeRow(matrix.length - 1);
+                        this.shakeRow(this.lastRowNumber);
                         modal.showError('No letters to erase');
                     }
                     break;
                 default:
-                    if (matrix.length === 0) {
-                        matrix.push([]);
+                    if (this.matrix.length === 0) {
+                        this.matrix.push([]);
                     }
-                    if (matrix[matrix.length - 1].length < 5) {
-                        matrix[matrix.length - 1].push(key);
+                    if (this.lastRow.length < 5) {
+                        this.lastRow.push(key);
                         this.update();
-                        this.animateLetter(this._cardDivs[matrix.length - 1][matrix[matrix.length - 1].length - 1]);
+                        this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
                     } else {
                         modal.showError('Five letter max');
-                        this.shakeRow(matrix.length - 1);
+                        this.shakeRow(this.lastRowNumber);
                     }
             }
         }
