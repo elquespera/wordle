@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle</title>
+<script defer src="bundle.1b7f307e4f25232fe4d6.js"></script></head>
+<body>
+    <main class="container">
+        <nav>
+            <div class="menu">
+                <div class="icon-btn help-btn">
+                </div>
+            </div>            
+            <h3>Wordle</h3>
+            <div class="menu">
+                <div class="icon-btn stats-btn">
+                </div>
+                <a href="https://github.com/elquespera">
+                    <div class="icon-btn github-btn">
+                    </div>
+                </a>
+        </div>
+        </nav>
+        <div id="puzzle" class="puzzle">
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div class="row">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+        </div>
+        <div class="keyboard">
+            <div class="row">
+                <div class="key">q</div>
+                <div class="key">w</div>
+                <div class="key">e</div>
+                <div class="key">r</div>
+                <div class="key">t</div>
+                <div class="key">y</div>
+                <div class="key">u</div>
+                <div class="key">i</div>
+                <div class="key">o</div>
+                <div class="key">p</div>
+            </div>
+            <div class="row">
+                <div class="key">a</div>
+                <div class="key">s</div>
+                <div class="key">d</div>
+                <div class="key">f</div>
+                <div class="key">g</div>
+                <div class="key">h</div>
+                <div class="key">j</div>
+                <div class="key">k</div>
+                <div class="key">l</div>
+            </div>
+            <div class="row">
+                <div class="key enter">enter</div>
+                <div class="key">z</div>
+                <div class="key">x</div>
+                <div class="key">c</div> 
+                <div class="key">v</div>
+                <div class="key">b</div>
+                <div class="key">n</div>
+                <div class="key">m</div>
+                <div class="key return">return</div>
+            </div>
+        </div>
+        <div class="error-msg"></div>
+        <div class="modal-overlay">
+            <div class="modal">
+                <div class="icon-btn close-btn">                   
+                </div> 
+                <div id="stats" class="pane stats">
+                    <h3>Statistics</h3>
+                    <div class="score-table">
+                        <div class="played score">0</div>
+                        <div class="won score">0</div>
+                        <div class="score-label">Played</div>
+                        <div class="score-label">Won</div>
+                    </div>
+                    <div class="hr"></div>
+                    <h3>Guess distribution</h3>
+                    <div class="guess-dist">
+                        <div class="score">1</div>
+                        <div class="score-bar">0</div>
+                        <div class="score">2</div>
+                        <div class="score-bar">0</div>
+                        <div class="score">3</div>
+                        <div class="score-bar">0</div>
+                        <div class="score">4</div>
+                        <div class="score-bar">0</div>
+                        <div class="score">5</div>
+                        <div class="score-bar">0</div>
+                        <div class="score">6</div>
+                        <div class="score-bar">0</div>
+                    </div>
+                </div>
+                <div id="help" class="pane help">
+                    <h3>How to play</h3>
+                    <p>Guess the <strong>WORDLE</strong> in six tries</p>
+                    <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
+                    <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
+                    <div class="hr"></div>
+                    <h4>Examples</h4>
+                    <div class="puzzle">
+                        <div class="row">
+                            <div class="letter unique">s</div>
+                            <div class="letter">p</div>
+                            <div class="letter">a</div>
+                            <div class="letter">c</div>
+                            <div class="letter">e</div>
+                        </div>
+                    </div>
+                    <p>The letter <strong>S</strong> is in the word and in the correct spot.</p>
+                    <div class="puzzle">
+                        <div class="row">
+                            <div class="letter current">a</div>
+                            <div class="letter current">b</div>
+                            <div class="letter current present">i</div>
+                            <div class="letter current">d</div>
+                            <div class="letter current">e</div>
+                        </div>
+                    </div>
+                    <p>The letter <strong>I</strong> is in the word but in the wrong spot.</p>
+                    <div class="puzzle">
+                        <div class="row">
+                            <div class="letter current">w</div>
+                            <div class="letter current">r</div>
+                            <div class="letter current">o</div>
+                            <div class="letter current not-present">n</div>
+                            <div class="letter current">g</div>
+                        </div>
+                    </div>                    
+                    <p>The letter <strong>N</strong> is not in the word in any spot.</p>
+                    <div class="hr"></div>
+                    <h4>Enjoy the game!</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
