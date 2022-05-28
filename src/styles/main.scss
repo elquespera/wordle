@@ -1,0 +1,54 @@
+$letter-size: 40px;
+$puzzle-gap: 10px;
+$puzzle-border: gray;
+
+$key-width: 30px;
+$key-height: 40px;
+$key-gap: 10px;
+$key-background: gray;
+
+*, body {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    .puzzle {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: $puzzle-gap;
+        .row {
+            display: flex;
+            gap: $puzzle-gap;
+            .letter {
+                width: $letter-size;
+                height: $letter-size;
+                border: 2px solid $puzzle-border;
+            }
+        }
+    }
+    .keyboard {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: $key-gap;
+        .row {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: $key-gap;
+            .key {
+                width: $key-width;
+                height: $key-height;
+                background-color: $key-background;
+                border-radius: 2px;
+            }
+        }
+    }
+
+}
