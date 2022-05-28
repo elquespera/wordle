@@ -45,7 +45,6 @@ class Puzzle {
     }
 
     showError(error) {
-        console.log(error);
         const errorDiv = document.querySelector('.error-msg');
         errorDiv.innerHTML = error;
         errorDiv.classList.add('visible');
@@ -54,6 +53,24 @@ class Puzzle {
 
     checkStatus() {
         
+    }
+
+    async shakeRow(row) {
+        const toggleClass = () => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    row.classList.toggle('shift1');
+                    row.classList.toggle('shift2');
+                    resolve('');          
+                }, 80);
+            });
+        }
+        row.classList.add('shift1');
+        for (let i = 0; i < 5; i++) {
+            await toggleClass();
+        }
+        row.classList.remove('shift1');
+        row.classList.remove('shift2');
     }
 
     set keyboard(k) {
@@ -71,6 +88,7 @@ class Puzzle {
                             }
                         }
                     } else {
+                        this.shakeRow(this._cardDivs[matrix.length-1][0].parentElement)
                         this.showError('Not enough letters');
                     }
                     break;

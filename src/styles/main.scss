@@ -79,6 +79,7 @@ $key-hover-background: #DDD;
         .row {
             display: flex;
             gap: $puzzle-gap;
+            transition: transform 0.08s ease-in;
             .letter {
                 font-size: 2em;
                 text-transform: uppercase;
@@ -98,6 +99,12 @@ $key-hover-background: #DDD;
             .letter.unique {
                 border-color: $unique-background;
             }            
+        }
+        .row.shift1 {
+            transform: translate(-0.3rem, 0);
+        }
+        .row.shift2 {
+            transform: translate(+0.3rem, 0);
         }
     }
     .keyboard {
