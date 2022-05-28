@@ -9,7 +9,7 @@ class Puzzle {
     ];
     _keyboard;
     constructor() {
-        document.querySelectorAll('.puzzle > .row').forEach(row => {
+        document.querySelectorAll('#puzzle > .row').forEach(row => {
             const _row = [];
             row.querySelectorAll('.letter').forEach(letter => _row.push(letter));
             this._cardDivs.push(_row.slice());
@@ -59,13 +59,6 @@ class Puzzle {
             this._cardDivs[row][i].classList.add(className);
             this._cardDivs[row][i].classList.remove('current');
         });
-    }
-
-    showError(error) {
-        const errorDiv = document.querySelector('.error-msg');
-        errorDiv.innerHTML = error;
-        errorDiv.classList.add('visible');
-        setTimeout(() => errorDiv.classList.remove('visible'), 2000);
     }
 
     checkStatus() {
@@ -129,7 +122,7 @@ class Puzzle {
                         }
                     } else {
                         this.shakeRow(matrix.length - 1);
-                        this.showError('Not enough letters');
+                        modal.showError('Not enough letters');
                     }
                     break;
                 case 'return':
@@ -138,7 +131,7 @@ class Puzzle {
                         this.update();
                     } else {
                         this.shakeRow(matrix.length - 1);
-                        this.showError('No letters to erase');
+                        modal.showError('No letters to erase');
                     }
                     break;
                 default:
@@ -149,6 +142,9 @@ class Puzzle {
                         matrix[matrix.length - 1].push(key);
                         this.update();
                         this.animateLetter(this._cardDivs[matrix.length - 1][matrix[matrix.length - 1].length - 1]);
+                    } else {
+                        modal.showError('Five letter max');
+                        this.shakeRow(matrix.length - 1);
                     }
             }
         }
