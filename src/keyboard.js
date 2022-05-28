@@ -1,3 +1,5 @@
+import modal from './modal';
+
 class Keyboard {
     _keys = [];
     _keypressFunc;
@@ -25,10 +27,6 @@ class Keyboard {
                 e.preventDefault();
             }
         });
-    }
-
-    get keyFunction() {
-        return this._keypressFunc;
     }
 
     set keyFunction (f) {

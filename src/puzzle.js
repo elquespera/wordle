@@ -1,3 +1,5 @@
+import modal from "./modal";
+
 class Puzzle {
     _cardDivs = [];
     _solution = 'space';
@@ -15,15 +17,29 @@ class Puzzle {
         this.reset();
     }
 
+    get solution() {
+        return this._solution;
+    }
+
     reset() {
         this._currentSolution = [];
         this.update();
     }
 
     update() {
+        const matrix = this._currentSolution;
         this._cardDivs.forEach((row, i) => row.forEach((div, j) => {
-            div.innerHTML = this._currentSolution[i] ? this._currentSolution[i][j] || '' : '';
+            div.innerHTML = matrix[i] ? matrix[i][j] || '' : '';
         }));
+        if (matrix.length > 0 && this._cardDivs[matrix.length-1]) {
+            this._cardDivs[matrix.length-1].forEach(card => {
+                if (card.innerHTML === '') {
+                    card.classList.remove('current');
+                } else {
+                    card.classList.add('current');
+                }
+            })
+        }        
     }
 
     isWordValid(word) {
@@ -33,14 +49,15 @@ class Puzzle {
     checkLetters(row) {
         this._currentSolution[row].forEach((letter, i) => {
             let className = 'not-present';
-            if (this._solution.includes(letter)) {
-                if (this._solution[i] === letter) {
+            if (this.solution.includes(letter)) {
+                if (this.solution[i] === letter) {
                     className = 'unique';
                 } else {
                     className = 'present';
                 }
             }
             this._cardDivs[row][i].classList.add(className);
+            this._cardDivs[row][i].classList.remove('current');
         });
     }
 
@@ -52,10 +69,17 @@ class Puzzle {
     }
 
     checkStatus() {
-        
+        const lastRow = this._currentSolution[this._currentSolution.length - 1];
+        console.log(lastRow);
+        if (lastRow && lastRow.join('') === this.solution) {
+            modal.show();
+        }
     }
 
     async shakeRow(row) {
+        if (row < 0 || row > this._cardDivs.length - 1)
+            return false;
+        row = this._cardDivs[row][0].parentElement;
         const toggleClass = () => {
             return new Promise(resolve => {
                 setTimeout(() => {
@@ -69,8 +93,23 @@ class Puzzle {
         for (let i = 0; i < 5; i++) {
             await toggleClass();
         }
-        row.classList.remove('shift1');
-        row.classList.remove('shift2');
+        row.classList.remove('shift1', 'shift2');
+    }
+
+    async animateLetter(letter) {
+        const inOut = (out) => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    letter.classList.toggle('in', !out);
+                    letter.classList.toggle('out', out);
+                    resolve('');          
+                }, 80);
+            });
+        }
+        letter.classList.add('out');
+        await inOut(false);
+        await inOut(true);
+        letter.classList.remove('in', 'out')
     }
 
     set keyboard(k) {
@@ -83,12 +122,13 @@ class Puzzle {
                         if (this.isWordValid(lastRow.join(''))) {
                             if (matrix.length < 6) {
                                 this.checkLetters(matrix.length - 1);
+                                this.checkStatus();                                
                                 matrix.push([]);
-                                this.update();
+                                this.update();            
                             }
                         }
                     } else {
-                        this.shakeRow(this._cardDivs[matrix.length-1][0].parentElement)
+                        this.shakeRow(matrix.length - 1);
                         this.showError('Not enough letters');
                     }
                     break;
@@ -97,6 +137,7 @@ class Puzzle {
                         lastRow.pop();
                         this.update();
                     } else {
+                        this.shakeRow(matrix.length - 1);
                         this.showError('No letters to erase');
                     }
                     break;
@@ -107,6 +148,7 @@ class Puzzle {
                     if (matrix[matrix.length - 1].length < 5) {
                         matrix[matrix.length - 1].push(key);
                         this.update();
+                        this.animateLetter(this._cardDivs[matrix.length - 1][matrix[matrix.length - 1].length - 1]);
                     }
             }
         }
