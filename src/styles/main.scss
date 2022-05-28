@@ -1,16 +1,17 @@
-$letter-size: 40px;
+$letter-size: 60px;
 $puzzle-gap: 10px;
 $puzzle-border: gray;
 
-$key-width: 30px;
-$key-height: 40px;
+$key-width: 48px;
+$key-height: 60px;
 $key-gap: 10px;
-$key-background: gray;
+$key-background: #CCC;
 
 *, body {
     margin: 0px;
     padding: 0px;
     border: 0px;
+    box-sizing: border-box;
 }
 
 
@@ -18,7 +19,9 @@ $key-background: gray;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: 12px;
 
     .puzzle {
         display: flex;
@@ -28,8 +31,8 @@ $key-background: gray;
             display: flex;
             gap: $puzzle-gap;
             .letter {
-                width: $letter-size;
-                height: $letter-size;
+                min-width: $letter-size;
+                min-height: $letter-size;
                 border: 2px solid $puzzle-border;
             }
         }
@@ -37,18 +40,27 @@ $key-background: gray;
     .keyboard {
         display: flex;
         flex-flow: column nowrap;
+        align-items: center;
         gap: $key-gap;
         .row {
             display: flex;
             flex-flow: row nowrap;
             gap: $key-gap;
             .key {
-                width: $key-width;
-                height: $key-height;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 8px;
+                min-width: $key-width;
+                min-height: $key-height;
                 background-color: $key-background;
                 border-radius: 2px;
             }
         }
     }
 
+}
+
+@media screen {
+    
 }
