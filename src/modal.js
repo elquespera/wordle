@@ -6,6 +6,10 @@ class Modal {
     _closeBtn = document.querySelector('.close-btn');
     _helpBtn = document.querySelector('.help-btn');
     _statsBtn = document.querySelector('.stats-btn');
+    _playedCount = document.querySelector('.played.score');
+    _wonCount = document.querySelector('.won.score');
+    _scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
+    _puzzle;
 
     constructor() {
         window.addEventListener('click', (e) => {
@@ -29,6 +33,15 @@ class Modal {
         });     
         this._closeBtn.addEventListener('click', () => this.hide());
     }
+
+    get puzzle() {
+        return this._puzzle;
+    }
+
+    set puzzle(p) {
+        this._puzzle = p;
+    }
+
     toggle() {
         this._open = !this._open;
         if (this._open) {
@@ -44,7 +57,21 @@ class Modal {
         }
     }
     show(msg = 'stats') {
-        if (!this._open) {
+        if (!this._open) {            
+            //Calculate & display statistics
+            if (msg === 'stats' && this.puzzle) {
+                const stats = this.puzzle.stats;
+                const won = Object.values(stats.dist).reduce((t, v) => t + v, 0);
+                const maxWin = Object.values(stats.dist).reduce((t, v) => v > t ? v : t, 0);
+                this._playedCount.innerHTML = stats.played;
+                this._wonCount.innerHTML = won;
+                this._scoreBins.forEach((bin, i) => {
+                    const count = parseInt(stats.dist[i]) || 0;
+                    const width = count === 0 ? 'fit-content' : count / maxWin * 100 + '%';
+                    bin.style.width = width;
+                    bin.innerHTML = count;                    
+                })
+            }
             this._panes.forEach(pane => {
                 if (pane.id === msg) {
                     pane.style.display = 'flex';

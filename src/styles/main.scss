@@ -244,15 +244,52 @@ $key-hover-background: #DDD;
                 }
     
             }
-            .pane.help {
-                .puzzle {
-                    .row {
-                        .letter {
-                            min-width: calc($letter-size * 0.8);
-                            min-height: calc($letter-size * 0.8);
-                            font-size: 1.6em;                                                        
-                        }
+            .pane.stats {
+                h3 {
+                    margin-bottom: 1em;
+                } 
+                .score-table {
+                    display: grid;
+                    grid-template-columns: repeat(2, max-content);
+                    grid-template-rows: repeat(2, max-content);
+                    column-gap: 1em;
+                    justify-items: center;
+                    justify-content: center;
+                    margin-bottom: 1em;
+                    .score {
+                        font-size: 3.5em;
+                        font-weight: normal;
                     }
+                    .score-label {
+                        font-size: 1rem;
+                        font-weight: normal;
+                    }
+
+                }
+                .guess-dist {
+                    display: grid;
+                    grid-template-columns: max-content 1fr;
+                    gap: 0.3em 0.5em;
+                    font-size: 0.8em;
+                    align-items: center;
+                    margin: 0 1em;
+                    .score {
+                        font-weight: normal;
+                        text-align: end;
+                    }
+                    .score-bar {
+                        padding: 0.1em 0.3em;
+                        width: fit-content;
+                        background-color: $not-present-backgroud;
+                        color: $active-color;
+                    }
+                }
+            }
+            .pane.help { 
+                .letter {
+                    min-width: calc($letter-size * 0.8);
+                    min-height: calc($letter-size * 0.8);
+                    font-size: 1.6em;                                                        
                 }
             }
         }

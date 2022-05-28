@@ -3,10 +3,17 @@ import modal from "./modal";
 class Puzzle {
     _cardDivs = [];
     _solution = 'space';
-    _currentSolution = [
-        ['a', 'b', 'b', 'c', 'e'],
-        ['a', 'b']
-    ];
+    _currentSolution = [];
+    _modal = modal;
+    _stats = {
+        played: 20,
+        dist: {
+            1: 3,
+            3: 7,
+            4: 3,
+            5: 3
+        }
+    }
     _keyboard;
     constructor() {
         document.querySelectorAll('#puzzle > .row').forEach(row => {
@@ -19,6 +26,14 @@ class Puzzle {
 
     get solution() {
         return this._solution;
+    }
+
+    get stats() {
+        return this._stats;
+    }
+
+    get modal() {
+        return this._modal;
     }
 
     reset() {

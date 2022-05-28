@@ -7,5 +7,6 @@ import puzzle from './puzzle';
 import keyboard from './keyboard';
 
 puzzle.keyboard = keyboard;
+puzzle.modal.puzzle = puzzle;
 
 
