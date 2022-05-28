@@ -6,8 +6,8 @@ $background: #fff;
 $overlay: rgba(255, 255, 255, 0.6);
 
 $not-present-backgroud: rgb(120, 124, 126);
-$present-background: rgb(201, 207, 50);
-$unique-background: green;
+$present-background: #c9b458;
+$unique-background: #6aaa64;
 $active-color: #FFF;
 $current-letter-border: rgb(135, 138, 140);
 
@@ -19,7 +19,6 @@ $key-gap: 0.4em;
 $key-background: #CCC;
 $key-active-background: #999;
 $key-hover-background: #DDD;
-
 
 *, body {
     margin: 0px;
@@ -36,13 +35,13 @@ $key-hover-background: #DDD;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-between;
-    min-height: 100vh;
     font-size: 16px;
+    min-height: 100vh;
 
     .icon-btn {
         cursor: pointer;
-        width: 1.5em;
-        height: 1.5em;
+        min-width: 1.5em;
+        min-height: 1.5em;
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
@@ -74,7 +73,7 @@ $key-hover-background: #DDD;
                 background-image: url('../assets/github.svg');
             }
         }
-        h3 {
+        h1 {
             font-size: 3em;
         }    
     }
@@ -209,7 +208,8 @@ $key-hover-background: #DDD;
             padding: 1em;
             border-radius: 0.2em;
             z-index: 10;
-            margin-top: 120vh; 
+            margin-top: 120vh;
+            overflow-y: auto;
             opacity: 0;
             transition: margin-top 0.2s ease-in-out, 
                         opacity 0.2s ease-in-out;
@@ -305,7 +305,36 @@ $key-hover-background: #DDD;
         overflow-x: hidden;
     }
     .container {
-        font-size: calc(2px + 2.2vw)
+        .keyboard {
+            font-size: 3.8vw;
+            .row {
+                gap: 0.3em; 
+                .key {
+                    min-width: 1.9em;
+                    padding: 0.2em;
+                }     
+            }       
+        }    
     }
-    
+}
+
+@media screen and (max-width: 400px) {
+    .container > .puzzle {
+        font-size: 3.9vw;
+        margin: 0px;
+    }
+    .container {
+        min-height: 95vh;
+        nav {
+            .menu .icon-btn {
+                font-size: 4vw;
+            }
+            h1 {
+                font-size: 10vw;
+            }
+        }
+        .keyboard {
+            margin: 0px 0px 0.5em;
+        }    
+    }
 }
