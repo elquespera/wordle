@@ -2,7 +2,7 @@ $letter-size: 2em;
 $puzzle-gap: 0.4em;
 $puzzle-border: #CCC;
 
-$not-present-backgroud: #666;
+$not-present-backgroud: rgb(120, 124, 126);
 $present-background: rgb(201, 207, 50);
 $unique-background: green;
 $active-color: #FFF;
@@ -23,7 +23,7 @@ $key-hover-background: #DDD;
     border: 0px;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .container {
@@ -58,6 +58,19 @@ $key-hover-background: #DDD;
         }
     }
 
+    .not-present {
+        background-color: $not-present-backgroud;
+    }
+    .present {
+        background-color: $present-background;
+    }
+    .unique {
+        background-color: $unique-background;
+    }
+    .not-present, .present, .unique {
+        color: $active-color;
+    }     
+
     .puzzle {
         display: flex;
         flex-flow: column nowrap;
@@ -74,8 +87,17 @@ $key-hover-background: #DDD;
                 align-items: center;                
                 min-width: $letter-size;
                 min-height: $letter-size;
-                border: 2px solid $puzzle-border;
+                border: 2px solid $puzzle-border;                
             }
+            .letter.not-present {
+                border-color: $not-present-backgroud;
+            }
+            .letter.present {
+                border-color: $present-background;
+            }
+            .letter.unique {
+                border-color: $unique-background;
+            }            
         }
     }
     .keyboard {
@@ -107,21 +129,28 @@ $key-hover-background: #DDD;
             .key:active, .key.pressed {
                 background-color: $key-active-background;
             }  
-            .key.not-present {
-                background-color: $not-present-backgroud;
-            }
-            .key.present {
-                background-color: $present-background;
-            }
-            .key.unique {
-                background-color: $unique-background;
-            }
-            .key.not-present, .key.present, .key-unique {
-                color: $active-color;
-            }
         }
     }
 
+}
+
+.error-msg {
+    // display: none;
+    position: absolute;
+    top: 5em;
+    margin: 0 auto;
+    background-color: black;
+    color: #FFF;
+    padding: 0.8em;
+    border-radius: 0.3em;
+    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.error-msg.visible {
+    opacity: 1;
+    // display: block;
 }
 
 @media screen and (max-width: 600px) {

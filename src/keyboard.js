@@ -27,6 +27,10 @@ class Keyboard {
         });
     }
 
+    get keyFunction() {
+        return this._keypressFunc;
+    }
+
     set keyFunction (f) {
         this._keypressFunc = f; 
     }
@@ -41,7 +45,6 @@ class Keyboard {
     press(key) {
         key = this.findKeyDiv(key);
         if (key) {
-            console.log(key.innerHTML);
             if (this._keypressFunc) {
                 this._keypressFunc(key.innerHTML);
             }
