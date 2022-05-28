@@ -2,11 +2,20 @@ $letter-size: 2em;
 $puzzle-gap: 0.4em;
 $puzzle-border: #CCC;
 
+$not-present-backgroud: #666;
+$present-background: rgb(201, 207, 50);
+$unique-background: green;
+$active-color: #FFF;
+
+
 $key-width: 2.5em;
 $key-height: 3.6em;
 $key-padding: 0.8em;
-$key-gap: 0.6em;
+$key-gap: 0.4em;
 $key-background: #CCC;
+$key-active-background: #999;
+$key-hover-background: #DDD;
+
 
 *, body {
     margin: 0px;
@@ -26,15 +35,40 @@ $key-background: #CCC;
     padding: 12px;
     font-size: 16px;
 
+    nav {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1em;
+        .help {
+            img {
+                width: 2em;
+                height: 2em;
+            }
+        }
+        h3 {
+            font-size: 3em;
+        }    
+        .about {
+            img {
+                width: 2em;
+                height: 2em;
+            }
+        }
+    }
+
     .puzzle {
         display: flex;
         flex-flow: column nowrap;
         gap: $puzzle-gap;
+        margin: 1em;
         .row {
             display: flex;
             gap: $puzzle-gap;
             .letter {
                 font-size: 2em;
+                text-transform: uppercase;
                 display: flex;
                 justify-content: center;
                 align-items: center;                
@@ -45,6 +79,7 @@ $key-background: #CCC;
         }
     }
     .keyboard {
+        margin: 1em;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
@@ -59,11 +94,30 @@ $key-background: #CCC;
                 align-items: center;
                 cursor: pointer;
                 font-size: 1em;
+                text-transform: uppercase;
                 padding: $key-padding;
                 min-width: $key-width;
                 min-height: $key-height;
                 background-color: $key-background;
-                border-radius: 8%;
+                border-radius: 0.3em;
+            }            
+            .key:hover {
+                background-color: $key-hover-background;
+            }
+            .key:active, .key.pressed {
+                background-color: $key-active-background;
+            }  
+            .key.not-present {
+                background-color: $not-present-backgroud;
+            }
+            .key.present {
+                background-color: $present-background;
+            }
+            .key.unique {
+                background-color: $unique-background;
+            }
+            .key.not-present, .key.present, .key-unique {
+                color: $active-color;
             }
         }
     }

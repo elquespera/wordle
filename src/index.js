@@ -1,6 +1,9 @@
 import './styles/main.scss';
 import githubIcon from './assets/github.png';
+import questionIcon from './assets/question.svg';
+import keyboard from './keyboard';
 
-
-console.log('Hello .js file');
-console.log(__dirname);
+keyboard.keyFunction = (key) => {
+    console.log(`Key ${key} was pressed!`);
+    keyboard.setKeyAttributes(key, {present: true})
+}
