@@ -1,26 +1,13 @@
-const layouts = {
-    en: {
-        locale: 'en',
-        name: 'English',
-        keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
-    },
-    es: {
-        locale: 'es',
-        name: 'Espanol',
-        keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
-    },
-    ru: {
-        locale: 'ru',
-        name: 'Русский',
-        keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё']
-    },
-}
+import { layouts, switchLanguage } from "./language";
 
 class Keyboard {
     _lay
     _keys = [];
     _keypressFunc;
     constructor() {
+        //Create language flyout
+
+        //Switch to english keyboard
         this.switch(layouts.en);
 
         //Add keypress event listener
@@ -60,6 +47,7 @@ class Keyboard {
             keyboardFragment.appendChild(rowDiv);
         });
         document.querySelector('.keyboard').replaceChildren(keyboardFragment);
+        switchLanguage(layout);
     }
 
     set keyFunction (f) {
@@ -78,21 +66,21 @@ class Keyboard {
         }
     }
 
-    setKeyAttributes(key, options) {
-        key = this.findKeyDiv(key);
-        if (key) {
-            if (options.present) {
-                key.classList.add('present')
-            } else {
-                key.classList.remove('present')
-            }
-            if (options.unique) {
-                key.classList.add('unique')
-            } else {
-                key.classList.remove('unique')
-            }
-        }
-    }
+    // setKeyAttributes(key, options) {
+    //     key = this.findKeyDiv(key);
+    //     if (key) {
+    //         if (options.present) {
+    //             key.classList.add('present')
+    //         } else {
+    //             key.classList.remove('present')
+    //         }
+    //         if (options.correct) {
+    //             key.classList.add('correct')
+    //         } else {
+    //             key.classList.remove('correct')
+    //         }
+    //     }
+    // }
 }
 
 export default new Keyboard();

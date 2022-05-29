@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language */ "./src/language.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -20,23 +21,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var layouts = {
-  en: {
-    locale: 'en',
-    name: 'English',
-    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
-  },
-  es: {
-    locale: 'es',
-    name: 'Espanol',
-    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
-  },
-  ru: {
-    locale: 'ru',
-    name: 'Русский',
-    keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё']
-  }
-};
+
 
 var Keyboard = /*#__PURE__*/function () {
   function Keyboard() {
@@ -50,7 +35,9 @@ var Keyboard = /*#__PURE__*/function () {
 
     _defineProperty(this, "_keypressFunc", void 0);
 
-    this["switch"](layouts.en); //Add keypress event listener
+    //Create language flyout
+    //Switch to english keyboard
+    this["switch"](_language__WEBPACK_IMPORTED_MODULE_0__.layouts.en); //Add keypress event listener
 
     window.addEventListener('keydown', function (e) {
       var div = _this.findKeyDiv(e.key);
@@ -74,7 +61,7 @@ var Keyboard = /*#__PURE__*/function () {
     value: function _switch() {
       var _this2 = this;
 
-      var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+      var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _language__WEBPACK_IMPORTED_MODULE_0__.layouts.en;
 
       var createKeyDiv = function createKeyDiv(key) {
         var special = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -108,6 +95,7 @@ var Keyboard = /*#__PURE__*/function () {
         keyboardFragment.appendChild(rowDiv);
       });
       document.querySelector('.keyboard').replaceChildren(keyboardFragment);
+      (0,_language__WEBPACK_IMPORTED_MODULE_0__.switchLanguage)(layout);
     }
   }, {
     key: "keyFunction",
@@ -129,32 +117,90 @@ var Keyboard = /*#__PURE__*/function () {
       if (this.findKeyDiv(key) && this._keypressFunc) {
         this._keypressFunc(key.toLowerCase());
       }
-    }
-  }, {
-    key: "setKeyAttributes",
-    value: function setKeyAttributes(key, options) {
-      key = this.findKeyDiv(key);
+    } // setKeyAttributes(key, options) {
+    //     key = this.findKeyDiv(key);
+    //     if (key) {
+    //         if (options.present) {
+    //             key.classList.add('present')
+    //         } else {
+    //             key.classList.remove('present')
+    //         }
+    //         if (options.correct) {
+    //             key.classList.add('correct')
+    //         } else {
+    //             key.classList.remove('correct')
+    //         }
+    //     }
+    // }
 
-      if (key) {
-        if (options.present) {
-          key.classList.add('present');
-        } else {
-          key.classList.remove('present');
-        }
-
-        if (options.unique) {
-          key.classList.add('unique');
-        } else {
-          key.classList.remove('unique');
-        }
-      }
-    }
   }]);
 
   return Keyboard;
 }();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Keyboard());
+
+/***/ }),
+
+/***/ "./src/language.js":
+/*!*************************!*\
+  !*** ./src/language.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "initLanguage": () => (/* binding */ initLanguage),
+/* harmony export */   "layouts": () => (/* binding */ layouts),
+/* harmony export */   "switchLanguage": () => (/* binding */ switchLanguage)
+/* harmony export */ });
+var layouts = {
+  en: {
+    locale: 'en',
+    name: 'English',
+    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+  },
+  es: {
+    locale: 'es',
+    name: 'Espanol',
+    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+  },
+  ru: {
+    locale: 'ru',
+    name: 'Русский',
+    keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё']
+  }
+}; // const langBtn = document.querySelector('.lang-btn');
+// const langFlyout = document.querySelector('.lang-flyout');
+// let flyoutOpen = false;
+
+var switchLanguage = function switchLanguage() {
+  var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+};
+
+var initLanguage = function initLanguage() {// const langFrag = new DocumentFragment();
+  // Object.values(layouts).forEach(layout => {
+  //     const item = document.createElement('li');
+  //     item.innerHTML = layout.name;
+  //     langFrag.appendChild(item);
+  // });
+  // langFlyout.replaceChildren(langFrag);
+  // langBtn.addEventListener('click', toggleFlyout);
+  // window.addEventListener('click', (event) => {
+  //     if (flyoutOpen && event.target !== langFlyout) {
+  //         toggleFlyout();
+  //     }
+  // });
+  // window.addEventListener('keydown', event => {
+  //     if (flyoutOpen && event.key == 'Escape') {
+  //         toggleFlyout();
+  //     }
+  // });     
+
+  var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+};
+
+
 
 /***/ }),
 
@@ -728,9 +774,10 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/help.svg */ "./src/assets/help.svg"), __webpack_require__.b);
 var ___CSS_LOADER_URL_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/chart.svg */ "./src/assets/chart.svg"), __webpack_require__.b);
 var ___CSS_LOADER_URL_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/github.svg */ "./src/assets/github.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_3___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/backspace.svg */ "./src/assets/backspace.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_4___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/arrow-turn-down.svg */ "./src/assets/arrow-turn-down.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_5___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/close.svg */ "./src/assets/close.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_3___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/settings.svg */ "./src/assets/settings.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_4___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/enter.svg */ "./src/assets/enter.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_5___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/backspace.svg */ "./src/assets/backspace.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_6___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/close.svg */ "./src/assets/close.svg"), __webpack_require__.b);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_1___);
@@ -738,8 +785,9 @@ var ___CSS_LOADER_URL_REPLACEMENT_2___ = _node_modules_css_loader_dist_runtime_g
 var ___CSS_LOADER_URL_REPLACEMENT_3___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_3___);
 var ___CSS_LOADER_URL_REPLACEMENT_4___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_4___);
 var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_5___);
+var ___CSS_LOADER_URL_REPLACEMENT_6___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_6___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "header {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .lang-btn {\n  text-transform: uppercase;\n}\nheader .menu .lang-flyout {\n  position: absolute;\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #CCC;\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: rgb(120, 124, 126);\n  border-color: rgb(120, 124, 126);\n}\n.puzzle .present {\n  background-color: #c9b458;\n  border-color: #c9b458;\n}\n.puzzle .correct {\n  background-color: #6aaa64;\n  border-color: #6aaa64;\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: #FFF;\n}\n\n.keyboard {\n  margin: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.4em;\n  max-width: 500px;\n  height: 300px;\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.4em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  min-width: 2.5em;\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n\n@media screen and (max-width: 600px) {\n  .keyboard {\n    font-size: 3.8vw;\n  }\n  .keyboard .row {\n    gap: 0.3em;\n  }\n  .keyboard .row .key {\n    min-width: 1.9em;\n    padding: 0.2em;\n  }\n}\n@media screen and (max-width: 400px) {\n  .keyboard {\n    margin: 0px 0px 0.5em;\n  }\n}\n.modal-overlay {\n  display: flex;\n  display: none;\n  position: absolute;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  overflow-y: auto;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  padding-bottom: 1.5em;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.modal-overlay .modal .pane.help .letter {\n  min-width: 1.6em;\n  min-height: 1.6em;\n  font-size: 1.6em;\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n*, body {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n  height: 100%;\n}\n\nbutton {\n  background-color: transparent;\n}\n\n.icon-btn {\n  cursor: pointer;\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}\n.container .error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  max-height: 2em;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n.container .error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}", "",{"version":3,"sources":["webpack://./src/styles/header.scss","webpack://./src/styles/main.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        align-items: center;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .lang-btn {\n            text-transform: uppercase;\n        }\n        .lang-flyout {\n            position: absolute;\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n*, body {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n    height: 100%;\n}\n\nbutton {\n    background-color: transparent;\n}\n\n.icon-btn {\n    cursor: pointer;\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height()); \n    \n    .error-msg {\n        position: absolute;\n        top: 5em;\n        margin: 0 auto;\n        max-height: 2em;\n        background-color: black;\n        color: #FFF;\n        padding: 0.8em;\n        border-radius: 0.3em;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n        opacity: 0;\n    }\n    \n    .error-msg.visible {\n        opacity: 1;\n        transition: opacity 0.5s;   \n    }        \n}","//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Colors\n$puzzle-border-color: #CCC;\n$not-present-color: rgb(120, 124, 126);\n$present-color: #c9b458;\n$correct-color: #6aaa64;\n$active-color: #FFF;\n$current-color: rgb(135, 138, 140);\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid $puzzle-border-color; \n        transition: transform 0.08s ease-out;\n    }\n\n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: $current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: $not-present-color;\n        border-color: $not-present-color;\n    }\n    .present {\n        background-color: $present-color;\n        border-color: $present-color;\n    }\n    .correct {\n        background-color: $correct-color;\n        border-color: $correct-color;\n    }\n    \n    .not-present, .present, .correct {\n        color: $active-color;\n    }    \n}","$key-width: 2.5em;\n$key-height: 3.6em;\n$key-padding: 0.8em;\n$key-gap: 0.4em;\n$key-background: #CCC;\n$key-active-background: #999;\n$key-hover-background: #DDD;\n\n\n.keyboard {\n    margin: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    max-width: 500px;\n    height: 300px;\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            // padding: $key-padding;\n            min-width: $key-width;\n            // height: $key-height;\n            background-color: $key-background;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n        }\n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n        .key.key-enter {    \n            background-image: url('../assets/arrow-turn-down.svg');\n        }\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .keyboard {\n        font-size: 3.8vw;\n        .row {\n            gap: 0.3em; \n            .key {\n                min-width: 1.9em;\n                padding: 0.2em;\n            }     \n        }       \n    }    \n}\n\n@media screen and (max-width: 400px) {\n    .keyboard {\n        margin: 0px 0px 0.5em;\n    }    \n}","$puzzle-border: #CCC;\n$not-present-backgroud: rgb(120, 124, 126);\n$active-color: #FFF;\n$letter-size: 2em;\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n.modal-overlay {\n    display: flex;\n    display: none;\n    position: absolute;     \n    z-index: 2;\n    background-color: $overlay;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: $background;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n        min-width: 40vw;\n        min-height: 20vh;\n        max-width: 90vw;\n        max-height: 90vh;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        overflow-y: auto;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            padding-bottom: 1.5em;\n\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid $puzzle-border;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: $not-present-backgroud;\n                    color: $active-color;\n                }\n            }\n        }\n        .pane.help { \n            .letter {\n                min-width: calc($letter-size * 0.8);\n                min-height: calc($letter-size * 0.8);\n                font-size: 1.6em;                                                        \n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    "],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "header {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  position: relative;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  transform: rotate(-90deg);\n}\nheader .menu .stats-btn:hover {\n  transform: none;\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .settings-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\nheader .menu .settings-btn:hover {\n  transform: rotate(200deg);\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #CCC;\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: rgb(120, 124, 126);\n  border-color: rgb(120, 124, 126);\n}\n.puzzle .present {\n  background-color: #c9b458;\n  border-color: #c9b458;\n}\n.puzzle .correct {\n  background-color: #6aaa64;\n  border-color: #6aaa64;\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: #FFF;\n}\n\n.keyboard {\n  margin-bottom: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.3em;\n  height: calc((min(60px, min(42px, (100vw - 3em) / 10) * 1.7) + 0.3em) * 3);\n  font-size: min(18px, min(42px, (100vw - 3em) / 10) / 2);\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.3em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  width: min(42px, (100vw - 3em) / 10);\n  height: min(60px, min(42px, (100vw - 3em) / 10) * 1.7);\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n  width: calc(min(42px, (100vw - 3em) / 10) * 1.5);\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n\n.modal-overlay {\n  display: flex;\n  display: none;\n  position: absolute;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  height: auto;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  overflow-y: auto;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  padding-bottom: 1.5em;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.modal-overlay .modal .pane.help .letter {\n  min-width: 1.6em;\n  min-height: 1.6em;\n  font-size: 1.6em;\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n*, body, ul, li {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n}\n\nul {\n  list-style: none;\n}\n\nbody, * {\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n}\n\n* {\n  height: 100%;\n}\n\nbutton {\n  background-color: transparent;\n}\n\n.icon-btn {\n  cursor: pointer;\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}\n.container .error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  max-height: 2em;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n.container .error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}", "",{"version":3,"sources":["webpack://./src/styles/header.scss","webpack://./src/styles/main.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$background: #fff;\n\n@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        position: relative;\n        align-items: center;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n            transform: rotate(-90deg);\n        }\n        .stats-btn:hover {\n            transform: none;\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .settings-btn {\n            background-image: url('../assets/settings.svg');\n        }\n        .settings-btn:hover {\n            transform: rotate(200deg);\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n// Reset\n*, body, ul, li {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n}\nul {\n    list-style: none;\n}\nbody, * {\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n}\n\n* {\n    height: 100%;\n}\n\n\nbutton {\n    background-color: transparent;\n}\n\n\n\n.icon-btn {\n    cursor: pointer;\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height()); \n    \n    .error-msg {\n        position: absolute;\n        top: 5em;\n        margin: 0 auto;\n        max-height: 2em;\n        background-color: black;\n        color: #FFF;\n        padding: 0.8em;\n        border-radius: 0.3em;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n        opacity: 0;\n    }\n    \n    .error-msg.visible {\n        opacity: 1;\n        transition: opacity 0.5s;   \n    }        \n}","//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Colors\n$puzzle-border-color: #CCC;\n$not-present-color: rgb(120, 124, 126);\n$present-color: #c9b458;\n$correct-color: #6aaa64;\n$active-color: #FFF;\n$current-color: rgb(135, 138, 140);\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid $puzzle-border-color; \n        transition: transform 0.08s ease-out;\n    }\n\n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: $current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: $not-present-color;\n        border-color: $not-present-color;\n    }\n    .present {\n        background-color: $present-color;\n        border-color: $present-color;\n    }\n    .correct {\n        background-color: $correct-color;\n        border-color: $correct-color;\n    }\n    \n    .not-present, .present, .correct {\n        color: $active-color;\n    }    \n}","$key-gap: 0.3em;\n\n$key-background-color: #CCC;\n$key-active-background-color: #999;\n$key-hover-background-color: #DDD;\n\n$keyboard-max-keys: 10;\n$keyboard-max-key-width: 42px;\n$keyboard-max-key-height: 60px;\n\n@function key-width() {\n    @return min($keyboard-max-key-width, \n                (100vw - $key-gap * $keyboard-max-keys) / $keyboard-max-keys);\n}\n@function key-width-special() {\n    @return calc(key-width() * 1.5);\n}\n@function key-height() {\n    @return min($keyboard-max-key-height, key-width() * 1.7);\n}\n@function keyboard-height() {\n    @return calc((key-height() + $key-gap) * 3);\n}\n@function keyboard-font-size() {\n    @return min(18px, key-width() / 2);\n}\n\n\n.keyboard {\n    margin-bottom: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    height: keyboard-height();\n    font-size: keyboard-font-size();\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            width: key-width();\n            height: key-height();\n            background-color: $key-background-color;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background-color;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background-color;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n            width: key-width-special();\n        }\n        .key.key-enter {    \n            background-image: url('../assets/enter.svg');\n        }        \n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n    }\n}","$puzzle-border: #CCC;\n$not-present-backgroud: rgb(120, 124, 126);\n$active-color: #FFF;\n$letter-size: 2em;\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n.modal-overlay {\n    display: flex;\n    display: none;\n    position: absolute;     \n    z-index: 2;\n    background-color: $overlay;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: $background;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n        min-width: 40vw;\n        min-height: 20vh;\n        max-width: 90vw;\n        max-height: 90vh;\n        height: auto;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        overflow-y: auto;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            padding-bottom: 1.5em;\n\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid $puzzle-border;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: $not-present-backgroud;\n                    color: $active-color;\n                }\n            }\n        }\n        .pane.help { \n            .letter {\n                min-width: calc($letter-size * 0.8);\n                min-height: calc($letter-size * 0.8);\n                font-size: 1.6em;                                                        \n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    "],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1286,16 +1334,6 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/assets/arrow-turn-down.svg":
-/*!****************************************!*\
-  !*** ./src/assets/arrow-turn-down.svg ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "arrow-turn-down.svg";
-
-/***/ }),
-
 /***/ "./src/assets/backspace.svg":
 /*!**********************************!*\
   !*** ./src/assets/backspace.svg ***!
@@ -1326,6 +1364,16 @@ module.exports = __webpack_require__.p + "close.svg";
 
 /***/ }),
 
+/***/ "./src/assets/enter.svg":
+/*!******************************!*\
+  !*** ./src/assets/enter.svg ***!
+  \******************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "enter.svg";
+
+/***/ }),
+
 /***/ "./src/assets/github.svg":
 /*!*******************************!*\
   !*** ./src/assets/github.svg ***!
@@ -1343,6 +1391,16 @@ module.exports = __webpack_require__.p + "github.svg";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "help.svg";
+
+/***/ }),
+
+/***/ "./src/assets/settings.svg":
+/*!*********************************!*\
+  !*** ./src/assets/settings.svg ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "settings.svg";
 
 /***/ })
 
@@ -1488,27 +1546,24 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.scss */ "./src/styles/main.scss");
-/* harmony import */ var _assets_help_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/help.svg */ "./src/assets/help.svg");
-/* harmony import */ var _assets_github_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/github.svg */ "./src/assets/github.svg");
-/* harmony import */ var _assets_chart_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/chart.svg */ "./src/assets/chart.svg");
-/* harmony import */ var _assets_close_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/close.svg */ "./src/assets/close.svg");
-/* harmony import */ var _assets_arrow_turn_down_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./assets/arrow-turn-down.svg */ "./src/assets/arrow-turn-down.svg");
-/* harmony import */ var _assets_backspace_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./assets/backspace.svg */ "./src/assets/backspace.svg");
-/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
-/* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
+/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
+/* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
+/* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./language */ "./src/language.js");
+ // import helpIcon from './assets/help.svg';
+// import githubIcon from './assets/github.svg';
+// import chartIcon from './assets/chart.svg';
+// import closeIcon from './assets/close.svg';
+// import returnIcon from './assets/arrow-turn-down.svg';
+// import backspaceIcon from './assets/backspace.svg';
 
 
 
 
-
-
-
-
-
-_puzzle__WEBPACK_IMPORTED_MODULE_7__["default"].keyboard = _keyboard__WEBPACK_IMPORTED_MODULE_8__["default"];
-_puzzle__WEBPACK_IMPORTED_MODULE_7__["default"].modal.puzzle = _puzzle__WEBPACK_IMPORTED_MODULE_7__["default"];
+_puzzle__WEBPACK_IMPORTED_MODULE_1__["default"].keyboard = _keyboard__WEBPACK_IMPORTED_MODULE_2__["default"];
+_puzzle__WEBPACK_IMPORTED_MODULE_1__["default"].modal.puzzle = _puzzle__WEBPACK_IMPORTED_MODULE_1__["default"];
+(0,_language__WEBPACK_IMPORTED_MODULE_3__.initLanguage)();
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.88db3f3907eeb1234f35.js.map
+//# sourceMappingURL=bundle.29fd45c75cec497751ad.js.map

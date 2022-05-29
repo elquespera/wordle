@@ -1,20 +1,39 @@
-$key-width: 2.5em;
-$key-height: 3.6em;
-$key-padding: 0.8em;
-$key-gap: 0.4em;
-$key-background: #CCC;
-$key-active-background: #999;
-$key-hover-background: #DDD;
+$key-gap: 0.3em;
+
+$key-background-color: #CCC;
+$key-active-background-color: #999;
+$key-hover-background-color: #DDD;
+
+$keyboard-max-keys: 10;
+$keyboard-max-key-width: 42px;
+$keyboard-max-key-height: 60px;
+
+@function key-width() {
+    @return min($keyboard-max-key-width, 
+                (100vw - $key-gap * $keyboard-max-keys) / $keyboard-max-keys);
+}
+@function key-width-special() {
+    @return calc(key-width() * 1.5);
+}
+@function key-height() {
+    @return min($keyboard-max-key-height, key-width() * 1.7);
+}
+@function keyboard-height() {
+    @return calc((key-height() + $key-gap) * 3);
+}
+@function keyboard-font-size() {
+    @return min(18px, key-width() / 2);
+}
 
 
 .keyboard {
-    margin: 1em;
+    margin-bottom: 1em;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     gap: $key-gap;
-    max-width: 500px;
-    height: 300px;
+    height: keyboard-height();
+    font-size: keyboard-font-size();
     .row {
         display: flex;
         flex-flow: row nowrap;
@@ -26,49 +45,30 @@ $key-hover-background: #DDD;
             cursor: pointer;
             font-size: 1em;
             text-transform: uppercase;
-            // padding: $key-padding;
-            min-width: $key-width;
-            // height: $key-height;
-            background-color: $key-background;
+            width: key-width();
+            height: key-height();
+            background-color: $key-background-color;
             border-radius: 0.3em;
             touch-action: manipulation;
             outline: none;
         }            
         .key:hover {
-            background-color: $key-hover-background;
+            background-color: $key-hover-background-color;
         }
         .key:active, .key.pressed {
-            background-color: $key-active-background;
+            background-color: $key-active-background-color;
         }
         .key.key-enter, .key.key-backspace {
             background-repeat: no-repeat;
             background-position: center;
             background-size: 1em;
+            width: key-width-special();
         }
+        .key.key-enter {    
+            background-image: url('../assets/enter.svg');
+        }        
         .key.key-backspace {
             background-image: url('../assets/backspace.svg');
         }
-        .key.key-enter {    
-            background-image: url('../assets/arrow-turn-down.svg');
-        }
     }
-}
-
-@media screen and (max-width: 600px) {
-    .keyboard {
-        font-size: 3.8vw;
-        .row {
-            gap: 0.3em; 
-            .key {
-                min-width: 1.9em;
-                padding: 0.2em;
-            }     
-        }       
-    }    
-}
-
-@media screen and (max-width: 400px) {
-    .keyboard {
-        margin: 0px 0px 0.5em;
-    }    
 }

@@ -1,3 +1,5 @@
+$background: #fff;
+
 @function header-height() {
     @return max(25px, min(60px, 13vw));
 }
@@ -12,6 +14,7 @@ header {
     padding: 0 1em;
     .menu {
         display: flex;
+        position: relative;
         align-items: center;
         gap: 1em;
         .help-btn {
@@ -19,15 +22,19 @@ header {
         }
         .stats-btn {
             background-image: url('../assets/chart.svg');
+            transform: rotate(-90deg);
+        }
+        .stats-btn:hover {
+            transform: none;
         }
         .github-btn {
             background-image: url('../assets/github.svg');
         }
-        .lang-btn {
-            text-transform: uppercase;
+        .settings-btn {
+            background-image: url('../assets/settings.svg');
         }
-        .lang-flyout {
-            position: absolute;
+        .settings-btn:hover {
+            transform: rotate(200deg);
         }
     }
     h1 {
