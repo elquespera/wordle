@@ -11,6 +11,8 @@ $unique-background: #6aaa64;
 $active-color: #FFF;
 $current-letter-border: rgb(135, 138, 140);
 
+$header-height: 50px;
+
  @use 'keyboard';
 
 *, body {
@@ -20,6 +22,48 @@ $current-letter-border: rgb(135, 138, 140);
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
+    height: 100%;
+}
+
+header {
+    height: $header-height;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
+    .menu {
+        display: flex;
+        gap: 1em;
+        .help-btn {
+            background-image: url('../assets/help.svg');
+        }
+        .stats-btn {
+            background-image: url('../assets/chart.svg');
+        }
+        .github-btn {
+            background-image: url('../assets/github.svg');
+        }
+    }
+    h1 {
+        font-size: 3em;
+    }    
+}
+
+.icon-btn {
+    cursor: pointer;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 .container {
@@ -29,47 +73,7 @@ $current-letter-border: rgb(135, 138, 140);
     align-items: center;
     justify-content: space-between;
     font-size: 16px;
-    min-height: 100vh;
-
-    .icon-btn {
-        cursor: pointer;
-        min-width: 1.5em;
-        min-height: 1.5em;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        opacity: 0.7;
-        transition: opacity 0.2s, transform;
-    }
-
-    .icon-btn:hover {
-        opacity: 1;
-        transform: translateY(-2px);
-    }
-
-    nav {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 1em;
-        .menu {
-            display: flex;
-            gap: 1em;
-            .help-btn {
-                background-image: url('../assets/help.svg');
-            }
-            .stats-btn {
-                background-image: url('../assets/chart.svg');
-            }
-            .github-btn {
-                background-image: url('../assets/github.svg');
-            }
-        }
-        h1 {
-            font-size: 3em;
-        }    
-    }
+    height: calc(100% - $header-height);
 
     .not-present {
         background-color: $not-present-backgroud;
@@ -135,6 +139,7 @@ $current-letter-border: rgb(135, 138, 140);
         position: absolute;
         top: 5em;
         margin: 0 auto;
+        max-height: 2em;
         background-color: black;
         color: #FFF;
         padding: 0.8em;

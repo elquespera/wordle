@@ -21,7 +21,7 @@ class Keyboard {
     _keys = [];
     _keypressFunc;
     constructor() {
-        this.switch(layouts.ru);
+        this.switch(layouts.en);
 
         //Add keypress event listener
         window.addEventListener('keydown', e => {
@@ -74,7 +74,7 @@ class Keyboard {
 
     press(key) {
         if (this.findKeyDiv(key) && this._keypressFunc) {
-            this._keypressFunc(key);
+            this._keypressFunc(key.toLowerCase());
         }
     }
 

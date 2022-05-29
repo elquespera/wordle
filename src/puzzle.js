@@ -168,7 +168,7 @@ class Puzzle {
                         modal.showError('Not enough letters');
                     }
                     break;
-                case 'return':
+                case 'backspace':
                     if (this.lastRow && this.lastRow.length > 0) {
                         this.lastRow.pop();
                         this.update();

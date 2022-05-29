@@ -7,22 +7,22 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <main class="container">
-        <nav>
-            <div class="menu">
-                <div class="icon-btn help-btn">
+    <header>
+        <div class="menu">
+            <div class="icon-btn help-btn">
+            </div>
+        </div>            
+        <h1><%= htmlWebpackPlugin.options.title %></h1>
+        <div class="menu">
+            <div class="icon-btn stats-btn">
+            </div>
+            <a href="https://github.com/elquespera">
+                <div class="icon-btn github-btn">
                 </div>
-            </div>            
-            <h1><%= htmlWebpackPlugin.options.title %></h1>
-            <div class="menu">
-                <div class="icon-btn stats-btn">
-                </div>
-                <a href="https://github.com/elquespera">
-                    <div class="icon-btn github-btn">
-                    </div>
-                </a>
+            </a>
         </div>
-        </nav>
+    </header>
+    <main class="container">        
         <div id="puzzle" class="puzzle">
             <div class="row">
                 <div class="letter"></div>

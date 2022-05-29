@@ -13,6 +13,7 @@ $key-hover-background: #DDD;
     flex-flow: column nowrap;
     align-items: center;
     gap: $key-gap;
+    max-width: 500px;
     .row {
         display: flex;
         flex-flow: row nowrap;
@@ -29,6 +30,7 @@ $key-hover-background: #DDD;
             min-height: $key-height;
             background-color: $key-background;
             border-radius: 0.3em;
+            touch-action: manipulation;
         }            
         .key:hover {
             background-color: $key-hover-background;
