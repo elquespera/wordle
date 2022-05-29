@@ -1,0 +1,77 @@
+//Sizes
+$puzzle-word-legnth: 5;
+$puzzle-max-width: 320px;
+$puzzle-border: 2px;
+$puzzle-gap: 0.1em;
+
+//Colors
+$puzzle-border-color: #CCC;
+$not-present-color: rgb(120, 124, 126);
+$present-color: #c9b458;
+$correct-color: #6aaa64;
+$active-color: #FFF;
+$current-color: rgb(135, 138, 140);
+
+//Calculate flexible card size
+@function card-size() {
+    $res: calc(min(calc(
+        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - 
+        $puzzle-border * $puzzle-word-legnth * 2) 
+        , $puzzle-max-width));
+    @return calc($res / $puzzle-word-legnth);
+}
+//Calculate card font size
+@function card-font-size() {
+    @return calc(card-size() * 0.6);
+}
+
+.puzzle {
+    font-size: card-font-size();
+    display: grid;
+    grid-template-columns: repeat(5, card-size());
+    grid-template-rows: repeat(6, card-size());
+    justify-content: center;
+    align-content: center;
+    gap: $puzzle-gap;
+    .card {
+        text-transform: uppercase;
+        display: flex;
+        justify-content: center;
+        align-items: center;                
+        border: $puzzle-border solid $puzzle-border-color; 
+        transition: transform 0.08s ease-out;
+    }
+
+    .card.current.in {
+        transform: scale(0.9);
+    }
+    .card.current.out {
+        transform: scale(1.1);
+    }    
+    .card.shift1 {
+        transform: translate(-0.3rem, 0);
+    }
+    .card.shift2 {
+        transform: translate(+0.3rem, 0);
+    }
+    .current {
+        border-color: $current-color;
+        transition: transform 0.08s ease-in;
+    }
+    .not-present {
+        background-color: $not-present-color;
+        border-color: $not-present-color;
+    }
+    .present {
+        background-color: $present-color;
+        border-color: $present-color;
+    }
+    .correct {
+        background-color: $correct-color;
+        border-color: $correct-color;
+    }
+    
+    .not-present, .present, .correct {
+        color: $active-color;
+    }    
+}

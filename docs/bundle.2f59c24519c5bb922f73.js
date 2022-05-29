@@ -78,7 +78,7 @@ var Keyboard = /*#__PURE__*/function () {
 
       var createKeyDiv = function createKeyDiv(key) {
         var special = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        var keyDiv = document.createElement('div');
+        var keyDiv = document.createElement('button');
         keyDiv.className = "key key-".concat(key);
         keyDiv.innerHTML = special ? '' : key;
         keyDiv.keyValue = key;
@@ -346,8 +346,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Puzzle = /*#__PURE__*/function () {
   function Puzzle() {
-    var _this = this;
-
     _classCallCheck(this, Puzzle);
 
     _defineProperty(this, "_cardDivs", []);
@@ -370,14 +368,23 @@ var Puzzle = /*#__PURE__*/function () {
 
     _defineProperty(this, "_keyboard", void 0);
 
-    document.querySelectorAll('#puzzle > .row').forEach(function (row) {
-      var _row = [];
-      row.querySelectorAll('.letter').forEach(function (letter) {
-        return _row.push(letter);
-      });
+    var puzzleFrag = new DocumentFragment();
+    var row = [];
 
-      _this._cardDivs.push(_row.slice());
-    });
+    for (var i = 1; i <= 5 * 6; i++) {
+      var card = document.createElement('div');
+      card.className = "card row-".concat(Math.floor(i / 6));
+      puzzleFrag.appendChild(card);
+      row.push(card);
+
+      if (row.length >= 5) {
+        this._cardDivs.push(row);
+
+        row = [];
+      }
+    }
+
+    document.querySelector('#puzzle').replaceChildren(puzzleFrag);
     this.reset();
   }
 
@@ -411,10 +418,10 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "stats",
     get: function get() {
-      var _this2 = this;
+      var _this = this;
 
       Object.keys(this._stats.dist).forEach(function (key) {
-        _this2._stats.dist[key] = parseInt(_this2._stats.dist[key]);
+        _this._stats.dist[key] = parseInt(_this._stats.dist[key]);
       });
       return this._stats;
     }
@@ -445,17 +452,18 @@ var Puzzle = /*#__PURE__*/function () {
       this.update();
 
       this._cardDivs.flat().forEach(function (card) {
-        card.classList.remove('not-preset', 'present', 'unique', 'current');
+        card.classList.remove('not-present', 'present', 'correct', 'current');
+        console.log(card.className);
       });
     }
   }, {
     key: "update",
     value: function update() {
-      var _this3 = this;
+      var _this2 = this;
 
       this._cardDivs.forEach(function (row, i) {
         return row.forEach(function (div, j) {
-          div.innerHTML = _this3.matrix[i] ? _this3.matrix[i][j] || '' : '';
+          div.innerHTML = _this2.matrix[i] ? _this2.matrix[i][j] || '' : '';
         });
       });
 
@@ -477,22 +485,22 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "checkLetters",
     value: function checkLetters(row) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.matrix[row].forEach(function (letter, i) {
         var className = 'not-present';
 
-        if (_this4.solution.includes(letter)) {
-          if (_this4.solution[i] === letter) {
-            className = 'unique';
+        if (_this3.solution.includes(letter)) {
+          if (_this3.solution[i] === letter) {
+            className = 'correct';
           } else {
             className = 'present';
           }
         }
 
-        _this4._cardDivs[row][i].classList.add(className);
+        _this3._cardDivs[row][i].classList.add(className);
 
-        _this4._cardDivs[row][i].classList.remove('current');
+        _this3._cardDivs[row][i].classList.remove('current');
       });
     }
   }, {
@@ -516,27 +524,33 @@ var Puzzle = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(row < 0 || row > this._cardDivs.length - 1)) {
-                  _context.next = 2;
+                row = this._cardDivs[row];
+
+                if (row) {
+                  _context.next = 3;
                   break;
                 }
 
                 return _context.abrupt("return", false);
 
-              case 2:
-                row = this._cardDivs[row][0].parentElement;
-
+              case 3:
                 toggleClass = function toggleClass() {
                   return new Promise(function (resolve) {
                     setTimeout(function () {
-                      row.classList.toggle('shift1');
-                      row.classList.toggle('shift2');
+                      row.forEach(function (x) {
+                        return x.classList.toggle('shift1');
+                      });
+                      row.forEach(function (x) {
+                        return x.classList.toggle('shift2');
+                      });
                       resolve('');
                     }, 80);
                   });
                 };
 
-                row.classList.add('shift1');
+                row.forEach(function (x) {
+                  return x.classList.add('shift1');
+                });
                 i = 0;
 
               case 6:
@@ -554,7 +568,9 @@ var Puzzle = /*#__PURE__*/function () {
                 break;
 
               case 12:
-                row.classList.remove('shift1', 'shift2');
+                row.forEach(function (x) {
+                  return x.classList.remove('shift1', 'shift2');
+                });
 
               case 13:
               case "end":
@@ -617,25 +633,25 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "keyboard",
     set: function set(k) {
-      var _this5 = this;
+      var _this4 = this;
 
       var keyPressed = function keyPressed(key) {
         switch (key) {
           case 'enter':
-            if (_this5.lastRow && _this5.lastRow.length === 5) {
-              if (_this5.isWordValid(_this5.lastRow.join(''))) {
-                if (_this5.matrix.length < 6) {
-                  _this5.checkLetters(_this5.lastRowNumber);
+            if (_this4.lastRow && _this4.lastRow.length === 5) {
+              if (_this4.isWordValid(_this4.lastRow.join(''))) {
+                if (_this4.matrix.length < 6) {
+                  _this4.checkLetters(_this4.lastRowNumber);
 
-                  _this5.checkStatus();
+                  _this4.checkStatus();
 
-                  _this5.matrix.push([]);
+                  _this4.matrix.push([]);
 
-                  _this5.update();
+                  _this4.update();
                 }
               }
             } else {
-              _this5.shakeRow(_this5.lastRowNumber);
+              _this4.shakeRow(_this4.lastRowNumber);
 
               _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Not enough letters');
             }
@@ -643,12 +659,12 @@ var Puzzle = /*#__PURE__*/function () {
             break;
 
           case 'backspace':
-            if (_this5.lastRow && _this5.lastRow.length > 0) {
-              _this5.lastRow.pop();
+            if (_this4.lastRow && _this4.lastRow.length > 0) {
+              _this4.lastRow.pop();
 
-              _this5.update();
+              _this4.update();
             } else {
-              _this5.shakeRow(_this5.lastRowNumber);
+              _this4.shakeRow(_this4.lastRowNumber);
 
               _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('No letters to erase');
             }
@@ -656,20 +672,20 @@ var Puzzle = /*#__PURE__*/function () {
             break;
 
           default:
-            if (_this5.matrix.length === 0) {
-              _this5.matrix.push([]);
+            if (_this4.matrix.length === 0) {
+              _this4.matrix.push([]);
             }
 
-            if (_this5.lastRow.length < 5) {
-              _this5.lastRow.push(key);
+            if (_this4.lastRow.length < 5) {
+              _this4.lastRow.push(key);
 
-              _this5.update();
+              _this4.update();
 
-              _this5.animateLetter(_this5._cardDivs[_this5.lastRowNumber][_this5.lastRow.length - 1]);
+              _this4.animateLetter(_this4._cardDivs[_this4.lastRowNumber][_this4.lastRow.length - 1]);
             } else {
               _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Five letter max');
 
-              _this5.shakeRow(_this5.lastRowNumber);
+              _this4.shakeRow(_this4.lastRowNumber);
             }
 
         }
@@ -711,10 +727,10 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/backspace.svg */ "./src/assets/backspace.svg"), __webpack_require__.b);
 var ___CSS_LOADER_URL_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/arrow-turn-down.svg */ "./src/assets/arrow-turn-down.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/help.svg */ "./src/assets/help.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_3___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/chart.svg */ "./src/assets/chart.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_4___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/github.svg */ "./src/assets/github.svg"), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_5___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/close.svg */ "./src/assets/close.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/close.svg */ "./src/assets/close.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_3___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/help.svg */ "./src/assets/help.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_4___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/chart.svg */ "./src/assets/chart.svg"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_5___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/github.svg */ "./src/assets/github.svg"), __webpack_require__.b);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_1___);
@@ -723,7 +739,7 @@ var ___CSS_LOADER_URL_REPLACEMENT_3___ = _node_modules_css_loader_dist_runtime_g
 var ___CSS_LOADER_URL_REPLACEMENT_4___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_4___);
 var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_5___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".keyboard {\n  margin: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.4em;\n  max-width: 500px;\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.4em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  padding: 0.8em;\n  min-width: 2.5em;\n  min-height: 3.6em;\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n\n@media screen and (max-width: 600px) {\n  .keyboard {\n    font-size: 3.8vw;\n  }\n  .keyboard .row {\n    gap: 0.3em;\n  }\n  .keyboard .row .key {\n    min-width: 1.9em;\n    padding: 0.2em;\n  }\n}\n@media screen and (max-width: 400px) {\n  .keyboard {\n    margin: 0px 0px 0.5em;\n  }\n}\n*, body {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n  height: 100%;\n}\n\nheader {\n  height: 50px;\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\nheader h1 {\n  font-size: 3em;\n}\n\n.icon-btn {\n  cursor: pointer;\n  min-width: 1.5em;\n  min-height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - 50px);\n}\n.container .not-present {\n  background-color: rgb(120, 124, 126);\n}\n.container .present {\n  background-color: #c9b458;\n}\n.container .unique {\n  background-color: #6aaa64;\n}\n.container .not-present, .container .present, .container .unique {\n  color: #FFF;\n}\n.container .puzzle {\n  display: flex;\n  flex-flow: column nowrap;\n  gap: 0.4em;\n  margin: 1em;\n}\n.container .puzzle .row {\n  display: flex;\n  gap: 0.4em;\n  transition: transform 0.08s ease-in;\n}\n.container .puzzle .row .letter {\n  font-size: 2em;\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-width: 2em;\n  min-height: 2em;\n  border: 2px solid #CCC;\n}\n.container .puzzle .row .letter.not-present {\n  border-color: rgb(120, 124, 126);\n}\n.container .puzzle .row .letter.present {\n  border-color: #c9b458;\n}\n.container .puzzle .row .letter.unique {\n  border-color: #6aaa64;\n}\n.container .puzzle .row .letter.current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.container .puzzle .row .letter.current.in {\n  transform: scale(0.9);\n}\n.container .puzzle .row .letter.current.out {\n  transform: scale(1.1);\n}\n.container .puzzle .row.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.container .puzzle .row.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.container .error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  max-height: 2em;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n.container .error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}\n.container .modal-overlay {\n  display: flex;\n  display: none;\n  position: absolute;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.container .modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  overflow-y: auto;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.container .modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n.container .modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  padding-bottom: 1.5em;\n}\n.container .modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.container .modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.container .modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.container .modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.container .modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.container .modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.container .modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.container .modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.container .modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.container .modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.container .modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.container .modal-overlay .modal .pane.help .letter {\n  min-width: 1.6em;\n  min-height: 1.6em;\n  font-size: 1.6em;\n}\n.container .modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n@media screen and (max-width: 400px) {\n  .container > .puzzle {\n    font-size: 3.9vw;\n    margin: 0px;\n  }\n\n  .container {\n    min-height: 95vh;\n  }\n  .container nav .menu .icon-btn {\n    font-size: 4vw;\n  }\n  .container nav h1 {\n    font-size: 10vw;\n  }\n}", "",{"version":3,"sources":["webpack://./src/styles/keyboard.scss","webpack://./src/styles/main.scss"],"names":[],"mappings":"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","sourcesContent":["$key-width: 2.5em;\n$key-height: 3.6em;\n$key-padding: 0.8em;\n$key-gap: 0.4em;\n$key-background: #CCC;\n$key-active-background: #999;\n$key-hover-background: #DDD;\n\n\n.keyboard {\n    margin: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    max-width: 500px;\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            padding: $key-padding;\n            min-width: $key-width;\n            min-height: $key-height;\n            background-color: $key-background;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n        }            \n        .key:hover {\n            background-color: $key-hover-background;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n        }\n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n        .key.key-enter {    \n            background-image: url('../assets/arrow-turn-down.svg');\n        }\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .keyboard {\n        font-size: 3.8vw;\n        .row {\n            gap: 0.3em; \n            .key {\n                min-width: 1.9em;\n                padding: 0.2em;\n            }     \n        }       \n    }    \n}\n\n@media screen and (max-width: 400px) {\n    .keyboard {\n        margin: 0px 0px 0.5em;\n    }    \n}","$letter-size: 2em;\n$puzzle-gap: 0.4em;\n$puzzle-border: #CCC;\n\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n$not-present-backgroud: rgb(120, 124, 126);\n$present-background: #c9b458;\n$unique-background: #6aaa64;\n$active-color: #FFF;\n$current-letter-border: rgb(135, 138, 140);\n\n$header-height: 50px;\n\n @use 'keyboard';\n\n*, body {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n    height: 100%;\n}\n\nheader {\n    height: $header-height;\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 1em;\n    .menu {\n        display: flex;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n    }\n    h1 {\n        font-size: 3em;\n    }    \n}\n\n.icon-btn {\n    cursor: pointer;\n    min-width: 1.5em;\n    min-height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - $header-height);\n\n    .not-present {\n        background-color: $not-present-backgroud;\n    }\n    .present {\n        background-color: $present-background;\n    }\n    .unique {\n        background-color: $unique-background;\n    }\n    .not-present, .present, .unique {\n        color: $active-color;\n    }     \n\n    .puzzle {\n        display: flex;\n        flex-flow: column nowrap;\n        gap: $puzzle-gap;\n        margin: 1em;\n        .row {\n            display: flex;\n            gap: $puzzle-gap;\n            transition: transform 0.08s ease-in;\n            .letter {\n                font-size: 2em;\n                text-transform: uppercase;\n                display: flex;\n                justify-content: center;\n                align-items: center;                \n                min-width: $letter-size;\n                min-height: $letter-size;\n                border: 2px solid $puzzle-border;                \n            }\n            .letter.not-present {\n                border-color: $not-present-backgroud;\n            }\n            .letter.present {\n                border-color: $present-background;\n            }\n            .letter.unique {\n                border-color: $unique-background;\n            }\n            .letter.current {\n                border-color: $current-letter-border;\n                transition: transform 0.08s ease-in;\n            }\n            .letter.current.in {\n                transform: scale(0.9);\n            }\n            .letter.current.out {\n                transform: scale(1.1);\n            }\n        }\n        .row.shift1 {\n            transform: translate(-0.3rem, 0);\n        }\n        .row.shift2 {\n            transform: translate(+0.3rem, 0);\n        }\n    }\n    \n    .error-msg {\n        position: absolute;\n        top: 5em;\n        margin: 0 auto;\n        max-height: 2em;\n        background-color: black;\n        color: #FFF;\n        padding: 0.8em;\n        border-radius: 0.3em;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n        opacity: 0;\n    }\n    \n    .error-msg.visible {\n        opacity: 1;\n        transition: opacity 0.5s;   \n    }\n    \n    .modal-overlay {\n        display: flex;\n        display: none;\n        position: absolute;     \n        z-index: 2;\n        background-color: $overlay;  \n        width: 100%;\n        height: 100%; \n        align-items: center;\n        justify-content: center;\n        overflow: hidden;\n        .modal {\n            display: flex;\n            flex-flow: column nowrap;\n            background-color: $background;\n            box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n            min-width: 40vw;\n            min-height: 20vh;\n            max-width: 90vw;\n            max-height: 90vh;\n            padding: 1em;\n            border-radius: 0.2em;\n            z-index: 10;\n            margin-top: 120vh;\n            overflow-y: auto;\n            opacity: 0;\n            transition: margin-top 0.2s ease-in-out, \n                        opacity 0.2s ease-in-out;\n\n            .close-btn {\n                align-self: flex-end;\n                background-image: url('../assets/close.svg');\n            }\n            .pane {\n                display: flex;\n                flex-flow: column nowrap;\n                padding-bottom: 1.5em;\n\n                h3 {\n                    align-self: center;\n                    text-transform: uppercase;\n                    letter-spacing: 0.08em;\n                    text-align: center;\n                    margin-bottom: 2em;\n                }\n                h4 {\n                    margin-bottom: 1em;\n                }\n                p {\n                    font-weight: normal;\n                    margin-bottom: 1em;\n                }\n                .hr {\n                    width: 100%;\n                    border-bottom: 1px solid $puzzle-border;\n                    margin-bottom: 2em;\n                }\n    \n            }\n            .pane.stats {\n                h3 {\n                    margin-bottom: 1em;\n                } \n                .score-table {\n                    display: grid;\n                    grid-template-columns: repeat(2, max-content);\n                    grid-template-rows: repeat(2, max-content);\n                    column-gap: 1em;\n                    justify-items: center;\n                    justify-content: center;\n                    margin-bottom: 1em;\n                    .score {\n                        font-size: 3.5em;\n                        font-weight: normal;\n                    }\n                    .score-label {\n                        font-size: 1rem;\n                        font-weight: normal;\n                    }\n\n                }\n                .guess-dist {\n                    display: grid;\n                    grid-template-columns: max-content 1fr;\n                    gap: 0.3em 0.5em;\n                    font-size: 0.8em;\n                    align-items: center;\n                    margin: 0 1em;\n                    .score {\n                        font-weight: normal;\n                        text-align: end;\n                    }\n                    .score-bar {\n                        padding: 0.1em 0.3em;\n                        width: fit-content;\n                        background-color: $not-present-backgroud;\n                        color: $active-color;\n                    }\n                }\n            }\n            .pane.help { \n                .letter {\n                    min-width: calc($letter-size * 0.8);\n                    min-height: calc($letter-size * 0.8);\n                    font-size: 1.6em;                                                        \n                }\n            }\n        }\n        .modal.open {\n            opacity: 1;\n            margin-top: 0px;\n        }\n    }    \n}\n\n@media screen and (max-width: 400px) {\n    .container > .puzzle {\n        font-size: 3.9vw;\n        margin: 0px;\n    }\n    .container {\n        min-height: 95vh;\n        nav {\n            .menu .icon-btn {\n                font-size: 4vw;\n            }\n            h1 {\n                font-size: 10vw;\n            }\n        }\n    }\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".keyboard {\n  margin: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.4em;\n  max-width: 500px;\n  height: 300px;\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.4em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  min-width: 2.5em;\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n\n@media screen and (max-width: 600px) {\n  .keyboard {\n    font-size: 3.8vw;\n  }\n  .keyboard .row {\n    gap: 0.3em;\n  }\n  .keyboard .row .key {\n    min-width: 1.9em;\n    padding: 0.2em;\n  }\n}\n@media screen and (max-width: 400px) {\n  .keyboard {\n    margin: 0px 0px 0.5em;\n  }\n}\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #CCC;\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: rgb(120, 124, 126);\n  border-color: rgb(120, 124, 126);\n}\n.puzzle .present {\n  background-color: #c9b458;\n  border-color: #c9b458;\n}\n.puzzle .correct {\n  background-color: #6aaa64;\n  border-color: #6aaa64;\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: #FFF;\n}\n\n.modal-overlay {\n  display: flex;\n  display: none;\n  position: absolute;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  overflow-y: auto;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  padding-bottom: 1.5em;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.modal-overlay .modal .pane.help .letter {\n  min-width: 1.6em;\n  min-height: 1.6em;\n  font-size: 1.6em;\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n*, body {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n  height: 100%;\n}\n\nheader {\n  height: 50px;\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\nheader h1 {\n  font-size: 3em;\n}\n\n.icon-btn {\n  cursor: pointer;\n  min-width: 1.5em;\n  min-height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - 50px);\n}\n.container .error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  max-height: 2em;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n.container .error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}\n\n@media screen and (max-width: 400px) {\n  .container nav .menu .icon-btn {\n    font-size: 4vw;\n  }\n  .container nav h1 {\n    font-size: 10vw;\n  }\n}", "",{"version":3,"sources":["webpack://./src/styles/keyboard.scss","webpack://./src/styles/main.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$key-width: 2.5em;\n$key-height: 3.6em;\n$key-padding: 0.8em;\n$key-gap: 0.4em;\n$key-background: #CCC;\n$key-active-background: #999;\n$key-hover-background: #DDD;\n\n\n.keyboard {\n    margin: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    max-width: 500px;\n    height: 300px;\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            // padding: $key-padding;\n            min-width: $key-width;\n            // height: $key-height;\n            background-color: $key-background;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n        }\n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n        .key.key-enter {    \n            background-image: url('../assets/arrow-turn-down.svg');\n        }\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .keyboard {\n        font-size: 3.8vw;\n        .row {\n            gap: 0.3em; \n            .key {\n                min-width: 1.9em;\n                padding: 0.2em;\n            }     \n        }       \n    }    \n}\n\n@media screen and (max-width: 400px) {\n    .keyboard {\n        margin: 0px 0px 0.5em;\n    }    \n}","$header-height: 50px;\n\n@use 'keyboard';\n@use 'puzzle';\n@use 'modal';\n\n*, body {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n    height: 100%;\n}\n\nheader {\n    height: $header-height;\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 1em;\n    .menu {\n        display: flex;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n    }\n    h1 {\n        font-size: 3em;\n    }    \n}\n\n.icon-btn {\n    cursor: pointer;\n    min-width: 1.5em;\n    min-height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - $header-height); \n    \n    .error-msg {\n        position: absolute;\n        top: 5em;\n        margin: 0 auto;\n        max-height: 2em;\n        background-color: black;\n        color: #FFF;\n        padding: 0.8em;\n        border-radius: 0.3em;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n        opacity: 0;\n    }\n    \n    .error-msg.visible {\n        opacity: 1;\n        transition: opacity 0.5s;   \n    }        \n}\n\n@media screen and (max-width: 400px) {\n    .container {\n        nav {\n            .menu .icon-btn {\n                font-size: 4vw;\n            }\n            h1 {\n                font-size: 10vw;\n            }\n        }\n    }\n}","//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Colors\n$puzzle-border-color: #CCC;\n$not-present-color: rgb(120, 124, 126);\n$present-color: #c9b458;\n$correct-color: #6aaa64;\n$active-color: #FFF;\n$current-color: rgb(135, 138, 140);\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid $puzzle-border-color; \n        transition: transform 0.08s ease-out;\n    }\n\n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: $current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: $not-present-color;\n        border-color: $not-present-color;\n    }\n    .present {\n        background-color: $present-color;\n        border-color: $present-color;\n    }\n    .correct {\n        background-color: $correct-color;\n        border-color: $correct-color;\n    }\n    \n    .not-present, .present, .correct {\n        color: $active-color;\n    }    \n}","$puzzle-border: #CCC;\n$not-present-backgroud: rgb(120, 124, 126);\n$active-color: #FFF;\n$letter-size: 2em;\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n.modal-overlay {\n    display: flex;\n    display: none;\n    position: absolute;     \n    z-index: 2;\n    background-color: $overlay;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: $background;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n        min-width: 40vw;\n        min-height: 20vh;\n        max-width: 90vw;\n        max-height: 90vh;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        overflow-y: auto;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            padding-bottom: 1.5em;\n\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid $puzzle-border;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: $not-present-backgroud;\n                    color: $active-color;\n                }\n            }\n        }\n        .pane.help { \n            .letter {\n                min-width: calc($letter-size * 0.8);\n                min-height: calc($letter-size * 0.8);\n                font-size: 1.6em;                                                        \n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    "],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1495,4 +1511,4 @@ _puzzle__WEBPACK_IMPORTED_MODULE_7__["default"].modal.puzzle = _puzzle__WEBPACK_
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.92297cf4299f00e209d5.js.map
+//# sourceMappingURL=bundle.2f59c24519c5bb922f73.js.map

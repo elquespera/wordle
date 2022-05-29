@@ -16,11 +16,19 @@ class Puzzle {
     }
     _keyboard;
     constructor() {
-        document.querySelectorAll('#puzzle > .row').forEach(row => {
-            const _row = [];
-            row.querySelectorAll('.letter').forEach(letter => _row.push(letter));
-            this._cardDivs.push(_row.slice());
-        });
+        const puzzleFrag = new DocumentFragment();
+        let row = [];
+        for (let i = 1; i <= 5*6; i++) {
+            const card = document.createElement('div');
+            card.className = `card row-${Math.floor(i / 6)}`;
+            puzzleFrag.appendChild(card);
+            row.push(card);
+            if (row.length >= 5) {
+                this._cardDivs.push(row);
+                row = [];
+            }
+        }
+        document.querySelector('#puzzle').replaceChildren(puzzleFrag);
         this.reset();
     }
 
@@ -66,8 +74,9 @@ class Puzzle {
         this._currentSolution = [];
         this.update();
         this._cardDivs.flat().forEach(card => {
-            card.classList.remove('not-preset', 'present', 'unique', 'current')
-        })
+            card.classList.remove('not-present', 'present', 'correct', 'current');
+            console.log(card.className);            
+        });
     }
 
     update() {
@@ -94,7 +103,7 @@ class Puzzle {
             let className = 'not-present';
             if (this.solution.includes(letter)) {
                 if (this.solution[i] === letter) {
-                    className = 'unique';
+                    className = 'correct';
                 } else {
                     className = 'present';
                 }
@@ -115,23 +124,22 @@ class Puzzle {
     }
 
     async shakeRow(row) {
-        if (row < 0 || row > this._cardDivs.length - 1)
-            return false;
-        row = this._cardDivs[row][0].parentElement;
+        row = this._cardDivs[row];
+        if (!row) return false;
         const toggleClass = () => {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    row.classList.toggle('shift1');
-                    row.classList.toggle('shift2');
+                    row.forEach(x => x.classList.toggle('shift1'));
+                    row.forEach(x => x.classList.toggle('shift2'));
                     resolve('');          
                 }, 80);
             });
         }
-        row.classList.add('shift1');
+        row.forEach(x => x.classList.add('shift1'));
         for (let i = 0; i < 5; i++) {
             await toggleClass();
         }
-        row.classList.remove('shift1', 'shift2');
+        row.forEach(x => x.classList.remove('shift1', 'shift2'));
     }
 
     async animateLetter(letter) {

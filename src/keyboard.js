@@ -39,7 +39,7 @@ class Keyboard {
     //generate keyboard from layout
     switch(layout = layouts.en) {
         const createKeyDiv = (key, special = false) => {
-            const keyDiv = document.createElement('div');
+            const keyDiv = document.createElement('button');
             keyDiv.className = `key key-${key}`;
             keyDiv.innerHTML = special ? '' : key;
             keyDiv.keyValue = key;
