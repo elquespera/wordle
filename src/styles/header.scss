@@ -1,0 +1,38 @@
+@function header-height() {
+    @return max(25px, min(60px, 13vw));
+}
+
+header {
+    height: header-height();
+    font-size: calc(header-height() / 3);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;    
+    padding: 0 1em;
+    .menu {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        .help-btn {
+            background-image: url('../assets/help.svg');
+        }
+        .stats-btn {
+            background-image: url('../assets/chart.svg');
+        }
+        .github-btn {
+            background-image: url('../assets/github.svg');
+        }
+        .lang-btn {
+            text-transform: uppercase;
+        }
+        .lang-flyout {
+            position: absolute;
+        }
+    }
+    h1 {
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+    }    
+}

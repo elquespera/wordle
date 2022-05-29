@@ -9,17 +9,16 @@
 <body>
     <header>
         <div class="menu">
-            <div class="icon-btn help-btn">
-            </div>
+            <a class="icon-btn github-btn" title="GitHub repo"
+                href="https://github.com/elquespera"></a>
+            <button class="icon-btn help-btn"></button>
         </div>            
         <h1><%= htmlWebpackPlugin.options.title %></h1>
         <div class="menu">
-            <div class="icon-btn stats-btn">
-            </div>
-            <a href="https://github.com/elquespera">
-                <div class="icon-btn github-btn">
-                </div>
-            </a>
+            <button class="icon-btn lang-btn">en</button>
+            <ul class="lang-flyout">
+            </ul>
+            <button class="icon-btn stats-btn"></button>
         </div>
     </header>
     <main class="container">        

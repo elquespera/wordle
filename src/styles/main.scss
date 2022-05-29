@@ -1,7 +1,7 @@
-$header-height: 50px;
 
-@use 'keyboard';
+@use 'header';
 @use 'puzzle';
+@use 'keyboard';
 @use 'modal';
 
 *, body {
@@ -14,35 +14,15 @@ $header-height: 50px;
     height: 100%;
 }
 
-header {
-    height: $header-height;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1em;
-    .menu {
-        display: flex;
-        gap: 1em;
-        .help-btn {
-            background-image: url('../assets/help.svg');
-        }
-        .stats-btn {
-            background-image: url('../assets/chart.svg');
-        }
-        .github-btn {
-            background-image: url('../assets/github.svg');
-        }
-    }
-    h1 {
-        font-size: 3em;
-    }    
+button {
+    background-color: transparent;
 }
 
 .icon-btn {
     cursor: pointer;
-    min-width: 1.5em;
-    min-height: 1.5em;
+    font-size: inherit;
+    width: 1.5em;
+    height: 1.5em;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -62,7 +42,7 @@ header {
     align-items: center;
     justify-content: space-between;
     font-size: 16px;
-    height: calc(100% - $header-height); 
+    height: calc(100% - header.header-height()); 
     
     .error-msg {
         position: absolute;
@@ -81,17 +61,4 @@ header {
         opacity: 1;
         transition: opacity 0.5s;   
     }        
-}
-
-@media screen and (max-width: 400px) {
-    .container {
-        nav {
-            .menu .icon-btn {
-                font-size: 4vw;
-            }
-            h1 {
-                font-size: 10vw;
-            }
-        }
-    }
 }
