@@ -11,14 +11,7 @@ $unique-background: #6aaa64;
 $active-color: #FFF;
 $current-letter-border: rgb(135, 138, 140);
 
-
-$key-width: 2.5em;
-$key-height: 3.6em;
-$key-padding: 0.8em;
-$key-gap: 0.4em;
-$key-background: #CCC;
-$key-active-background: #999;
-$key-hover-background: #DDD;
+ @use 'keyboard';
 
 *, body {
     margin: 0px;
@@ -137,37 +130,7 @@ $key-hover-background: #DDD;
             transform: translate(+0.3rem, 0);
         }
     }
-    .keyboard {
-        margin: 1em;
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        gap: $key-gap;
-        .row {
-            display: flex;
-            flex-flow: row nowrap;
-            gap: $key-gap;
-            .key {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                font-size: 1em;
-                text-transform: uppercase;
-                padding: $key-padding;
-                min-width: $key-width;
-                min-height: $key-height;
-                background-color: $key-background;
-                border-radius: 0.3em;
-            }            
-            .key:hover {
-                background-color: $key-hover-background;
-            }
-            .key:active, .key.pressed {
-                background-color: $key-active-background;
-            }  
-        }
-    }
+    
     .error-msg {
         position: absolute;
         top: 5em;
@@ -300,31 +263,13 @@ $key-hover-background: #DDD;
     }    
 }
 
-@media screen and (max-width: 600px) {
-    body {
-        overflow-x: hidden;
-    }
-    .container {
-        .keyboard {
-            font-size: 3.8vw;
-            .row {
-                gap: 0.3em; 
-                .key {
-                    min-width: 1.9em;
-                    padding: 0.2em;
-                }     
-            }       
-        }    
-    }
-}
-
 @media screen and (max-width: 400px) {
     .container > .puzzle {
         font-size: 3.9vw;
         margin: 0px;
     }
     .container {
-        min-height: 95obvh;
+        min-height: 95vh;
         nav {
             .menu .icon-btn {
                 font-size: 4vw;
@@ -333,8 +278,5 @@ $key-hover-background: #DDD;
                 font-size: 10vw;
             }
         }
-        .keyboard {
-            margin: 0px 0px 0.5em;
-        }    
     }
 }

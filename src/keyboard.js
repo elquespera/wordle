@@ -1,15 +1,27 @@
-import modal from './modal';
-
-const en = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
-const es = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
-const ru = ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё'];
+const layouts = {
+    en: {
+        locale: 'en',
+        name: 'English',
+        keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+    },
+    es: {
+        locale: 'es',
+        name: 'Espanol',
+        keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+    },
+    ru: {
+        locale: 'ru',
+        name: 'Русский',
+        keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё']
+    },
+}
 
 class Keyboard {
     _lay
     _keys = [];
     _keypressFunc;
     constructor() {
-        this.switch(en);
+        this.switch(layouts.ru);
 
         //Add keypress event listener
         window.addEventListener('keydown', e => {
@@ -25,7 +37,7 @@ class Keyboard {
     }
 
     //generate keyboard from layout
-    switch(layout = en) {
+    switch(layout = layouts.en) {
         const createKeyDiv = (key, special = false) => {
             const keyDiv = document.createElement('div');
             keyDiv.className = `key key-${key}`;
@@ -37,13 +49,13 @@ class Keyboard {
         }
         this._keys = [];
         const keyboardFragment = new DocumentFragment();
-        layout.forEach((row, ind) => {
+        layout.keys.forEach((row, ind) => {
             const rowDiv = document.createElement('div');
             rowDiv.className = `row row-${ind}`;
             row.split('').forEach(key => rowDiv.appendChild(createKeyDiv(key)));
-            if (ind === layout.length - 1) {
+            if (ind === layout.keys.length - 1) {
                 rowDiv.insertBefore(createKeyDiv('enter', true), rowDiv.children[0]);
-                rowDiv.appendChild(createKeyDiv('return', true));
+                rowDiv.appendChild(createKeyDiv('backspace', true));
             }
             keyboardFragment.appendChild(rowDiv);
         });
@@ -57,7 +69,6 @@ class Keyboard {
     //Find Key Div
     findKeyDiv(key) {
         key = key.toLowerCase();
-        if (key === 'backspace') key = 'return';
         return this._keys.find(x => x.keyValue === key);
     }
 
