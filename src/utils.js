@@ -4,9 +4,10 @@ export const $ = (selector, parent = document, all = false) => {
 }
 
 //Create new Element
-export const newEl = (tagName, innerHTML = '', className = '') => {
+export const newEl = (tagName, innerHTML = '', className = '', id = '') => {
     const el = document.createElement(tagName);
     el.innerHTML = innerHTML;    
     el.className = className;
+    el.id = id;
     return el;
 }

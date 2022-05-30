@@ -1,16 +1,19 @@
+:root {
+    --keyboard-max-keys: 10;
+}
+
 $key-gap: 0.3em;
 
 $key-background-color: #CCC;
 $key-active-background-color: #999;
 $key-hover-background-color: #DDD;
 
-$keyboard-max-keys: 10;
 $keyboard-max-key-width: 50px;
 $keyboard-max-key-height: 60px;
 
 @function key-width() {
     @return min($keyboard-max-key-width, 
-                (100vw - $key-gap * $keyboard-max-keys) / $keyboard-max-keys);
+                (100vw - $key-gap * var(--keyboard-max-keys)) / var(--keyboard-max-keys));
 }
 @function key-width-special() {
     @return calc(key-width() * 1.5);

@@ -7,6 +7,9 @@ $letter-size: 2em;
 $background: #fff;
 $overlay: rgba(255, 255, 255, 0.6);
 
+$highlight-color: rgb(245, 121, 58);
+$light-gray: rgb(194, 194, 194);
+
 .modal-overlay {
     display: none;
     position: absolute; 
@@ -126,15 +129,43 @@ $overlay: rgba(255, 255, 255, 0.6);
         }
         .pane.settings {
             .settings-table {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                align-items: center;
+                display: flex;
+                flex-flow: column nowrap;
                 font-weight: normal;
                 gap: 1em;
+
+                ul.language-selector {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    li {
+                        padding: 0.3em 0.6em;
+                        border-radius: 0.1em;
+                        cursor: pointer;
+                        transition: background-color 0.2s;
+                    }
+                    li::before {
+                        content: '';
+                        display: inline-block;
+                        height: 0.8em;
+                        width: 0.2em;
+                        margin-right: 0.4em;
+                        border-radius: 0.1em;
+                        transition: background-color 0.2s;
+                    }
+                    li.checked::before {
+                        background-color: $highlight-color;
+                    }
+                    li:hover {
+                        background-color: $light-gray;
+                    }                    
+                }
             }
             .settings-table > div {
-                // padding: 1em 0;
-                border-bottom: 1px solid gray;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1em 0;
+                border-bottom: 1px solid $light-gray;
             }
 
 
@@ -143,20 +174,21 @@ $overlay: rgba(255, 255, 255, 0.6);
                 width: 3em;
                 height: 1.5em;
                 padding: 0.2em;
-                background-color: gray;
+                background-color: $light-gray;
                 justify-self: end;
                 border-radius: 999px;
                 cursor: pointer;
             }
             .check-box > span {
                 display: block;
-                //position: absolute;
                 width: 1.1em;
                 height: 1.1em;
-                //left: 0px;
                 background-color: white;
                 border-radius: 100%;
                 transition: margin-left 0.3s ease-in-out;
+            }
+            .check-box.checked {
+                background-color: $highlight-color;
             }
             .check-box.checked > span {
                 margin-left: 1.4em;

@@ -10,9 +10,22 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "keyboard": () => (/* binding */ keyboard)
 /* harmony export */ });
 /* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language */ "./src/language.js");
+/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -20,6 +33,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -33,12 +47,7 @@ var Keyboard = /*#__PURE__*/function () {
 
     _defineProperty(this, "_keys", []);
 
-    _defineProperty(this, "_keypressFunc", void 0);
-
-    //Create language flyout
-    //Switch to english keyboard
-    this["switch"](_language__WEBPACK_IMPORTED_MODULE_0__.layouts.en); //Add keypress event listener
-
+    //Add keypress event listener
     window.addEventListener('keydown', function (e) {
       var div = _this.findKeyDiv(e.key);
 
@@ -61,7 +70,7 @@ var Keyboard = /*#__PURE__*/function () {
     value: function _switch() {
       var _this2 = this;
 
-      var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _language__WEBPACK_IMPORTED_MODULE_0__.layouts.en;
+      var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _language__WEBPACK_IMPORTED_MODULE_0__.currentLayout;
 
       var createKeyDiv = function createKeyDiv(key) {
         var special = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -94,13 +103,12 @@ var Keyboard = /*#__PURE__*/function () {
 
         keyboardFragment.appendChild(rowDiv);
       });
+      var maxKeys = Math.max.apply(Math, _toConsumableArray(layout.keys.map(function (x, i, arr) {
+        return i === arr.length - 1 ? x.length + 3 : x.length;
+      })));
+      console.log(maxKeys);
+      document.documentElement.style.setProperty('--keyboard-max-keys', maxKeys);
       document.querySelector('.keyboard').replaceChildren(keyboardFragment);
-      (0,_language__WEBPACK_IMPORTED_MODULE_0__.switchLanguage)(layout);
-    }
-  }, {
-    key: "keyFunction",
-    set: function set(f) {
-      this._keypressFunc = f;
     } //Find Key Div
 
   }, {
@@ -114,31 +122,17 @@ var Keyboard = /*#__PURE__*/function () {
   }, {
     key: "press",
     value: function press(key) {
-      if (this.findKeyDiv(key) && this._keypressFunc) {
-        this._keypressFunc(key.toLowerCase());
+      if (this.findKeyDiv(key) && _puzzle__WEBPACK_IMPORTED_MODULE_1__.puzzle) {
+        _puzzle__WEBPACK_IMPORTED_MODULE_1__.puzzle.keyPressed(key.toLowerCase());
       }
-    } // setKeyAttributes(key, options) {
-    //     key = this.findKeyDiv(key);
-    //     if (key) {
-    //         if (options.present) {
-    //             key.classList.add('present')
-    //         } else {
-    //             key.classList.remove('present')
-    //         }
-    //         if (options.correct) {
-    //             key.classList.add('correct')
-    //         } else {
-    //             key.classList.remove('correct')
-    //         }
-    //     }
-    // }
-
+    }
   }]);
 
   return Keyboard;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Keyboard());
+var keyboard = new Keyboard();
+
 
 /***/ }),
 
@@ -150,6 +144,7 @@ var Keyboard = /*#__PURE__*/function () {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "currentLayout": () => (/* binding */ currentLayout),
 /* harmony export */   "initLanguage": () => (/* binding */ initLanguage),
 /* harmony export */   "layouts": () => (/* binding */ layouts),
 /* harmony export */   "modalPages": () => (/* binding */ modalPages),
@@ -157,6 +152,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./settings */ "./src/settings.js");
+/* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -168,6 +164,7 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 
@@ -216,17 +213,88 @@ var layouts = {
   es: {
     locale: 'es',
     name: 'Espanol',
-    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'],
+    help: {
+      title: 'How to play',
+      desc: ["Guess the <strong>WORDLE</strong> in six tries", "Each guess must be a valid five-letter word. Hit the enter button to submit.", "After each guess, the color of the tiles will change to show how close your guess was to the word."],
+      examplesTitle: 'Examples',
+      examples: {
+        correct: {
+          word: 'space',
+          highlight: 0,
+          msg: "The letter <strong>S</strong> is in the word and in the correct spot."
+        },
+        present: {
+          word: 'abide',
+          highlight: 2,
+          msg: "The letter <strong>I</strong> is in the word but in the wrong spot."
+        },
+        'not-present': {
+          word: 'wrong',
+          highlight: 4,
+          msg: "The letter <strong>N</strong> is not in the word in any spot."
+        }
+      },
+      enjoy: 'Enjoy the game!'
+    },
+    stats: {
+      title: 'Statistics',
+      played: 'Played',
+      won: 'Won',
+      guessDist: 'Guess discribution'
+    },
+    settings: {
+      title: 'Settings',
+      dark: 'Dark theme',
+      contrast: 'High Conrast',
+      lang: 'Language'
+    }
   },
   ru: {
     locale: 'ru',
     name: 'Русский',
-    keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё']
+    keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё'],
+    help: {
+      title: 'Правила игры',
+      desc: ["Guess the <strong>WORDLE</strong> in six tries", "Each guess must be a valid five-letter word. Hit the enter button to submit.", "After each guess, the color of the tiles will change to show how close your guess was to the word."],
+      examplesTitle: 'Examples',
+      examples: {
+        correct: {
+          word: 'space',
+          highlight: 0,
+          msg: "The letter <strong>S</strong> is in the word and in the correct spot."
+        },
+        present: {
+          word: 'abide',
+          highlight: 2,
+          msg: "The letter <strong>I</strong> is in the word but in the wrong spot."
+        },
+        'not-present': {
+          word: 'wrong',
+          highlight: 4,
+          msg: "The letter <strong>N</strong> is not in the word in any spot."
+        }
+      },
+      enjoy: 'Enjoy the game!'
+    },
+    stats: {
+      title: 'Statistics',
+      played: 'Played',
+      won: 'Won',
+      guessDist: 'Guess discribution'
+    },
+    settings: {
+      title: 'Настройки',
+      dark: 'Темная тема',
+      contrast: 'Высококонтрастная тема',
+      lang: 'Язык'
+    }
   }
 };
+var currentLayout = layouts.en;
 
 var switchLanguage = function switchLanguage() {
-  var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+  var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : currentLayout;
   modalPages.forEach(function (pName) {
     var pane = document.querySelector('#' + pName);
     var paneFrag = new DocumentFragment();
@@ -268,19 +336,31 @@ var switchLanguage = function switchLanguage() {
       case 'settings':
         {
           var table = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'settings-table');
-          table.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.dark), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box dark-mode'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.contrast), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box contrast-mode'));
+          var darkMode = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
+          darkMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.dark), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box dark-mode'));
+          var contrastMode = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
+          contrastMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.contrast), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box contrast-mode'));
+          var language = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
+          var ul = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('ul', '', 'language-selector');
+          Object.values(layouts).forEach(function (l) {
+            return ul.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('li', l.name, '', l.locale));
+          });
+          language.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.lang), ul);
+          table.append(darkMode, contrastMode, language);
           paneFrag.append(table);
           break;
         }
     }
 
     pane.replaceChildren(paneFrag);
+    currentLayout = layout;
+    _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard["switch"](currentLayout);
     (0,_settings__WEBPACK_IMPORTED_MODULE_1__.initSettings)();
   });
 };
 
 var initLanguage = function initLanguage() {
-  var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+  switchLanguage(currentLayout);
 };
 
 
@@ -436,9 +516,10 @@ var Modal = /*#__PURE__*/function () {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "puzzle": () => (/* binding */ puzzle)
 /* harmony export */ });
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./src/modal.js");
+/* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -457,6 +538,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var Puzzle = /*#__PURE__*/function () {
   function Puzzle() {
     _classCallCheck(this, Puzzle);
@@ -467,8 +549,6 @@ var Puzzle = /*#__PURE__*/function () {
 
     _defineProperty(this, "_currentSolution", []);
 
-    _defineProperty(this, "_modal", _modal__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
     _defineProperty(this, "_stats", {
       played: 20,
       dist: {
@@ -478,8 +558,6 @@ var Puzzle = /*#__PURE__*/function () {
         5: 3
       }
     });
-
-    _defineProperty(this, "_keyboard", void 0);
 
     var puzzleFrag = new DocumentFragment();
     var row = [];
@@ -505,11 +583,6 @@ var Puzzle = /*#__PURE__*/function () {
     key: "solution",
     get: function get() {
       return this._solution;
-    }
-  }, {
-    key: "modal",
-    get: function get() {
-      return this._modal;
     } // Current matrix operations
 
   }, {
@@ -744,69 +817,51 @@ var Puzzle = /*#__PURE__*/function () {
       return animateLetter;
     }()
   }, {
-    key: "keyboard",
-    set: function set(k) {
-      var _this4 = this;
-
-      var keyPressed = function keyPressed(key) {
-        switch (key) {
-          case 'enter':
-            if (_this4.lastRow && _this4.lastRow.length === 5) {
-              if (_this4.isWordValid(_this4.lastRow.join(''))) {
-                if (_this4.matrix.length < 6) {
-                  _this4.checkLetters(_this4.lastRowNumber);
-
-                  _this4.checkStatus();
-
-                  _this4.matrix.push([]);
-
-                  _this4.update();
-                }
+    key: "keyPressed",
+    value: function keyPressed(key) {
+      switch (key) {
+        case 'enter':
+          if (this.lastRow && this.lastRow.length === 5) {
+            if (this.isWordValid(this.lastRow.join(''))) {
+              if (this.matrix.length < 6) {
+                this.checkLetters(this.lastRowNumber);
+                this.checkStatus();
+                this.matrix.push([]);
+                this.update();
               }
-            } else {
-              _this4.shakeRow(_this4.lastRowNumber);
-
-              _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Not enough letters');
             }
+          } else {
+            this.shakeRow(this.lastRowNumber);
+            _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Not enough letters');
+          }
 
-            break;
+          break;
 
-          case 'backspace':
-            if (_this4.lastRow && _this4.lastRow.length > 0) {
-              _this4.lastRow.pop();
+        case 'backspace':
+          if (this.lastRow && this.lastRow.length > 0) {
+            this.lastRow.pop();
+            this.update();
+          } else {
+            this.shakeRow(this.lastRowNumber);
+            _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('No letters to erase');
+          }
 
-              _this4.update();
-            } else {
-              _this4.shakeRow(_this4.lastRowNumber);
+          break;
 
-              _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('No letters to erase');
-            }
+        default:
+          if (this.matrix.length === 0) {
+            this.matrix.push([]);
+          }
 
-            break;
+          if (this.lastRow.length < 5) {
+            this.lastRow.push(key);
+            this.update();
+            this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
+          } else {
+            _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Five letter max');
+            this.shakeRow(this.lastRowNumber);
+          }
 
-          default:
-            if (_this4.matrix.length === 0) {
-              _this4.matrix.push([]);
-            }
-
-            if (_this4.lastRow.length < 5) {
-              _this4.lastRow.push(key);
-
-              _this4.update();
-
-              _this4.animateLetter(_this4._cardDivs[_this4.lastRowNumber][_this4.lastRow.length - 1]);
-            } else {
-              _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError('Five letter max');
-
-              _this4.shakeRow(_this4.lastRowNumber);
-            }
-
-        }
-      };
-
-      if (k) {
-        k.keyFunction = keyPressed;
-        this._keyboard = k;
       }
     }
   }]);
@@ -814,7 +869,8 @@ var Puzzle = /*#__PURE__*/function () {
   return Puzzle;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Puzzle());
+var puzzle = new Puzzle();
+
 
 /***/ }),
 
@@ -829,12 +885,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "initSettings": () => (/* binding */ initSettings)
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+/* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language */ "./src/language.js");
+
 
 
 var initSettings = function initSettings() {
   (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.check-box', document, true).forEach(function (checkbox) {
     checkbox.addEventListener('click', function (e) {
       e.currentTarget.classList.toggle('checked');
+    });
+  });
+  var langs = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.language-selector>li', document, true);
+
+  var checkStatus = function checkStatus() {
+    langs.forEach(function (item) {
+      if (item.id === _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.locale) {
+        item.classList.add('checked');
+      } else {
+        item.classList.remove('checked');
+      }
+    });
+  };
+
+  checkStatus();
+  langs.forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      if (e.currentTarget.id !== _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.locale) {
+        (0,_language__WEBPACK_IMPORTED_MODULE_1__.switchLanguage)(_language__WEBPACK_IMPORTED_MODULE_1__.layouts[e.currentTarget.id]);
+        checkStatus();
+      }
     });
   });
 };
@@ -864,9 +943,11 @@ var $ = function $(selector) {
 var newEl = function newEl(tagName) {
   var innerHTML = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var id = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
   var el = document.createElement(tagName);
   el.innerHTML = innerHTML;
   el.className = className;
+  el.id = id;
   return el;
 };
 
@@ -908,7 +989,7 @@ var ___CSS_LOADER_URL_REPLACEMENT_4___ = _node_modules_css_loader_dist_runtime_g
 var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_5___);
 var ___CSS_LOADER_URL_REPLACEMENT_6___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_6___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "header {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  position: relative;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  transform: rotate(-90deg);\n}\nheader .menu .stats-btn:hover {\n  transform: none;\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .settings-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\nheader .menu .settings-btn:hover {\n  transform: rotate(200deg);\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #CCC;\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: rgb(120, 124, 126);\n  border-color: rgb(120, 124, 126);\n}\n.puzzle .present {\n  background-color: #c9b458;\n  border-color: #c9b458;\n}\n.puzzle .correct {\n  background-color: #6aaa64;\n  border-color: #6aaa64;\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: #FFF;\n}\n\n.keyboard {\n  margin-bottom: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.3em;\n  height: calc((min(60px, min(50px, (100vw - 3em) / 10) * 1.7) + 0.3em) * 3);\n  font-size: min(18px, min(50px, (100vw - 3em) / 10) / 2);\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.3em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  width: min(50px, (100vw - 3em) / 10);\n  height: min(60px, min(50px, (100vw - 3em) / 10) * 1.7);\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n  width: calc(min(50px, (100vw - 3em) / 10) * 1.5);\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n\n.modal-overlay {\n  display: none;\n  position: absolute;\n  top: 0;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  height: auto;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  right: 0px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  padding-bottom: 1.5em;\n  overflow-y: auto;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.modal-overlay .modal .pane.help .puzzle {\n  justify-content: start;\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6 * 0.7);\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7));\n  grid-template-rows: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7);\n  margin-bottom: 4px;\n}\n.modal-overlay .modal .pane.settings .settings-table {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  align-items: center;\n  font-weight: normal;\n  gap: 1em;\n}\n.modal-overlay .modal .pane.settings .settings-table > div {\n  border-bottom: 1px solid gray;\n}\n.modal-overlay .modal .pane.settings .check-box {\n  position: relative;\n  width: 3em;\n  height: 1.5em;\n  padding: 0.2em;\n  background-color: gray;\n  justify-self: end;\n  border-radius: 999px;\n  cursor: pointer;\n}\n.modal-overlay .modal .pane.settings .check-box > span {\n  display: block;\n  width: 1.1em;\n  height: 1.1em;\n  background-color: white;\n  border-radius: 100%;\n  transition: margin-left 0.3s ease-in-out;\n}\n.modal-overlay .modal .pane.settings .check-box.checked > span {\n  margin-left: 1.4em;\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n\n.error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}\n\n*, body, ul, li {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n}\n\nul {\n  list-style: none;\n}\n\nbody, * {\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n}\n\n* {\n  height: 100%;\n}\n\nbutton {\n  background-color: transparent;\n}\n\n.icon-btn {\n  cursor: pointer;\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n\n.error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}", "",{"version":3,"sources":["webpack://./src/styles/header.scss","webpack://./src/styles/main.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$background: #fff;\n\n@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        position: relative;\n        align-items: center;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n            transform: rotate(-90deg);\n        }\n        .stats-btn:hover {\n            transform: none;\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .settings-btn {\n            background-image: url('../assets/settings.svg');\n        }\n        .settings-btn:hover {\n            transform: rotate(200deg);\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n// Reset\n*, body, ul, li {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n}\nul {\n    list-style: none;\n}\nbody, * {\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n}\n\n* {\n    height: 100%;\n}\n\n\nbutton {\n    background-color: transparent;\n}\n\n\n\n.icon-btn {\n    cursor: pointer;\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height());    \n}\n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    margin: 0 auto;\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    padding: 0.8em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n    opacity: 0;\n}\n\n.error-msg.visible {\n    opacity: 1;\n    transition: opacity 0.5s;   \n}     ","//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Colors\n$puzzle-border-color: #CCC;\n$not-present-color: rgb(120, 124, 126);\n$present-color: #c9b458;\n$correct-color: #6aaa64;\n$active-color: #FFF;\n$current-color: rgb(135, 138, 140);\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    \n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid $puzzle-border-color; \n        transition: transform 0.08s ease-out;\n    }\n\n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: $current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: $not-present-color;\n        border-color: $not-present-color;\n    }\n    .present {\n        background-color: $present-color;\n        border-color: $present-color;\n    }\n    .correct {\n        background-color: $correct-color;\n        border-color: $correct-color;\n    }\n    \n    .not-present, .present, .correct {\n        color: $active-color;\n    }    \n}","$key-gap: 0.3em;\n\n$key-background-color: #CCC;\n$key-active-background-color: #999;\n$key-hover-background-color: #DDD;\n\n$keyboard-max-keys: 10;\n$keyboard-max-key-width: 50px;\n$keyboard-max-key-height: 60px;\n\n@function key-width() {\n    @return min($keyboard-max-key-width, \n                (100vw - $key-gap * $keyboard-max-keys) / $keyboard-max-keys);\n}\n@function key-width-special() {\n    @return calc(key-width() * 1.5);\n}\n@function key-height() {\n    @return min($keyboard-max-key-height, key-width() * 1.7);\n}\n@function keyboard-height() {\n    @return calc((key-height() + $key-gap) * 3);\n}\n@function keyboard-font-size() {\n    @return min(18px, key-width() / 2);\n}\n\n\n.keyboard {\n    margin-bottom: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    height: keyboard-height();\n    font-size: keyboard-font-size();\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            width: key-width();\n            height: key-height();\n            background-color: $key-background-color;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background-color;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background-color;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n            width: key-width-special();\n        }\n        .key.key-enter {    \n            background-image: url('../assets/enter.svg');\n        }        \n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n    }\n}","@use 'puzzle';\n\n$puzzle-border: #CCC;\n$not-present-backgroud: rgb(120, 124, 126);\n$active-color: #FFF;\n$letter-size: 2em;\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n.modal-overlay {\n    display: none;\n    position: absolute; \n    top: 0;    \n    z-index: 2;\n    background-color: $overlay;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: $background;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n        height: auto;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            right: 0px;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            min-width: 40vw;\n            min-height: 20vh;\n            max-width: 90vw;\n            max-height: 90vh;\n            padding-bottom: 1.5em;\n            overflow-y: auto;\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid $puzzle-border;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: $not-present-backgroud;\n                    color: $active-color;\n                }\n            }\n        }\n        $shrink: 0.7;\n        @function card-size() {\n            @return calc(puzzle.card-size() * $shrink);\n        }\n        @function card-font-size() {\n            @return calc(puzzle.card-font-size() * $shrink);\n        }\n        .pane.help {\n            .puzzle {\n                justify-content: start;\n                font-size: card-font-size();\n                grid-template-columns: repeat(5, card-size());   \n                grid-template-rows: card-size();\n                margin-bottom: 4px;        \n            } \n        }\n        .pane.settings {\n            .settings-table {\n                display: grid;\n                grid-template-columns: 1fr 1fr;\n                align-items: center;\n                font-weight: normal;\n                gap: 1em;\n            }\n            .settings-table > div {\n                // padding: 1em 0;\n                border-bottom: 1px solid gray;\n            }\n\n\n            .check-box {\n                position: relative;\n                width: 3em;\n                height: 1.5em;\n                padding: 0.2em;\n                background-color: gray;\n                justify-self: end;\n                border-radius: 999px;\n                cursor: pointer;\n            }\n            .check-box > span {\n                display: block;\n                //position: absolute;\n                width: 1.1em;\n                height: 1.1em;\n                //left: 0px;\n                background-color: white;\n                border-radius: 100%;\n                transition: margin-left 0.3s ease-in-out;\n            }\n            .check-box.checked > span {\n                margin-left: 1.4em;\n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    \n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    margin: 0 auto;\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    padding: 0.8em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n    opacity: 0;\n}\n\n.error-msg.visible {\n    opacity: 1;\n    transition: opacity 0.5s;   \n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "header {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  position: relative;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n  transform: rotate(-90deg);\n}\nheader .menu .stats-btn:hover {\n  transform: none;\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .settings-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n}\nheader .menu .settings-btn:hover {\n  transform: rotate(200deg);\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #CCC;\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: rgb(135, 138, 140);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: rgb(120, 124, 126);\n  border-color: rgb(120, 124, 126);\n}\n.puzzle .present {\n  background-color: #c9b458;\n  border-color: #c9b458;\n}\n.puzzle .correct {\n  background-color: #6aaa64;\n  border-color: #6aaa64;\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: #FFF;\n}\n\n:root {\n  --keyboard-max-keys: 10;\n}\n\n.keyboard {\n  margin-bottom: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.3em;\n  height: calc((min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7) + 0.3em) * 3);\n  font-size: min(18px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) / 2);\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.3em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  width: min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n  height: min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7);\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n  width: calc(min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.5);\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n\n.modal-overlay {\n  display: none;\n  position: absolute;\n  top: 0;\n  z-index: 2;\n  background-color: rgba(255, 255, 255, 0.6);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: #fff;\n  box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n  height: auto;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  right: 0px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  min-width: 40vw;\n  min-height: 20vh;\n  max-width: 90vw;\n  max-height: 90vh;\n  padding-bottom: 1.5em;\n  overflow-y: auto;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid #CCC;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: rgb(120, 124, 126);\n  color: #FFF;\n}\n.modal-overlay .modal .pane.help .puzzle {\n  justify-content: start;\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6 * 0.7);\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7));\n  grid-template-rows: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7);\n  margin-bottom: 4px;\n}\n.modal-overlay .modal .pane.settings .settings-table {\n  display: flex;\n  flex-flow: column nowrap;\n  font-weight: normal;\n  gap: 1em;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector {\n  display: flex;\n  flex-flow: column nowrap;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li {\n  padding: 0.3em 0.6em;\n  border-radius: 0.1em;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li::before {\n  content: \"\";\n  display: inline-block;\n  height: 0.8em;\n  width: 0.2em;\n  margin-right: 0.4em;\n  border-radius: 0.1em;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li.checked::before {\n  background-color: rgb(245, 121, 58);\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li:hover {\n  background-color: rgb(194, 194, 194);\n}\n.modal-overlay .modal .pane.settings .settings-table > div {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 1em 0;\n  border-bottom: 1px solid rgb(194, 194, 194);\n}\n.modal-overlay .modal .pane.settings .check-box {\n  position: relative;\n  width: 3em;\n  height: 1.5em;\n  padding: 0.2em;\n  background-color: rgb(194, 194, 194);\n  justify-self: end;\n  border-radius: 999px;\n  cursor: pointer;\n}\n.modal-overlay .modal .pane.settings .check-box > span {\n  display: block;\n  width: 1.1em;\n  height: 1.1em;\n  background-color: white;\n  border-radius: 100%;\n  transition: margin-left 0.3s ease-in-out;\n}\n.modal-overlay .modal .pane.settings .check-box.checked {\n  background-color: rgb(245, 121, 58);\n}\n.modal-overlay .modal .pane.settings .check-box.checked > span {\n  margin-left: 1.4em;\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n\n.error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}\n\n*, body, ul, li {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n}\n\nul {\n  list-style: none;\n}\n\nbody, * {\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n}\n\n* {\n  height: 100%;\n}\n\nbutton {\n  background-color: transparent;\n}\n\n.icon-btn {\n  cursor: pointer;\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  margin: 0 auto;\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  padding: 0.8em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.8em rgb(0, 0, 0);\n  opacity: 0;\n}\n\n.error-msg.visible {\n  opacity: 1;\n  transition: opacity 0.5s;\n}", "",{"version":3,"sources":["webpack://./src/styles/header.scss","webpack://./src/styles/main.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$background: #fff;\n\n@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        position: relative;\n        align-items: center;\n        gap: 1em;\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n            transform: rotate(-90deg);\n        }\n        .stats-btn:hover {\n            transform: none;\n        }\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .settings-btn {\n            background-image: url('../assets/settings.svg');\n        }\n        .settings-btn:hover {\n            transform: rotate(200deg);\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n// Reset\n*, body, ul, li {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n}\nul {\n    list-style: none;\n}\nbody, * {\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n}\n\n* {\n    height: 100%;\n}\n\n\nbutton {\n    background-color: transparent;\n}\n\n\n\n.icon-btn {\n    cursor: pointer;\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height());    \n}\n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    margin: 0 auto;\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    padding: 0.8em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n    opacity: 0;\n}\n\n.error-msg.visible {\n    opacity: 1;\n    transition: opacity 0.5s;   \n}     ","//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Colors\n$puzzle-border-color: #CCC;\n$not-present-color: rgb(120, 124, 126);\n$present-color: #c9b458;\n$correct-color: #6aaa64;\n$active-color: #FFF;\n$current-color: rgb(135, 138, 140);\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    \n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid $puzzle-border-color; \n        transition: transform 0.08s ease-out;\n    }\n\n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: $current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: $not-present-color;\n        border-color: $not-present-color;\n    }\n    .present {\n        background-color: $present-color;\n        border-color: $present-color;\n    }\n    .correct {\n        background-color: $correct-color;\n        border-color: $correct-color;\n    }\n    \n    .not-present, .present, .correct {\n        color: $active-color;\n    }    \n}",":root {\n    --keyboard-max-keys: 10;\n}\n\n$key-gap: 0.3em;\n\n$key-background-color: #CCC;\n$key-active-background-color: #999;\n$key-hover-background-color: #DDD;\n\n$keyboard-max-key-width: 50px;\n$keyboard-max-key-height: 60px;\n\n@function key-width() {\n    @return min($keyboard-max-key-width, \n                (100vw - $key-gap * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n}\n@function key-width-special() {\n    @return calc(key-width() * 1.5);\n}\n@function key-height() {\n    @return min($keyboard-max-key-height, key-width() * 1.7);\n}\n@function keyboard-height() {\n    @return calc((key-height() + $key-gap) * 3);\n}\n@function keyboard-font-size() {\n    @return min(18px, key-width() / 2);\n}\n\n\n.keyboard {\n    margin-bottom: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    height: keyboard-height();\n    font-size: keyboard-font-size();\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            width: key-width();\n            height: key-height();\n            background-color: $key-background-color;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background-color;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background-color;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n            width: key-width-special();\n        }\n        .key.key-enter {    \n            background-image: url('../assets/enter.svg');\n        }        \n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n    }\n}","@use 'puzzle';\n\n$puzzle-border: #CCC;\n$not-present-backgroud: rgb(120, 124, 126);\n$active-color: #FFF;\n$letter-size: 2em;\n$background: #fff;\n$overlay: rgba(255, 255, 255, 0.6);\n\n$highlight-color: rgb(245, 121, 58);\n$light-gray: rgb(194, 194, 194);\n\n.modal-overlay {\n    display: none;\n    position: absolute; \n    top: 0;    \n    z-index: 2;\n    background-color: $overlay;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: $background;\n        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);\n        height: auto;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            right: 0px;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            min-width: 40vw;\n            min-height: 20vh;\n            max-width: 90vw;\n            max-height: 90vh;\n            padding-bottom: 1.5em;\n            overflow-y: auto;\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid $puzzle-border;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: $not-present-backgroud;\n                    color: $active-color;\n                }\n            }\n        }\n        $shrink: 0.7;\n        @function card-size() {\n            @return calc(puzzle.card-size() * $shrink);\n        }\n        @function card-font-size() {\n            @return calc(puzzle.card-font-size() * $shrink);\n        }\n        .pane.help {\n            .puzzle {\n                justify-content: start;\n                font-size: card-font-size();\n                grid-template-columns: repeat(5, card-size());   \n                grid-template-rows: card-size();\n                margin-bottom: 4px;        \n            } \n        }\n        .pane.settings {\n            .settings-table {\n                display: flex;\n                flex-flow: column nowrap;\n                font-weight: normal;\n                gap: 1em;\n\n                ul.language-selector {\n                    display: flex;\n                    flex-flow: column nowrap;\n                    li {\n                        padding: 0.3em 0.6em;\n                        border-radius: 0.1em;\n                        cursor: pointer;\n                        transition: background-color 0.2s;\n                    }\n                    li::before {\n                        content: '';\n                        display: inline-block;\n                        height: 0.8em;\n                        width: 0.2em;\n                        margin-right: 0.4em;\n                        border-radius: 0.1em;\n                        transition: background-color 0.2s;\n                    }\n                    li.checked::before {\n                        background-color: $highlight-color;\n                    }\n                    li:hover {\n                        background-color: $light-gray;\n                    }                    \n                }\n            }\n            .settings-table > div {\n                display: flex;\n                align-items: center;\n                justify-content: space-between;\n                padding: 1em 0;\n                border-bottom: 1px solid $light-gray;\n            }\n\n\n            .check-box {\n                position: relative;\n                width: 3em;\n                height: 1.5em;\n                padding: 0.2em;\n                background-color: $light-gray;\n                justify-self: end;\n                border-radius: 999px;\n                cursor: pointer;\n            }\n            .check-box > span {\n                display: block;\n                width: 1.1em;\n                height: 1.1em;\n                background-color: white;\n                border-radius: 100%;\n                transition: margin-left 0.3s ease-in-out;\n            }\n            .check-box.checked {\n                background-color: $highlight-color;\n            }\n            .check-box.checked > span {\n                margin-left: 1.4em;\n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    \n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    margin: 0 auto;\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    padding: 0.8em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);\n    opacity: 0;\n}\n\n.error-msg.visible {\n    opacity: 1;\n    transition: opacity 0.5s;   \n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1674,11 +1755,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_puzzle__WEBPACK_IMPORTED_MODULE_1__["default"].keyboard = _keyboard__WEBPACK_IMPORTED_MODULE_2__["default"];
-_puzzle__WEBPACK_IMPORTED_MODULE_1__["default"].modal.puzzle = _puzzle__WEBPACK_IMPORTED_MODULE_1__["default"];
+_keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_IMPORTED_MODULE_1__.puzzle.keyPressed; // puzzle.keyboard = keyboard;
+// puzzle.modal.puzzle = puzzle;
+
 (0,_language__WEBPACK_IMPORTED_MODULE_3__.initLanguage)();
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.3c9b548ca9cee7e2b621.js.map
+//# sourceMappingURL=bundle.ce46894fee5fa43fb94a.js.map

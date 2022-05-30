@@ -1,10 +1,10 @@
 import modal from "./modal";
+import { keyboard } from "./keyboard";
 
 class Puzzle {
     _cardDivs = [];
     _solution = 'space';
     _currentSolution = [];
-    _modal = modal;
     _stats = {
         played: 20,
         dist: {
@@ -14,7 +14,6 @@ class Puzzle {
             5: 3
         }
     }
-    _keyboard;
     constructor() {
         const puzzleFrag = new DocumentFragment();
         let row = [];
@@ -34,10 +33,6 @@ class Puzzle {
 
     get solution() {
         return this._solution;
-    }
-
-    get modal() {
-        return this._modal;
     }
 
     // Current matrix operations
@@ -158,52 +153,48 @@ class Puzzle {
         letter.classList.remove('in', 'out')
     }
 
-    set keyboard(k) {
-        const keyPressed = (key) => {
-            switch (key) {
-                case 'enter': 
-                    if (this.lastRow && this.lastRow.length === 5) {
-                        if (this.isWordValid(this.lastRow.join(''))) {
-                            if (this.matrix.length < 6) {
-                                this.checkLetters(this.lastRowNumber);
-                                this.checkStatus();                                
-                                this.matrix.push([]);
-                                this.update();            
-                            }
+    keyPressed(key) {
+        switch (key) {
+            case 'enter': 
+                if (this.lastRow && this.lastRow.length === 5) {
+                    if (this.isWordValid(this.lastRow.join(''))) {
+                        if (this.matrix.length < 6) {
+                            this.checkLetters(this.lastRowNumber);
+                            this.checkStatus();                                
+                            this.matrix.push([]);
+                            this.update();            
                         }
-                    } else {
-                        this.shakeRow(this.lastRowNumber);
-                        modal.showError('Not enough letters');
                     }
-                    break;
-                case 'backspace':
-                    if (this.lastRow && this.lastRow.length > 0) {
-                        this.lastRow.pop();
-                        this.update();
-                    } else {
-                        this.shakeRow(this.lastRowNumber);
-                        modal.showError('No letters to erase');
-                    }
-                    break;
-                default:
-                    if (this.matrix.length === 0) {
-                        this.matrix.push([]);
-                    }
-                    if (this.lastRow.length < 5) {
-                        this.lastRow.push(key);
-                        this.update();
-                        this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
-                    } else {
-                        modal.showError('Five letter max');
-                        this.shakeRow(this.lastRowNumber);
-                    }
-            }
-        }
-        if (k) {
-            k.keyFunction = keyPressed;
-            this._keyboard = k;
+                } else {
+                    this.shakeRow(this.lastRowNumber);
+                    modal.showError('Not enough letters');
+                }
+                break;
+            case 'backspace':
+                if (this.lastRow && this.lastRow.length > 0) {
+                    this.lastRow.pop();
+                    this.update();
+                } else {
+                    this.shakeRow(this.lastRowNumber);
+                    modal.showError('No letters to erase');
+                }
+                break;
+            default:
+                if (this.matrix.length === 0) {
+                    this.matrix.push([]);
+                }
+                if (this.lastRow.length < 5) {
+                    this.lastRow.push(key);
+                    this.update();
+                    this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
+                } else {
+                    modal.showError('Five letter max');
+                    this.shakeRow(this.lastRowNumber);
+                }
         }
     }
 }
 
-export default new Puzzle();
+const puzzle = new Puzzle();
+
+export { puzzle }

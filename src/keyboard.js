@@ -1,15 +1,10 @@
-import { layouts, switchLanguage } from "./language";
+import { layouts, currentLayout } from "./language";
+import { puzzle } from "./puzzle";
 
 class Keyboard {
     _lay
     _keys = [];
-    _keypressFunc;
     constructor() {
-        //Create language flyout
-
-        //Switch to english keyboard
-        this.switch(layouts.en);
-
         //Add keypress event listener
         window.addEventListener('keydown', e => {
             const div = this.findKeyDiv(e.key);
@@ -24,7 +19,7 @@ class Keyboard {
     }
 
     //generate keyboard from layout
-    switch(layout = layouts.en) {
+    switch(layout = currentLayout) {
         const createKeyDiv = (key, special = false) => {
             const keyDiv = document.createElement('button');
             keyDiv.className = `key key-${key}`;
@@ -46,12 +41,11 @@ class Keyboard {
             }
             keyboardFragment.appendChild(rowDiv);
         });
+        const maxKeys = Math.max(...layout.keys.
+            map((x, i, arr) => i === arr.length-1 ? x.length + 3 : x.length));
+        console.log(maxKeys);
+        document.documentElement.style.setProperty('--keyboard-max-keys', maxKeys);
         document.querySelector('.keyboard').replaceChildren(keyboardFragment);
-        switchLanguage(layout);
-    }
-
-    set keyFunction (f) {
-        this._keypressFunc = f; 
     }
 
     //Find Key Div
@@ -61,26 +55,12 @@ class Keyboard {
     }
 
     press(key) {
-        if (this.findKeyDiv(key) && this._keypressFunc) {
-            this._keypressFunc(key.toLowerCase());
+        if (this.findKeyDiv(key) && puzzle) {
+            puzzle.keyPressed(key.toLowerCase());
         }
     }
-
-    // setKeyAttributes(key, options) {
-    //     key = this.findKeyDiv(key);
-    //     if (key) {
-    //         if (options.present) {
-    //             key.classList.add('present')
-    //         } else {
-    //             key.classList.remove('present')
-    //         }
-    //         if (options.correct) {
-    //             key.classList.add('correct')
-    //         } else {
-    //             key.classList.remove('correct')
-    //         }
-    //     }
-    // }
 }
 
-export default new Keyboard();
+const keyboard = new Keyboard();
+
+export { keyboard };
