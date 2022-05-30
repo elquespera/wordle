@@ -6,9 +6,6 @@ class Modal {
     _closeBtn = document.querySelector('.close-btn');
     _helpBtn = document.querySelector('.help-btn');
     _statsBtn = document.querySelector('.stats-btn');
-    _playedCount = document.querySelector('.played.score');
-    _wonCount = document.querySelector('.won.score');
-    _scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
     _puzzle;
 
     constructor() {
@@ -60,14 +57,15 @@ class Modal {
         if (!this._open) {            
             //Calculate & display statistics
             if (msg === 'stats' && this.puzzle) {
-                this._playedCount.innerHTML = this.puzzle.stats.played;
-                this._wonCount.innerHTML = this.puzzle.wonCount;
-                this._scoreBins.forEach((bin, i) => {
+                document.querySelector('.played.score').innerHTML = this.puzzle.stats.played;
+                document.querySelector('.won.score').innerHTML = this.puzzle.wonCount;
+                const scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
+                scoreBins.forEach((bin, i) => {
                     const count = this.puzzle.stats.dist[i] || 0;
                     const width = count === 0 ? 'fit-content' : count / this.puzzle.maxWin * 100 + '%';
                     bin.style.width = width;
                     bin.innerHTML = count;                    
-                })
+                });
             }
             this._panes.forEach(pane => {
                 if (pane.id === msg) {

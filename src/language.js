@@ -1,3 +1,5 @@
+import { $, newEl } from "./utils";
+
 const layouts = {
     en: {
         locale: 'en',
@@ -29,6 +31,12 @@ const layouts = {
                 } 
             },
             enjoy: 'Enjoy the game!'
+        },
+        stats: {
+            title: 'Statistics',
+            played: 'Played',
+            won: 'Won',
+            guessDist: 'Guess discribution'
         }
     },
     es: {
@@ -44,34 +52,51 @@ const layouts = {
 }
 
 
-const switchLanguage = (layout = layouts.en) => {  
-    const createEl = (tag, text = '', className = '') => {
-        const el = document.createElement(tag);
-        el.innerHTML = text;
-        el.className = className;
-        return el;
-    }
-    const helpPane = document.querySelector('#help');
-    const helpFrag = new DocumentFragment();
-    
-    helpFrag.append(createEl('h3', layout.help.title), 
-                    ...layout.help.desc.map(d => createEl('p', d)),
-                    createEl('div', '', 'hr'),
-                    createEl('h4', layout.help.examplesTitle));
+const switchLanguage = (layout = layouts.en) => {      
+    ['help', 'stats'].forEach(pName => {
+        const pane = document.querySelector('#' + pName);
+        const paneFrag = new DocumentFragment();
+        
+        switch (pName) {
+            case 'help':
+                paneFrag.append(newEl('h3', layout.help.title), 
+                ...layout.help.desc.map(d => newEl('p', d)),
+                newEl('div', '', 'hr'),
+                newEl('h4', layout.help.examplesTitle));
 
-    Object.values(layout.help.examples).forEach((example, ind) => {
-        const item = createEl('div', '', 'puzzle');
-        example.word.split('').forEach((letter, i) => {
-            const card = createEl('div', letter, 'card');
-            if (i === example.highlight) {
-                card.classList.add(Object.keys(layout.help.examples)[ind]);
-            }
-            item.appendChild(card);
-        });
-        helpFrag.append(item, createEl('p', example.msg));
+                Object.values(layout.help.examples).forEach((example, ind) => {
+                    const item = newEl('div', '', 'puzzle');
+                    example.word.split('').forEach((letter, i) => {
+                        const card = newEl('div', letter, 'card');
+                        if (i === example.highlight) {
+                            card.classList.add(Object.keys(layout.help.examples)[ind]);
+                        }
+                        item.appendChild(card);
+                    });
+                    paneFrag.append(item, newEl('p', example.msg));
+                });
+                paneFrag.append(newEl('div', '', 'hr'), 
+                                newEl('h4', layout.help.enjoy));
+                break;
+            case 'stats':
+                const scoreTable = newEl('div', '', 'score-table');
+                scoreTable.append(newEl('div', 0, 'played score'),
+                                  newEl('div', 0, 'won score'),
+                                  newEl('div', layout.stats.played, 'score-label'),
+                                  newEl('div', layout.stats.won, 'score-label'));                                   
+                const guessDist = newEl('div', '', 'guess-dist');
+                for (let i = 1; i <= 6; i++) {
+                    guessDist.append(newEl('div', i, 'score'),
+                                     newEl('div', 0, 'score-bar'));
+                }
+                paneFrag.append(newEl('h3', layout.stats.title),
+                                scoreTable, newEl('div', '', 'hr'),
+                                newEl('h3', layout.stats.guessDist),
+                                guessDist);
+                break;
+        }         
+        pane.replaceChildren(paneFrag);    
     });
-    helpFrag.append(createEl('div', '', 'hr'), createEl('h4', layout.help.enjoy));
-    helpPane.replaceChildren(helpFrag);
 }
 
 const initLanguage = (layout = layouts.en) => {

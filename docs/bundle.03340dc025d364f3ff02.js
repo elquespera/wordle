@@ -154,6 +154,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "layouts": () => (/* binding */ layouts),
 /* harmony export */   "switchLanguage": () => (/* binding */ switchLanguage)
 /* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -165,6 +166,7 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 var layouts = {
   en: {
@@ -193,6 +195,12 @@ var layouts = {
         }
       },
       enjoy: 'Enjoy the game!'
+    },
+    stats: {
+      title: 'Statistics',
+      played: 'Played',
+      won: 'Won',
+      guessDist: 'Guess discribution'
     }
   },
   es: {
@@ -209,36 +217,46 @@ var layouts = {
 
 var switchLanguage = function switchLanguage() {
   var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : layouts.en;
+  ['help', 'stats'].forEach(function (pName) {
+    var pane = document.querySelector('#' + pName);
+    var paneFrag = new DocumentFragment();
 
-  var createEl = function createEl(tag) {
-    var text = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-    var el = document.createElement(tag);
-    el.innerHTML = text;
-    el.className = className;
-    return el;
-  };
+    switch (pName) {
+      case 'help':
+        paneFrag.append.apply(paneFrag, [(0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3', layout.help.title)].concat(_toConsumableArray(layout.help.desc.map(function (d) {
+          return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('p', d);
+        })), [(0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'hr'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h4', layout.help.examplesTitle)]));
+        Object.values(layout.help.examples).forEach(function (example, ind) {
+          var item = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'puzzle');
+          example.word.split('').forEach(function (letter, i) {
+            var card = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', letter, 'card');
 
-  var helpPane = document.querySelector('#help');
-  var helpFrag = new DocumentFragment();
-  helpFrag.append.apply(helpFrag, [createEl('h3', layout.help.title)].concat(_toConsumableArray(layout.help.desc.map(function (d) {
-    return createEl('p', d);
-  })), [createEl('div', '', 'hr'), createEl('h4', layout.help.examplesTitle)]));
-  Object.values(layout.help.examples).forEach(function (example, ind) {
-    var item = createEl('div', '', 'puzzle');
-    example.word.split('').forEach(function (letter, i) {
-      var card = createEl('div', letter, 'card');
+            if (i === example.highlight) {
+              card.classList.add(Object.keys(layout.help.examples)[ind]);
+            }
 
-      if (i === example.highlight) {
-        card.classList.add(Object.keys(layout.help.examples)[ind]);
-      }
+            item.appendChild(card);
+          });
+          paneFrag.append(item, (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('p', example.msg));
+        });
+        paneFrag.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'hr'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h4', layout.help.enjoy));
+        break;
 
-      item.appendChild(card);
-    });
-    helpFrag.append(item, createEl('p', example.msg));
+      case 'stats':
+        var scoreTable = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'score-table');
+        scoreTable.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'played score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'won score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.stats.played, 'score-label'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.stats.won, 'score-label'));
+        var guessDist = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'guess-dist');
+
+        for (var i = 1; i <= 6; i++) {
+          guessDist.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', i, 'score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'score-bar'));
+        }
+
+        paneFrag.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3', layout.stats.title), scoreTable, (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'hr'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3', layout.stats.guessDist), guessDist);
+        break;
+    }
+
+    pane.replaceChildren(paneFrag);
   });
-  helpFrag.append(createEl('div', '', 'hr'), createEl('h4', layout.help.enjoy));
-  helpPane.replaceChildren(helpFrag);
 };
 
 var initLanguage = function initLanguage() {
@@ -286,12 +304,6 @@ var Modal = /*#__PURE__*/function () {
     _defineProperty(this, "_helpBtn", document.querySelector('.help-btn'));
 
     _defineProperty(this, "_statsBtn", document.querySelector('.stats-btn'));
-
-    _defineProperty(this, "_playedCount", document.querySelector('.played.score'));
-
-    _defineProperty(this, "_wonCount", document.querySelector('.won.score'));
-
-    _defineProperty(this, "_scoreBins", document.querySelectorAll('.guess-dist>.score-bar'));
 
     _defineProperty(this, "_puzzle", void 0);
 
@@ -359,10 +371,10 @@ var Modal = /*#__PURE__*/function () {
       if (!this._open) {
         //Calculate & display statistics
         if (msg === 'stats' && this.puzzle) {
-          this._playedCount.innerHTML = this.puzzle.stats.played;
-          this._wonCount.innerHTML = this.puzzle.wonCount;
-
-          this._scoreBins.forEach(function (bin, i) {
+          document.querySelector('.played.score').innerHTML = this.puzzle.stats.played;
+          document.querySelector('.won.score').innerHTML = this.puzzle.wonCount;
+          var scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
+          scoreBins.forEach(function (bin, i) {
             var count = _this3.puzzle.stats.dist[i] || 0;
             var width = count === 0 ? 'fit-content' : count / _this3.puzzle.maxWin * 100 + '%';
             bin.style.width = width;
@@ -793,6 +805,34 @@ var Puzzle = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Puzzle());
+
+/***/ }),
+
+/***/ "./src/utils.js":
+/*!**********************!*\
+  !*** ./src/utils.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "$": () => (/* binding */ $),
+/* harmony export */   "newEl": () => (/* binding */ newEl)
+/* harmony export */ });
+//jQuery-like Selector
+var $ = function $(selector) {
+  var parent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+  return parent.querySelector(selector);
+}; //Create new Element
+
+var newEl = function newEl(tagName) {
+  var innerHTML = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var el = document.createElement(tagName);
+  el.innerHTML = innerHTML;
+  el.className = className;
+  return el;
+};
 
 /***/ }),
 
@@ -1605,4 +1645,4 @@ _puzzle__WEBPACK_IMPORTED_MODULE_1__["default"].modal.puzzle = _puzzle__WEBPACK_
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.78d31330cfeedc5ce635.js.map
+//# sourceMappingURL=bundle.03340dc025d364f3ff02.js.map
