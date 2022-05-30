@@ -1,4 +1,7 @@
 import { $, newEl } from "./utils";
+import { initSettings } from "./settings";
+
+const modalPages = ['help', 'stats', 'settings'];
 
 const layouts = {
     en: {
@@ -37,6 +40,12 @@ const layouts = {
             played: 'Played',
             won: 'Won',
             guessDist: 'Guess discribution'
+        },
+        settings: {
+            title: 'Settings',
+            dark: 'Dark theme',
+            contrast: 'High Conrast',
+            lang: 'Language'
         }
     },
     es: {
@@ -53,16 +62,18 @@ const layouts = {
 
 
 const switchLanguage = (layout = layouts.en) => {      
-    ['help', 'stats'].forEach(pName => {
+    modalPages.forEach(pName => {
         const pane = document.querySelector('#' + pName);
         const paneFrag = new DocumentFragment();
-        
+        paneFrag.append(newEl('h3', layout[pName].title));
+
         switch (pName) {
             case 'help':
-                paneFrag.append(newEl('h3', layout.help.title), 
-                ...layout.help.desc.map(d => newEl('p', d)),
-                newEl('div', '', 'hr'),
-                newEl('h4', layout.help.examplesTitle));
+                paneFrag.append( 
+                    ...layout.help.desc.map(d => newEl('p', d)),
+                    newEl('div', '', 'hr'),
+                    newEl('h4', layout.help.examplesTitle)
+                );
 
                 Object.values(layout.help.examples).forEach((example, ind) => {
                     const item = newEl('div', '', 'puzzle');
@@ -89,13 +100,26 @@ const switchLanguage = (layout = layouts.en) => {
                     guessDist.append(newEl('div', i, 'score'),
                                      newEl('div', 0, 'score-bar'));
                 }
-                paneFrag.append(newEl('h3', layout.stats.title),
-                                scoreTable, newEl('div', '', 'hr'),
-                                newEl('h3', layout.stats.guessDist),
-                                guessDist);
+                paneFrag.append(
+                    scoreTable, newEl('div', '', 'hr'),
+                    newEl('h3', layout.stats.guessDist),
+                    guessDist
+                );
                 break;
+            case 'settings': {
+                const table = newEl('div', '', 'settings-table');
+                table.append(newEl('div', layout.settings.dark), 
+                             newEl('div', '<span></span>', 'check-box dark-mode'), 
+                             newEl('div', layout.settings.contrast), 
+                             newEl('div', '<span></span>', 'check-box contrast-mode'));
+                
+                paneFrag.append(table);
+
+                break;
+            }
         }         
-        pane.replaceChildren(paneFrag);    
+        pane.replaceChildren(paneFrag);  
+        initSettings();  
     });
 }
 
@@ -103,4 +127,4 @@ const initLanguage = (layout = layouts.en) => {
 
 }
 
-export {layouts, initLanguage, switchLanguage};
+export {layouts, modalPages, initLanguage, switchLanguage};

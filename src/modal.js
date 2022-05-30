@@ -1,16 +1,14 @@
+import { modalPages } from "./language";
+import { $ } from "./utils";
+
 class Modal {
     _open = false;
-    _overlay = document.querySelector('.modal-overlay');
-    _modal = document.querySelector('.modal');
-    _panes = this._modal.querySelectorAll('.pane');
-    _closeBtn = document.querySelector('.close-btn');
-    _helpBtn = document.querySelector('.help-btn');
-    _statsBtn = document.querySelector('.stats-btn');
+    _closeBtn = $('.close-btn');
     _puzzle;
 
     constructor() {
         window.addEventListener('click', (e) => {
-            if (e.target === this._overlay) {
+            if (e.target === $('.modal-overlay')) {
                 this.hide();
             }
         });
@@ -22,12 +20,10 @@ class Modal {
                     event.stopImmediatePropagation();
             }
         }); 
-        this._statsBtn.addEventListener('click', event => {
-            this.show('stats');
+        modalPages.forEach(page => {
+            $(`.${page}-btn`).addEventListener('click', e => this.show(page));
         });
-        this._helpBtn.addEventListener('click', event => {
-            this.show('help');
-        });     
+
         this._closeBtn.addEventListener('click', () => this.hide());
     }
 
@@ -42,18 +38,20 @@ class Modal {
     toggle() {
         this._open = !this._open;
         if (this._open) {
-            this._overlay.style.display = 'flex';
+            $('.modal-overlay').style.display = 'flex';
             setTimeout(() => {
-                this._modal.classList.add('open');                 
+                $('.modal').classList.add('open');                 
             }, 10);
         } else {
-            this._modal.classList.remove('open');
+            $('.modal').classList.remove('open');
             setTimeout(() => {
-                this._overlay.style.display = 'none';
+                $('.modal-overlay').style.display = 'none';
             }, 300);
         }
     }
-    show(msg = 'stats') {
+
+    show(msg = 'help') {
+
         if (!this._open) {            
             //Calculate & display statistics
             if (msg === 'stats' && this.puzzle) {
@@ -67,7 +65,7 @@ class Modal {
                     bin.innerHTML = count;                    
                 });
             }
-            this._panes.forEach(pane => {
+            modalPages.map(pname => $(`.${pname}`)).forEach(pane => {
                 if (pane.id === msg) {
                     pane.style.display = 'flex';
                 } else {

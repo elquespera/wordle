@@ -124,6 +124,44 @@ $overlay: rgba(255, 255, 255, 0.6);
                 margin-bottom: 4px;        
             } 
         }
+        .pane.settings {
+            .settings-table {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                font-weight: normal;
+                gap: 1em;
+            }
+            .settings-table > div {
+                // padding: 1em 0;
+                border-bottom: 1px solid gray;
+            }
+
+
+            .check-box {
+                position: relative;
+                width: 3em;
+                height: 1.5em;
+                padding: 0.2em;
+                background-color: gray;
+                justify-self: end;
+                border-radius: 999px;
+                cursor: pointer;
+            }
+            .check-box > span {
+                display: block;
+                //position: absolute;
+                width: 1.1em;
+                height: 1.1em;
+                //left: 0px;
+                background-color: white;
+                border-radius: 100%;
+                transition: margin-left 0.3s ease-in-out;
+            }
+            .check-box.checked > span {
+                margin-left: 1.4em;
+            }
+        }
     }
     .modal.open {
         opacity: 1;
