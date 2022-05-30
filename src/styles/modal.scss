@@ -1,3 +1,5 @@
+@use 'puzzle';
+
 $puzzle-border: #CCC;
 $not-present-backgroud: rgb(120, 124, 126);
 $active-color: #FFF;
@@ -6,9 +8,9 @@ $background: #fff;
 $overlay: rgba(255, 255, 255, 0.6);
 
 .modal-overlay {
-    display: flex;
     display: none;
-    position: absolute;     
+    position: absolute; 
+    top: 0;    
     z-index: 2;
     background-color: $overlay;  
     width: 100%;
@@ -21,29 +23,29 @@ $overlay: rgba(255, 255, 255, 0.6);
         flex-flow: column nowrap;
         background-color: $background;
         box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);
-        min-width: 40vw;
-        min-height: 20vh;
-        max-width: 90vw;
-        max-height: 90vh;
         height: auto;
         padding: 1em;
         border-radius: 0.2em;
         z-index: 10;
         margin-top: 120vh;
-        overflow-y: auto;
         opacity: 0;
         transition: margin-top 0.2s ease-in-out, 
                     opacity 0.2s ease-in-out;
 
         .close-btn {
             align-self: flex-end;
+            right: 0px;
             background-image: url('../assets/close.svg');
         }
         .pane {
             display: flex;
             flex-flow: column nowrap;
+            min-width: 40vw;
+            min-height: 20vh;
+            max-width: 90vw;
+            max-height: 90vh;
             padding-bottom: 1.5em;
-
+            overflow-y: auto;
             h3 {
                 align-self: center;
                 text-transform: uppercase;
@@ -106,12 +108,21 @@ $overlay: rgba(255, 255, 255, 0.6);
                 }
             }
         }
-        .pane.help { 
-            .letter {
-                min-width: calc($letter-size * 0.8);
-                min-height: calc($letter-size * 0.8);
-                font-size: 1.6em;                                                        
-            }
+        $shrink: 0.7;
+        @function card-size() {
+            @return calc(puzzle.card-size() * $shrink);
+        }
+        @function card-font-size() {
+            @return calc(puzzle.card-font-size() * $shrink);
+        }
+        .pane.help {
+            .puzzle {
+                justify-content: start;
+                font-size: card-font-size();
+                grid-template-columns: repeat(5, card-size());   
+                grid-template-rows: card-size();
+                margin-bottom: 4px;        
+            } 
         }
     }
     .modal.open {
@@ -119,3 +130,21 @@ $overlay: rgba(255, 255, 255, 0.6);
         margin-top: 0px;
     }
 }    
+
+.error-msg {
+    position: absolute;
+    top: 5em;
+    margin: 0 auto;
+    height: auto;
+    background-color: black;
+    color: #FFF;
+    padding: 0.8em;
+    border-radius: 0.3em;
+    box-shadow: 0 0 0.8em rgba(0, 0, 0, 1);
+    opacity: 0;
+}
+
+.error-msg.visible {
+    opacity: 1;
+    transition: opacity 0.5s;   
+}

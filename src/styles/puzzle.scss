@@ -33,6 +33,7 @@ $current-color: rgb(135, 138, 140);
     justify-content: center;
     align-content: center;
     gap: $puzzle-gap;
+    
     .card {
         text-transform: uppercase;
         display: flex;
