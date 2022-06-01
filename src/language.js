@@ -51,16 +51,16 @@ const layouts = {
     },
     es: {
         locale: 'es',
-        name: 'Espanol',
-        keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'],
+        name: 'Español',
+        keys: ['qwertyuiop', 'asdfghjklñ', 'zxcvbnm'],
         help: {
-            title: 'How to play',
+            title: 'Cómo jugar',
             desc: [
-                `Guess the <strong>WORDLE</strong> in six tries`,
-                `Each guess must be a valid five-letter word. Hit the enter button to submit.`,
-                `After each guess, the color of the tiles will change to show how close your guess was to the word.`
+                `Adivina la <strong>WORDLE</strong> en seis intentos`,
+                `Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.`,
+                `Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra.`
             ],
-            examplesTitle: 'Examples',
+            examplesTitle: 'Ejemplos',
             examples: {
                 correct: {
                     word: 'space',
@@ -78,19 +78,19 @@ const layouts = {
                     msg: `The letter <strong>N</strong> is not in the word in any spot.`
                 } 
             },
-            enjoy: 'Enjoy the game!'
+            enjoy: 'Disfruta el juego!'
         },
         stats: {
-            title: 'Statistics',
-            played: 'Played',
-            won: 'Won',
-            guessDist: 'Guess discribution'
+            title: 'Estadísticas',
+            played: 'Jugadas',
+            won: 'Victorias',
+            guessDist: 'Distribución de conjeturas'
         },
         settings: {
-            title: 'Settings',
-            dark: 'Dark theme',
-            contrast: 'High Conrast',
-            lang: 'Language'
+            title: 'Ajustes',
+            dark: 'Tema oscuro',
+            contrast: 'Alto contraste',
+            lang: 'Idioma'
         }        
     },
     ru: {
@@ -100,35 +100,35 @@ const layouts = {
         help: {
             title: 'Правила игры',
             desc: [
-                `Guess the <strong>WORDLE</strong> in six tries`,
-                `Each guess must be a valid five-letter word. Hit the enter button to submit.`,
-                `After each guess, the color of the tiles will change to show how close your guess was to the word.`
+                `Разгадай <strong>WORDLE</strong> за шесть попыток.`,
+                `Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.`,
+                `После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову.`
             ],
-            examplesTitle: 'Examples',
+            examplesTitle: 'Примеры',
             examples: {
                 correct: {
-                    word: 'space',
+                    word: 'вчера',
                     highlight: 0,
-                    msg: `The letter <strong>S</strong> is in the word and in the correct spot.`                    
+                    msg: `Буква <strong>А</strong> находится в разгадываемом слове на правильном месте.`                    
                 },
                 present: {
-                    word: 'abide',
+                    word: 'шепот',
                     highlight: 2,
-                    msg: `The letter <strong>I</strong> is in the word but in the wrong spot.`
+                    msg: `Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте.`
                 },
                 'not-present': {
-                    word: 'wrong',
+                    word: 'весна',
                     highlight: 4,
-                    msg: `The letter <strong>N</strong> is not in the word in any spot.`
+                    msg: `Буквы <strong>A</strong> нет в разгадываемом слове.`
                 } 
             },
-            enjoy: 'Enjoy the game!'
+            enjoy: 'Приятной игры!'
         },
         stats: {
-            title: 'Statistics',
-            played: 'Played',
-            won: 'Won',
-            guessDist: 'Guess discribution'
+            title: 'Статистика',
+            played: 'Сыграно',
+            won: 'Побед',
+            guessDist: 'Распределение побед'
         },
         settings: {
             title: 'Настройки',

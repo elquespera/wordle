@@ -1,10 +1,11 @@
-import { modalPages } from "./language";
 import { $ } from "./utils";
+import { modalPages } from "./language";
+import { puzzle } from "./puzzle";
+
 
 class Modal {
     _open = false;
     _closeBtn = $('.close-btn');
-    _puzzle;
 
     constructor() {
         window.addEventListener('click', (e) => {
@@ -27,14 +28,6 @@ class Modal {
         this._closeBtn.addEventListener('click', () => this.hide());
     }
 
-    get puzzle() {
-        return this._puzzle;
-    }
-
-    set puzzle(p) {
-        this._puzzle = p;
-    }
-
     toggle() {
         this._open = !this._open;
         if (this._open) {
@@ -54,24 +47,20 @@ class Modal {
 
         if (!this._open) {            
             //Calculate & display statistics
-            if (msg === 'stats' && this.puzzle) {
-                document.querySelector('.played.score').innerHTML = this.puzzle.stats.played;
-                document.querySelector('.won.score').innerHTML = this.puzzle.wonCount;
-                const scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
+            if (msg === 'stats') {
+                $('.played.score').innerHTML = puzzle.stats.played;
+                $('.won.score').innerHTML = puzzle.wonCount;
+                const scoreBins = $('.guess-dist>.score-bar', document, true);
                 scoreBins.forEach((bin, i) => {
-                    const count = this.puzzle.stats.dist[i] || 0;
-                    const width = count === 0 ? 'fit-content' : count / this.puzzle.maxWin * 100 + '%';
+                    const count = puzzle.stats.dist[i] || 0;
+                    const width = count === 0 ? 'fit-content' : count / puzzle.maxWin * 100 + '%';
                     bin.style.width = width;
                     bin.innerHTML = count;                    
                 });
             }
             modalPages.map(pname => $(`.${pname}`)).forEach(pane => {
-                if (pane.id === msg) {
-                    pane.style.display = 'flex';
-                } else {
-                    pane.style.display = 'none';
-                }
-            })
+                pane.style.display = pane.id === msg ? 'flex' : 'none';
+            });
             this.toggle();
         }
     }
@@ -80,7 +69,7 @@ class Modal {
     }
     
     showError(error) {
-        const errorDiv = document.querySelector('.error-msg');
+        const errorDiv = $('.error-msg');
         errorDiv.innerHTML = error;
         errorDiv.style.transition = 'opacity 0.5s';
         errorDiv.classList.add('visible');

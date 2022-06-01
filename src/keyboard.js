@@ -2,7 +2,6 @@ import { layouts, currentLayout } from "./language";
 import { puzzle } from "./puzzle";
 
 class Keyboard {
-    _lay
     _keys = [];
     constructor() {
         //Add keypress event listener
@@ -43,7 +42,6 @@ class Keyboard {
         });
         const maxKeys = Math.max(...layout.keys.
             map((x, i, arr) => i === arr.length-1 ? x.length + 3 : x.length));
-        console.log(maxKeys);
         document.documentElement.style.setProperty('--keyboard-max-keys', maxKeys);
         document.querySelector('.keyboard').replaceChildren(keyboardFragment);
     }

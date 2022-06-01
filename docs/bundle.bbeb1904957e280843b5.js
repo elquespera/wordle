@@ -43,8 +43,6 @@ var Keyboard = /*#__PURE__*/function () {
 
     _classCallCheck(this, Keyboard);
 
-    _defineProperty(this, "_lay", void 0);
-
     _defineProperty(this, "_keys", []);
 
     //Add keypress event listener
@@ -106,7 +104,6 @@ var Keyboard = /*#__PURE__*/function () {
       var maxKeys = Math.max.apply(Math, _toConsumableArray(layout.keys.map(function (x, i, arr) {
         return i === arr.length - 1 ? x.length + 3 : x.length;
       })));
-      console.log(maxKeys);
       document.documentElement.style.setProperty('--keyboard-max-keys', maxKeys);
       document.querySelector('.keyboard').replaceChildren(keyboardFragment);
     } //Find Key Div
@@ -212,12 +209,12 @@ var layouts = {
   },
   es: {
     locale: 'es',
-    name: 'Espanol',
-    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'],
+    name: 'Español',
+    keys: ['qwertyuiop', 'asdfghjklñ', 'zxcvbnm'],
     help: {
-      title: 'How to play',
-      desc: ["Guess the <strong>WORDLE</strong> in six tries", "Each guess must be a valid five-letter word. Hit the enter button to submit.", "After each guess, the color of the tiles will change to show how close your guess was to the word."],
-      examplesTitle: 'Examples',
+      title: 'Cómo jugar',
+      desc: ["Adivina la <strong>WORDLE</strong> en seis intentos", "Cada conjetura debe ser una palabra v\xE1lida de cinco letras. Pulse el bot\xF3n Intro para enviar.", "Despu\xE9s de cada suposici\xF3n, el color de las fichas cambiar\xE1 para mostrar qu\xE9 tan cerca estuvo su suposici\xF3n de la palabra."],
+      examplesTitle: 'Ejemplos',
       examples: {
         correct: {
           word: 'space',
@@ -235,19 +232,19 @@ var layouts = {
           msg: "The letter <strong>N</strong> is not in the word in any spot."
         }
       },
-      enjoy: 'Enjoy the game!'
+      enjoy: 'Disfruta el juego!'
     },
     stats: {
-      title: 'Statistics',
-      played: 'Played',
-      won: 'Won',
-      guessDist: 'Guess discribution'
+      title: 'Estadísticas',
+      played: 'Jugadas',
+      won: 'Victorias',
+      guessDist: 'Distribución de conjeturas'
     },
     settings: {
-      title: 'Settings',
-      dark: 'Dark theme',
-      contrast: 'High Conrast',
-      lang: 'Language'
+      title: 'Ajustes',
+      dark: 'Tema oscuro',
+      contrast: 'Alto contraste',
+      lang: 'Idioma'
     }
   },
   ru: {
@@ -256,32 +253,32 @@ var layouts = {
     keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё'],
     help: {
       title: 'Правила игры',
-      desc: ["Guess the <strong>WORDLE</strong> in six tries", "Each guess must be a valid five-letter word. Hit the enter button to submit.", "After each guess, the color of the tiles will change to show how close your guess was to the word."],
-      examplesTitle: 'Examples',
+      desc: ["\u0420\u0430\u0437\u0433\u0430\u0434\u0430\u0439 <strong>WORDLE</strong> \u0437\u0430 \u0448\u0435\u0441\u0442\u044C \u043F\u043E\u043F\u044B\u0442\u043E\u043A.", "\u041A\u0430\u0436\u0434\u0430\u044F \u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u0434\u043E\u043B\u0436\u043D\u0430 \u0431\u044B\u0442\u044C \u0434\u043E\u043F\u0443\u0441\u0442\u0438\u043C\u044B\u043C \u0441\u043B\u043E\u0432\u043E\u043C \u0438\u0437 \u043F\u044F\u0442\u0438 \u0431\u0443\u043A\u0432. \u041D\u0430\u0436\u043C\u0438 \u0432\u0432\u043E\u0434 \u0434\u043B\u044F \u043F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u0438\u044F.", "\u041F\u043E\u0441\u043B\u0435 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u0440\u0435\u0434\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0446\u0432\u0435\u0442 \u0431\u0443\u043A\u0432 \u0431\u0443\u0434\u0435\u0442 \u043C\u0435\u043D\u044F\u0442\u044C\u0441\u044F, \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u044C, \u043D\u0430\u0441\u043A\u043E\u043B\u044C\u043A\u043E \u043F\u0440\u0435\u0434\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0431\u044B\u043B\u043E \u0431\u043B\u0438\u0437\u043A\u043E \u043A \u0441\u043B\u043E\u0432\u0443."],
+      examplesTitle: 'Примеры',
       examples: {
         correct: {
-          word: 'space',
+          word: 'вчера',
           highlight: 0,
-          msg: "The letter <strong>S</strong> is in the word and in the correct spot."
+          msg: "\u0411\u0443\u043A\u0432\u0430 <strong>\u0410</strong> \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435 \u043D\u0430 \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u043C \u043C\u0435\u0441\u0442\u0435."
         },
         present: {
-          word: 'abide',
+          word: 'шепот',
           highlight: 2,
-          msg: "The letter <strong>I</strong> is in the word but in the wrong spot."
+          msg: "\u0411\u0443\u043A\u0432\u0430 <strong>\u041F</strong> \u0435\u0441\u0442\u044C \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435, \u043D\u043E \u0432 \u0434\u0440\u0443\u0433\u043E\u043C \u043C\u0435\u0441\u0442\u0435."
         },
         'not-present': {
-          word: 'wrong',
+          word: 'весна',
           highlight: 4,
-          msg: "The letter <strong>N</strong> is not in the word in any spot."
+          msg: "\u0411\u0443\u043A\u0432\u044B <strong>A</strong> \u043D\u0435\u0442 \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435."
         }
       },
-      enjoy: 'Enjoy the game!'
+      enjoy: 'Приятной игры!'
     },
     stats: {
-      title: 'Statistics',
-      played: 'Played',
-      won: 'Won',
-      guessDist: 'Guess discribution'
+      title: 'Статистика',
+      played: 'Сыграно',
+      won: 'Побед',
+      guessDist: 'Распределение побед'
     },
     settings: {
       title: 'Настройки',
@@ -377,8 +374,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language */ "./src/language.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+/* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language */ "./src/language.js");
+/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -386,6 +384,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -398,12 +397,10 @@ var Modal = /*#__PURE__*/function () {
 
     _defineProperty(this, "_open", false);
 
-    _defineProperty(this, "_closeBtn", (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.close-btn'));
-
-    _defineProperty(this, "_puzzle", void 0);
+    _defineProperty(this, "_closeBtn", (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.close-btn'));
 
     window.addEventListener('click', function (e) {
-      if (e.target === (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.modal-overlay')) {
+      if (e.target === (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.modal-overlay')) {
         _this.hide();
       }
     });
@@ -414,8 +411,8 @@ var Modal = /*#__PURE__*/function () {
         if (_this._open) event.stopImmediatePropagation();
       }
     });
-    _language__WEBPACK_IMPORTED_MODULE_0__.modalPages.forEach(function (page) {
-      (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)(".".concat(page, "-btn")).addEventListener('click', function (e) {
+    _language__WEBPACK_IMPORTED_MODULE_1__.modalPages.forEach(function (page) {
+      (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)(".".concat(page, "-btn")).addEventListener('click', function (e) {
         return _this.show(page);
       });
     });
@@ -426,59 +423,45 @@ var Modal = /*#__PURE__*/function () {
   }
 
   _createClass(Modal, [{
-    key: "puzzle",
-    get: function get() {
-      return this._puzzle;
-    },
-    set: function set(p) {
-      this._puzzle = p;
-    }
-  }, {
     key: "toggle",
     value: function toggle() {
       this._open = !this._open;
 
       if (this._open) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.modal-overlay').style.display = 'flex';
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.modal-overlay').style.display = 'flex';
         setTimeout(function () {
-          (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.modal').classList.add('open');
+          (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.modal').classList.add('open');
         }, 10);
       } else {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.modal').classList.remove('open');
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.modal').classList.remove('open');
         setTimeout(function () {
-          (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)('.modal-overlay').style.display = 'none';
+          (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.modal-overlay').style.display = 'none';
         }, 300);
       }
     }
   }, {
     key: "show",
     value: function show() {
-      var _this2 = this;
-
       var msg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'help';
 
       if (!this._open) {
         //Calculate & display statistics
-        if (msg === 'stats' && this.puzzle) {
-          document.querySelector('.played.score').innerHTML = this.puzzle.stats.played;
-          document.querySelector('.won.score').innerHTML = this.puzzle.wonCount;
-          var scoreBins = document.querySelectorAll('.guess-dist>.score-bar');
+        if (msg === 'stats') {
+          (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.played.score').innerHTML = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.stats.played;
+          (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.won.score').innerHTML = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.wonCount;
+          var scoreBins = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.guess-dist>.score-bar', document, true);
           scoreBins.forEach(function (bin, i) {
-            var count = _this2.puzzle.stats.dist[i] || 0;
-            var width = count === 0 ? 'fit-content' : count / _this2.puzzle.maxWin * 100 + '%';
+            var count = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.stats.dist[i] || 0;
+            var width = count === 0 ? 'fit-content' : count / _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.maxWin * 100 + '%';
             bin.style.width = width;
             bin.innerHTML = count;
           });
         }
 
-        _language__WEBPACK_IMPORTED_MODULE_0__.modalPages.map(function (pname) {
-          return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.$)(".".concat(pname));
+        _language__WEBPACK_IMPORTED_MODULE_1__.modalPages.map(function (pname) {
+          return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)(".".concat(pname));
         }).forEach(function (pane) {
-          if (pane.id === msg) {
-            pane.style.display = 'flex';
-          } else {
-            pane.style.display = 'none';
-          }
+          pane.style.display = pane.id === msg ? 'flex' : 'none';
         });
         this.toggle();
       }
@@ -491,7 +474,7 @@ var Modal = /*#__PURE__*/function () {
   }, {
     key: "showError",
     value: function showError(error) {
-      var errorDiv = document.querySelector('.error-msg');
+      var errorDiv = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.error-msg');
       errorDiv.innerHTML = error;
       errorDiv.style.transition = 'opacity 0.5s';
       errorDiv.classList.add('visible');
@@ -1763,4 +1746,4 @@ _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_I
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.ce46894fee5fa43fb94a.js.map
+//# sourceMappingURL=bundle.bbeb1904957e280843b5.js.map
