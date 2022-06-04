@@ -1,6 +1,6 @@
 import { $ } from "./utils";
-import { modalPages } from "./language";
-import { puzzle } from "./puzzle";
+import { currentLayout, modalPages } from "./language";
+import { puzzle, revealCard } from "./puzzle";
 
 
 class Modal {
@@ -43,12 +43,24 @@ class Modal {
         }
     }
 
-    show(msg = 'help') {
+    show(msg = 'help', winStatus) {
 
         if (!this._open) {            
-            //Calculate & display statistics
+            //Calculate & display statistics and show win/loose msg
             switch(msg) {
                 case 'stats':
+                    const gameStatus = $('.game-status-message');
+                    gameStatus.style.display = winStatus ? 'flex' : 'none';
+                    if (winStatus) {
+                        if (winStatus === 'win') {
+                            $('h3', gameStatus).innerHTML = currentLayout.stats.wonTitle;
+                        } else {
+                            $('h3', gameStatus).innerHTML = currentLayout.stats.loseTitle;
+                        }
+                        $('.card', gameStatus, true).forEach((card, i) => {
+                            card.innerHTML = puzzle.solution[i];
+                        });
+                    }
                     $('.played.score').innerHTML = puzzle.stats.played;
                     $('.won.score').innerHTML = puzzle.wonCount;
                     const scoreBins = $('.guess-dist>.score-bar', document, true);

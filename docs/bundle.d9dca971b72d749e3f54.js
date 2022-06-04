@@ -143,14 +143,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "currentLayout": () => (/* binding */ currentLayout),
 /* harmony export */   "initLanguage": () => (/* binding */ initLanguage),
-/* harmony export */   "layouts": () => (/* reexport default export from named module */ _translations_json__WEBPACK_IMPORTED_MODULE_3__),
+/* harmony export */   "layouts": () => (/* reexport default export from named module */ _translations_json__WEBPACK_IMPORTED_MODULE_4__),
 /* harmony export */   "modalPages": () => (/* binding */ modalPages),
 /* harmony export */   "switchLanguage": () => (/* binding */ switchLanguage)
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./settings */ "./src/settings.js");
 /* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
-/* harmony import */ var _translations_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./translations.json */ "./src/translations.json");
+/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
+/* harmony import */ var _translations_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./translations.json */ "./src/translations.json");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -167,14 +168,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
 var modalPages = ['help', 'stats', 'settings', 'reset'];
-var currentLayout = _translations_json__WEBPACK_IMPORTED_MODULE_3__.en;
+var currentLayout = _translations_json__WEBPACK_IMPORTED_MODULE_4__.en;
 
 var switchLanguage = function switchLanguage() {
   var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : currentLayout;
   modalPages.forEach(function (pName) {
     var pane = document.querySelector('#' + pName);
     var paneFrag = new DocumentFragment();
+
+    if (pName === 'stats') {
+      var statusDiv = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'game-status-message');
+      var puzzleDiv = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'puzzle');
+
+      for (var i = 0; i < _puzzle__WEBPACK_IMPORTED_MODULE_3__.wordLength; i++) {
+        puzzleDiv.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'card'));
+      }
+
+      statusDiv.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('p', layout.stats.correctAnswer), puzzleDiv);
+      paneFrag.append(statusDiv);
+    }
+
     paneFrag.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3', layout[pName].title));
 
     switch (pName) {
@@ -203,8 +218,8 @@ var switchLanguage = function switchLanguage() {
         scoreTable.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'played score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'won score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.stats.played, 'score-label'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.stats.won, 'score-label'));
         var guessDist = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'guess-dist');
 
-        for (var i = 1; i <= 6; i++) {
-          guessDist.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', i, 'score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'score-bar'));
+        for (var _i = 1; _i <= 6; _i++) {
+          guessDist.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', _i, 'score'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', 0, 'score-bar'));
         }
 
         paneFrag.append(scoreTable, (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'hr'), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('h3', layout.stats.guessDist), guessDist);
@@ -219,7 +234,7 @@ var switchLanguage = function switchLanguage() {
           contrastMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.contrast), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box contrast-mode', 'high-contrast-theme'));
           var language = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
           var ul = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('ul', '', 'language-selector');
-          Object.values(_translations_json__WEBPACK_IMPORTED_MODULE_3__).forEach(function (l) {
+          Object.values(_translations_json__WEBPACK_IMPORTED_MODULE_4__).forEach(function (l) {
             return ul.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('li', l.name, '', l.locale));
           });
           language.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.lang), ul);
@@ -331,11 +346,27 @@ var Modal = /*#__PURE__*/function () {
     key: "show",
     value: function show() {
       var msg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'help';
+      var winStatus = arguments.length > 1 ? arguments[1] : undefined;
 
       if (!this._open) {
-        //Calculate & display statistics
+        //Calculate & display statistics and show win/loose msg
         switch (msg) {
           case 'stats':
+            var gameStatus = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.game-status-message');
+            gameStatus.style.display = winStatus ? 'flex' : 'none';
+
+            if (winStatus) {
+              if (winStatus === 'win') {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('h3', gameStatus).innerHTML = _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.stats.wonTitle;
+              } else {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('h3', gameStatus).innerHTML = _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.stats.loseTitle;
+              }
+
+              (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.card', gameStatus, true).forEach(function (card, i) {
+                card.innerHTML = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.solution[i];
+              });
+            }
+
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.played.score').innerHTML = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.stats.played;
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.won.score').innerHTML = _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.wonCount;
             var scoreBins = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.guess-dist>.score-bar', document, true);
@@ -389,7 +420,10 @@ var Modal = /*#__PURE__*/function () {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "puzzle": () => (/* binding */ puzzle)
+/* harmony export */   "puzzle": () => (/* binding */ puzzle),
+/* harmony export */   "puzzleLength": () => (/* binding */ puzzleLength),
+/* harmony export */   "revealCard": () => (/* binding */ revealCard),
+/* harmony export */   "wordLength": () => (/* binding */ wordLength)
 /* harmony export */ });
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./src/modal.js");
 /* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language */ "./src/language.js");
@@ -562,25 +596,59 @@ var Puzzle = /*#__PURE__*/function () {
     }
   }, {
     key: "checkLetters",
-    value: function checkLetters(row) {
-      var _this3 = this;
+    value: function () {
+      var _checkLetters = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(row) {
+        var i, letter, className;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                i = 0;
 
-      this.matrix[row].forEach(function (letter, i) {
-        var className = 'not-present';
+              case 1:
+                if (!(i < this.matrix[row].length)) {
+                  _context.next = 12;
+                  break;
+                }
 
-        if (_this3.solution.includes(letter)) {
-          if (_this3.solution[i] === letter) {
-            className = 'correct';
-          } else {
-            className = 'present';
+                letter = this.matrix[row][i];
+                className = 'not-present';
+
+                if (this.solution.includes(letter)) {
+                  if (this.solution[i] === letter) {
+                    className = 'correct';
+                  } else {
+                    className = 'present';
+                  }
+                }
+
+                _context.next = 7;
+                return revealCard(this._cardDivs[row][i]);
+
+              case 7:
+                this._cardDivs[row][i].classList.add(className);
+
+                this._cardDivs[row][i].classList.remove('current');
+
+              case 9:
+                i++;
+                _context.next = 1;
+                break;
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
           }
-        }
+        }, _callee, this);
+      }));
 
-        _this3._cardDivs[row][i].classList.add(className);
+      function checkLetters(_x) {
+        return _checkLetters.apply(this, arguments);
+      }
 
-        _this3._cardDivs[row][i].classList.remove('current');
-      });
-    }
+      return checkLetters;
+    }()
   }, {
     key: "checkStatus",
     value: function checkStatus() {
@@ -596,20 +664,20 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "shakeRow",
     value: function () {
-      var _shakeRow = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(row) {
+      var _shakeRow = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(row) {
         var toggleClass, i;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 row = this._cardDivs[row];
 
                 if (row) {
-                  _context.next = 3;
+                  _context2.next = 3;
                   break;
                 }
 
-                return _context.abrupt("return", false);
+                return _context2.abrupt("return", false);
 
               case 3:
                 toggleClass = function toggleClass() {
@@ -633,16 +701,16 @@ var Puzzle = /*#__PURE__*/function () {
 
               case 6:
                 if (!(i < wordLength)) {
-                  _context.next = 12;
+                  _context2.next = 12;
                   break;
                 }
 
-                _context.next = 9;
+                _context2.next = 9;
                 return toggleClass();
 
               case 9:
                 i++;
-                _context.next = 6;
+                _context2.next = 6;
                 break;
 
               case 12:
@@ -652,13 +720,13 @@ var Puzzle = /*#__PURE__*/function () {
 
               case 13:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
-      function shakeRow(_x) {
+      function shakeRow(_x2) {
         return _shakeRow.apply(this, arguments);
       }
 
@@ -667,11 +735,11 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "animateLetter",
     value: function () {
-      var _animateLetter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(letter) {
+      var _animateLetter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(letter) {
         var inOut;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 inOut = function inOut(out) {
                   return new Promise(function (resolve) {
@@ -684,11 +752,11 @@ var Puzzle = /*#__PURE__*/function () {
                 };
 
                 letter.classList.add('out');
-                _context2.next = 4;
+                _context3.next = 4;
                 return inOut(false);
 
               case 4:
-                _context2.next = 6;
+                _context3.next = 6;
                 return inOut(true);
 
               case 6:
@@ -696,13 +764,13 @@ var Puzzle = /*#__PURE__*/function () {
 
               case 7:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }));
 
-      function animateLetter(_x2) {
+      function animateLetter(_x3) {
         return _animateLetter.apply(this, arguments);
       }
 
@@ -710,59 +778,114 @@ var Puzzle = /*#__PURE__*/function () {
     }()
   }, {
     key: "keyPressed",
-    value: function keyPressed(key) {
-      var _this4 = this;
+    value: function () {
+      var _keyPressed = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(key) {
+        var _this3 = this;
 
-      var shake = function shake(msg) {
-        _this4.shakeRow(_this4.lastRowNumber);
+        var shake;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                shake = function shake(msg) {
+                  _this3.shakeRow(_this3.lastRowNumber);
 
-        _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError(msg);
-      };
+                  _modal__WEBPACK_IMPORTED_MODULE_0__["default"].showError(msg);
+                };
 
-      switch (key) {
-        case 'enter':
-          if (this.lastRow.length === wordLength) {
-            if (this.wordExists(this.lastRow.join(''))) {
-              this.checkLetters(this.lastRowNumber);
-              this.matrix.push([]);
-              this.checkStatus();
-              this.update();
-            } else shake("Word doesn't exist");
-          } else {
-            shake('Not enough letters');
+                _context4.t0 = key;
+                _context4.next = _context4.t0 === 'enter' ? 4 : _context4.t0 === 'backspace' ? 18 : 20;
+                break;
+
+              case 4:
+                if (!(this.lastRow.length === wordLength)) {
+                  _context4.next = 16;
+                  break;
+                }
+
+                if (!this.wordExists(this.lastRow.join(''))) {
+                  _context4.next = 13;
+                  break;
+                }
+
+                _context4.next = 8;
+                return this.checkLetters(this.lastRowNumber);
+
+              case 8:
+                this.matrix.push([]);
+                this.checkStatus();
+                this.update();
+                _context4.next = 14;
+                break;
+
+              case 13:
+                shake("Word doesn't exist");
+
+              case 14:
+                _context4.next = 17;
+                break;
+
+              case 16:
+                shake('Not enough letters');
+
+              case 17:
+                return _context4.abrupt("break", 22);
+
+              case 18:
+                if (this.lastRow && this.lastRow.length > 0) {
+                  this.lastRow.pop();
+                  this.update();
+                } else {
+                  shake('No letters to erase');
+                }
+
+                return _context4.abrupt("break", 22);
+
+              case 20:
+                if (this.matrix.length === 0) {
+                  this.matrix.push([]);
+                }
+
+                if (this.lastRow.length < wordLength) {
+                  this.lastRow.push(key);
+                  this.update();
+                  this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
+                } else {
+                  shake('Five letter max');
+                }
+
+              case 22:
+              case "end":
+                return _context4.stop();
+            }
           }
+        }, _callee4, this);
+      }));
 
-          break;
-
-        case 'backspace':
-          if (this.lastRow && this.lastRow.length > 0) {
-            this.lastRow.pop();
-            this.update();
-          } else {
-            shake('No letters to erase');
-          }
-
-          break;
-
-        default:
-          if (this.matrix.length === 0) {
-            this.matrix.push([]);
-          }
-
-          if (this.lastRow.length < wordLength) {
-            this.lastRow.push(key);
-            this.update();
-            this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
-          } else {
-            shake('Five letter max');
-          }
-
+      function keyPressed(_x4) {
+        return _keyPressed.apply(this, arguments);
       }
-    }
+
+      return keyPressed;
+    }()
   }]);
 
   return Puzzle;
 }();
+
+var revealCard = function revealCard(card) {
+  return new Promise(function (resolve) {
+    card.style.transition = 'none';
+    card.style.transform = 'rotateX(180deg)';
+    setTimeout(function () {
+      card.style.transition = 'transform 1s ease-out';
+      card.style.transform = 'rotateX(0deg)';
+      setTimeout(function () {
+        resolve('');
+      }, 100);
+    }, 50);
+  });
+};
 
 var puzzle = new Puzzle();
 
@@ -815,6 +938,7 @@ var initSettings = function initSettings() {
       if (e.currentTarget.id !== _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.locale) {
         (0,_language__WEBPACK_IMPORTED_MODULE_1__.switchLanguage)(_translations_json__WEBPACK_IMPORTED_MODULE_2__[e.currentTarget.id]);
         checkStatus();
+        _puzzle__WEBPACK_IMPORTED_MODULE_3__.puzzle.reset();
       }
     });
   }); //Reset dialog event bindings
@@ -901,7 +1025,7 @@ var ___CSS_LOADER_URL_REPLACEMENT_5___ = _node_modules_css_loader_dist_runtime_g
 var ___CSS_LOADER_URL_REPLACEMENT_6___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_6___);
 var ___CSS_LOADER_URL_REPLACEMENT_7___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_7___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  --main-color: black;\n  --background-color: white;\n  --overlay-color: rgba(255, 255, 255, 0.6);\n  --shadow-color: rgba(0, 0, 0, 0.5);\n  --border-color: #CCC;\n  --text-btn-color: white;\n  --accent-color1: #6aaa64;\n  --accent-color2: #c9b458;\n  --accent-color3: rgb(120, 124, 126);\n  --accent-color4: rgb(229, 229, 229);\n  --puzzle-current-color: rgb(135, 138, 140);\n  --puzzle-active-color: var(--background-color);\n}\n\nbody.dark-theme {\n  --main-color: white;\n  --background-color: black;\n  --overlay-color: rgba(0, 0, 0, 0.6);\n  --shadow-color: rgba(255, 255, 255, 0.5);\n}\nbody.dark-theme .icon-btn {\n  filter: invert(1);\n}\n\nbody.high-contrast-theme {\n  --accent-color1: orange;\n  --accent-color2: steelblue;\n}\n\nheader {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  position: relative;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\nheader .menu .reset-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  transform: rotate(-90deg);\n}\nheader .menu .stats-btn:hover {\n  transform: none;\n}\nheader .menu .settings-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\nheader .menu .settings-btn:hover {\n  transform: rotate(200deg);\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid var(--border-color);\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .current {\n  border-color: var(--puzzle-current-color);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: var(--accent-color3);\n  border-color: var(--accent-color3);\n}\n.puzzle .present {\n  background-color: var(--accent-color2);\n  border-color: var(--accent-color2);\n}\n.puzzle .correct {\n  background-color: var(--accent-color1);\n  border-color: var(--accent-color1);\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: var(--puzzle-active-color);\n}\n\n:root {\n  --keyboard-max-keys: 10;\n}\n\n.keyboard {\n  margin-bottom: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.3em;\n  height: calc((min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7) + 0.3em) * 3);\n  font-size: min(18px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) / 2);\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.3em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  width: min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n  height: min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7);\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n  width: calc(min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.5);\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n\n.modal-overlay {\n  display: none;\n  position: absolute;\n  top: 0;\n  z-index: 2;\n  background-color: var(--overlay-color);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: var(--background-color);\n  box-shadow: 0 0 0.8em var(--shadow-color);\n  height: auto;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  right: 0px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_7___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  min-width: max(40vw, 260px);\n  min-height: max(20vh, 200px);\n  max-width: 85vw;\n  max-height: 85vh;\n  padding-bottom: 1.5em;\n  overflow-y: auto;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid var(--border-color);\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: var(--accent-color3);\n  color: var(--puzzle-active-color);\n}\n.modal-overlay .modal .pane.reset .yes-no {\n  display: flex;\n  gap: 2em;\n  justify-content: center;\n  align-items: center;\n  margin-top: 3em;\n}\n.modal-overlay .modal .pane.help .puzzle {\n  justify-content: start;\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6 * 0.7);\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7));\n  grid-template-rows: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7);\n  margin-bottom: 4px;\n}\n.modal-overlay .modal .pane.settings .settings-table {\n  display: flex;\n  flex-flow: column nowrap;\n  font-weight: normal;\n  gap: 1em;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector {\n  display: flex;\n  flex-flow: column nowrap;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li {\n  padding: 0.3em 0.6em;\n  border-radius: 0.1em;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li::before {\n  content: \"\";\n  display: inline-block;\n  height: 0.8em;\n  width: 0.2em;\n  margin-right: 0.4em;\n  border-radius: 0.1em;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li.checked::before {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li:hover {\n  background-color: var(--accent-color4);\n}\n.modal-overlay .modal .pane.settings .settings-table > div {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 1em 0;\n  border-bottom: 1px solid var(--border-color);\n  gap: 1.5em;\n}\n.modal-overlay .modal .pane.settings .check-box {\n  position: relative;\n  width: 3em;\n  height: 1.5em;\n  padding: 0.2em;\n  background-color: rgb(194, 194, 194);\n  justify-self: end;\n  border-radius: 999px;\n  cursor: pointer;\n}\n.modal-overlay .modal .pane.settings .check-box > span {\n  display: block;\n  width: 1.1em;\n  height: 1.1em;\n  background-color: white;\n  border-radius: 100%;\n  transition: margin-left 0.3s ease-in-out;\n}\n.modal-overlay .modal .pane.settings .check-box.checked {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.settings .check-box.checked > span {\n  margin-left: 1.4em;\n}\n.modal-overlay .modal .pane.reset #reset-yes-btn {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.reset #reset-no-btn {\n  background-color: var(--accent-color2);\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  left: 50%;\n  transform: translateX(-50%);\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  width: max-content;\n  max-width: 90%;\n  padding: 0.5em 0.7em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.4em rgb(0, 0, 0);\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.error-msg.visible {\n  opacity: 1;\n}\n\n*, body, ul, li {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n}\n\nul {\n  list-style: none;\n}\n\nbody, * {\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n}\n\n* {\n  height: 100%;\n}\n\nbody {\n  background-color: var(--background-color);\n  color: var(--main-color);\n}\n\nbutton {\n  background-color: transparent;\n  cursor: pointer;\n}\n\n.text-btn {\n  color: var(--text-btn-color);\n  background-color: var(--accent-color3);\n  padding: 0.8em;\n  min-width: 12ch;\n  border-radius: 0.3em;\n}\n\n.icon-btn {\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}", "",{"version":3,"sources":["webpack://./src/styles/_vars.scss","webpack://./src/styles/main.scss","webpack://./src/styles/header.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$main-color: var(--main-color);\n$background-color: var(--background-color);\n$overlay-color: var(--overlay-color);\n$shadow-color: var(--shadow-color);\n$border-color: var(--border-color);\n$text-btn-color: var(--text-btn-color);\n\n$accent-color1: var(--accent-color1);\n$accent-color2: var(--accent-color2);\n$accent-color3: var(--accent-color3);\n$accent-color4: var(--accent-color4);\n\n$puzzle-current-color: var(--puzzle-current-color);\n$puzzle-active-color: var(--puzzle-active-color);\n\n\n// Default Theme\n\nbody {\n    --main-color: black;\n    --background-color: white;\n    --overlay-color: rgba(255, 255, 255, 0.6);\n    --shadow-color: rgba(0, 0, 0, 0.5);\n    --border-color: #CCC;\n    --text-btn-color: white;\n\n    --accent-color1: #6aaa64;\n    --accent-color2: #c9b458;\n    --accent-color3: rgb(120, 124, 126);\n    --accent-color4: rgb(229, 229, 229);\n\n    --puzzle-current-color: rgb(135, 138, 140);    \n    --puzzle-active-color: var(--background-color);\n}\n\n// Dark Theme \n\nbody.dark-theme {\n    --main-color: white;\n    --background-color: black;\n    --overlay-color: rgba(0, 0, 0, 0.6);\n    --shadow-color: rgba(255, 255, 255, 0.5);\n\n\n    // Invert colors for icon buttons\n    .icon-btn {\n        filter: invert(1);\n    }\n}\n\n// High Contrast Theme\n\nbody.high-contrast-theme {\n    --accent-color1: orange;\n    --accent-color2: steelblue;    \n}","@use 'vars';\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n// Reset\n*, body, ul, li {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n}\nul {\n    list-style: none;\n}\nbody, * {\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n}\n\n* {\n    height: 100%;\n}\n\nbody {\n    background-color: vars.$background-color;\n    color: vars.$main-color;\n}\n\nbutton {\n    background-color: transparent;\n    cursor: pointer;\n}\n\n.text-btn {\n    color: vars.$text-btn-color;\n    background-color: vars.$accent-color3;\n    padding: 0.8em;\n    min-width: 12ch;\n    border-radius: 0.3em;\n}\n\n\n.icon-btn {\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height());    \n}","$background: #fff;\n\n@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        position: relative;\n        align-items: center;\n        gap: 1em;\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .reset-btn {\n            background-image: url('../assets/reset.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n            transform: rotate(-90deg);\n        }\n        .stats-btn:hover {\n            transform: none;\n        }\n        .settings-btn {\n            background-image: url('../assets/settings.svg');\n        }\n        .settings-btn:hover {\n            transform: rotate(200deg);\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","@use \"vars\";\n\n//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    \n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid vars.$border-color; \n        transition: transform 0.08s ease-out;\n    }\n    \n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n    .current {\n        border-color: vars.$puzzle-current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: vars.$accent-color3;\n        border-color: vars.$accent-color3;\n    }\n    .present {\n        background-color: vars.$accent-color2;\n        border-color: vars.$accent-color2;\n    }\n    .correct {\n        background-color: vars.$accent-color1;\n        border-color: vars.$accent-color1;\n    }\n    \n    .not-present, .present, .correct {\n        color: vars.$puzzle-active-color;\n    }    \n}",":root {\n    --keyboard-max-keys: 10;\n}\n\n$key-gap: 0.3em;\n\n$key-background-color: #CCC;\n$key-active-background-color: #999;\n$key-hover-background-color: #DDD;\n\n$keyboard-max-key-width: 50px;\n$keyboard-max-key-height: 60px;\n\n@function key-width() {\n    @return min($keyboard-max-key-width, \n                (100vw - $key-gap * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n}\n@function key-width-special() {\n    @return calc(key-width() * 1.5);\n}\n@function key-height() {\n    @return min($keyboard-max-key-height, key-width() * 1.7);\n}\n@function keyboard-height() {\n    @return calc((key-height() + $key-gap) * 3);\n}\n@function keyboard-font-size() {\n    @return min(18px, key-width() / 2);\n}\n\n\n.keyboard {\n    margin-bottom: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    height: keyboard-height();\n    font-size: keyboard-font-size();\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            width: key-width();\n            height: key-height();\n            background-color: $key-background-color;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background-color;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background-color;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n            width: key-width-special();\n        }\n        .key.key-enter {    \n            background-image: url('../assets/enter.svg');\n        }        \n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n    }\n}","@use 'vars';\n@use 'puzzle';\n\n\n$letter-size: 2em;\n\n$light-gray: rgb(194, 194, 194);\n\n.modal-overlay {\n    display: none;\n    position: absolute; \n    top: 0;    \n    z-index: 2;\n    background-color: vars.$overlay-color;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: vars.$background-color;\n        box-shadow: 0 0 0.8em vars.$shadow-color;\n        height: auto;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            right: 0px;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            min-width: max(40vw, 260px);\n            min-height: max(20vh, 200px);\n            max-width: 85vw;\n            max-height: 85vh;\n            padding-bottom: 1.5em;\n            overflow-y: auto;\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid vars.$border-color;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            } \n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: vars.$accent-color3;\n                    color: vars.$puzzle-active-color;\n                }\n            }\n        }\n\n        .pane.reset {\n            .yes-no {\n                display: flex;\n                gap: 2em;\n                justify-content: center;\n                align-items: center;\n                margin-top: 3em;\n            }\n        }\n\n\n        $shrink: 0.7;\n        @function card-size() {\n            @return calc(puzzle.card-size() * $shrink);\n        }\n        @function card-font-size() {\n            @return calc(puzzle.card-font-size() * $shrink);\n        }\n        .pane.help {\n            .puzzle {\n                justify-content: start;\n                font-size: card-font-size();\n                grid-template-columns: repeat(5, card-size());   \n                grid-template-rows: card-size();\n                margin-bottom: 4px;        \n            } \n        }\n        .pane.settings {\n            .settings-table {\n                display: flex;\n                flex-flow: column nowrap;\n                font-weight: normal;\n                gap: 1em;\n\n                ul.language-selector {\n                    display: flex;\n                    flex-flow: column nowrap;\n                    li {\n                        padding: 0.3em 0.6em;\n                        border-radius: 0.1em;\n                        cursor: pointer;\n                        transition: background-color 0.2s;\n                    }\n                    li::before {\n                        content: '';\n                        display: inline-block;\n                        height: 0.8em;\n                        width: 0.2em;\n                        margin-right: 0.4em;\n                        border-radius: 0.1em;\n                        transition: background-color 0.2s;\n                    }\n                    li.checked::before {\n                        background-color: vars.$accent-color1;\n                    }\n                    li:hover {\n                        background-color: vars.$accent-color4;\n                    }                    \n                }\n            }\n            .settings-table > div {\n                display: flex;\n                align-items: center;\n                justify-content: space-between;\n                padding: 1em 0;\n                border-bottom: 1px solid vars.$border-color;\n                gap: 1.5em;\n            }\n\n\n            .check-box {\n                position: relative;\n                width: 3em;\n                height: 1.5em;\n                padding: 0.2em;\n                background-color: $light-gray;\n                justify-self: end;\n                border-radius: 999px;\n                cursor: pointer;\n            }\n            .check-box > span {\n                display: block;\n                width: 1.1em;\n                height: 1.1em;\n                background-color: white;\n                border-radius: 100%;\n                transition: margin-left 0.3s ease-in-out;\n            }\n            .check-box.checked {\n                background-color: vars.$accent-color1;\n            }\n            .check-box.checked > span {\n                margin-left: 1.4em;\n            }\n        }\n        .pane.reset {\n            #reset-yes-btn {\n                background-color: vars.$accent-color1;\n            }\n            #reset-no-btn {\n                background-color: vars.$accent-color2;\n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    \n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    left: 50%;\n    transform: translateX(-50%);\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    width: max-content;\n    max-width: 90%;\n    padding: 0.5em 0.7em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.4em rgba(0, 0, 0, 1);\n    opacity: 0;\n    transition: opacity 0.5s;\n}\n\n.error-msg.visible {\n    opacity: 1; \n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  --main-color: black;\n  --background-color: white;\n  --overlay-color: rgba(255, 255, 255, 0.6);\n  --shadow-color: rgba(0, 0, 0, 0.5);\n  --border-color: #CCC;\n  --text-btn-color: white;\n  --accent-color1: #6aaa64;\n  --accent-color2: #c9b458;\n  --accent-color3: rgb(120, 124, 126);\n  --accent-color4: rgb(229, 229, 229);\n  --puzzle-current-color: rgb(135, 138, 140);\n  --puzzle-active-color: var(--background-color);\n}\n\nbody.dark-theme {\n  --main-color: white;\n  --background-color: black;\n  --overlay-color: rgba(0, 0, 0, 0.6);\n  --shadow-color: rgba(255, 255, 255, 0.5);\n}\nbody.dark-theme .icon-btn {\n  filter: invert(1);\n}\n\nbody.high-contrast-theme {\n  --accent-color1: orange;\n  --accent-color2: steelblue;\n}\n\nheader {\n  height: max(25px, min(60px, 13vw));\n  font-size: calc(max(25px, min(60px, 13vw)) / 3);\n  display: flex;\n  width: 100%;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 1em;\n}\nheader .menu {\n  display: flex;\n  position: relative;\n  align-items: center;\n  gap: 1em;\n}\nheader .menu .github-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\nheader .menu .help-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\nheader .menu .reset-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_2___ + ");\n}\nheader .menu .stats-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_3___ + ");\n  transform: rotate(-90deg);\n}\nheader .menu .stats-btn:hover {\n  transform: none;\n}\nheader .menu .settings-btn {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_4___ + ");\n}\nheader .menu .settings-btn:hover {\n  transform: rotate(200deg);\n}\nheader h1 {\n  font-size: 2em;\n  display: flex;\n  align-items: center;\n}\n\n.puzzle {\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6);\n  display: grid;\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  grid-template-rows: repeat(6, calc(min(92vw - 0.4em - 20px, 320px) / 5));\n  justify-content: center;\n  align-content: center;\n  gap: 0.1em;\n}\n.puzzle .card {\n  text-transform: uppercase;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid var(--border-color);\n  transition: transform 0.08s ease-out;\n}\n.puzzle .card.current.in {\n  transform: scale(0.9);\n}\n.puzzle .card.current.out {\n  transform: scale(1.1);\n}\n.puzzle .card.shift1 {\n  transform: translate(-0.3rem, 0);\n}\n.puzzle .card.shift2 {\n  transform: translate(0.3rem, 0);\n}\n.puzzle .reveal {\n  transform: rotateY(180deg);\n}\n.puzzle .current {\n  border-color: var(--puzzle-current-color);\n  transition: transform 0.08s ease-in;\n}\n.puzzle .not-present {\n  background-color: var(--accent-color3);\n  border-color: var(--accent-color3);\n}\n.puzzle .present {\n  background-color: var(--accent-color2);\n  border-color: var(--accent-color2);\n}\n.puzzle .correct {\n  background-color: var(--accent-color1);\n  border-color: var(--accent-color1);\n}\n.puzzle .not-present, .puzzle .present, .puzzle .correct {\n  color: var(--puzzle-active-color);\n}\n\n:root {\n  --keyboard-max-keys: 10;\n}\n\n.keyboard {\n  margin-bottom: 1em;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  gap: 0.3em;\n  height: calc((min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7) + 0.3em) * 3);\n  font-size: min(18px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) / 2);\n}\n.keyboard .row {\n  display: flex;\n  flex-flow: row nowrap;\n  gap: 0.3em;\n}\n.keyboard .row .key {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  font-size: 1em;\n  text-transform: uppercase;\n  width: min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n  height: min(60px, min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.7);\n  background-color: #CCC;\n  border-radius: 0.3em;\n  touch-action: manipulation;\n  outline: none;\n}\n.keyboard .row .key:hover {\n  background-color: #DDD;\n}\n.keyboard .row .key:active, .keyboard .row .key.pressed {\n  background-color: #999;\n}\n.keyboard .row .key.key-enter, .keyboard .row .key.key-backspace {\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 1em;\n  width: calc(min(50px, (100vw - 0.3em * var(--keyboard-max-keys)) / var(--keyboard-max-keys)) * 1.5);\n}\n.keyboard .row .key.key-enter {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_5___ + ");\n}\n.keyboard .row .key.key-backspace {\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_6___ + ");\n}\n\n.modal-overlay {\n  display: none;\n  position: absolute;\n  top: 0;\n  z-index: 2;\n  background-color: var(--overlay-color);\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.modal-overlay .modal {\n  display: flex;\n  flex-flow: column nowrap;\n  background-color: var(--background-color);\n  box-shadow: 0 0 0.8em var(--shadow-color);\n  height: auto;\n  padding: 1em;\n  border-radius: 0.2em;\n  z-index: 10;\n  margin-top: 120vh;\n  opacity: 0;\n  transition: margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;\n}\n.modal-overlay .modal .close-btn {\n  align-self: flex-end;\n  right: 0px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_7___ + ");\n}\n.modal-overlay .modal .pane {\n  display: flex;\n  flex-flow: column nowrap;\n  min-width: max(40vw, 260px);\n  min-height: max(20vh, 200px);\n  max-width: 85vw;\n  max-height: 85vh;\n  padding-bottom: 1.5em;\n  overflow-y: auto;\n}\n.modal-overlay .modal .pane h3 {\n  align-self: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  text-align: center;\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane h4 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane p {\n  font-weight: normal;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane .hr {\n  width: 100%;\n  border-bottom: 1px solid var(--border-color);\n  margin-bottom: 2em;\n}\n.modal-overlay .modal .pane.stats h3 {\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .game-status-message {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin-bottom: 5em;\n}\n.modal-overlay .modal .pane.stats .score-table {\n  display: grid;\n  grid-template-columns: repeat(2, max-content);\n  grid-template-rows: repeat(2, max-content);\n  column-gap: 1em;\n  justify-items: center;\n  justify-content: center;\n  margin-bottom: 1em;\n}\n.modal-overlay .modal .pane.stats .score-table .score {\n  font-size: 3.5em;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .score-table .score-label {\n  font-size: 1rem;\n  font-weight: normal;\n}\n.modal-overlay .modal .pane.stats .guess-dist {\n  display: grid;\n  grid-template-columns: max-content 1fr;\n  gap: 0.3em 0.5em;\n  font-size: 0.8em;\n  align-items: center;\n  margin: 0 1em;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score {\n  font-weight: normal;\n  text-align: end;\n}\n.modal-overlay .modal .pane.stats .guess-dist .score-bar {\n  padding: 0.1em 0.3em;\n  width: fit-content;\n  background-color: var(--accent-color3);\n  color: var(--puzzle-active-color);\n}\n.modal-overlay .modal .pane.reset .yes-no {\n  display: flex;\n  gap: 2em;\n  justify-content: center;\n  align-items: center;\n  margin-top: 3em;\n}\n.modal-overlay .modal .puzzle {\n  justify-content: start;\n  font-size: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.6 * 0.7);\n  grid-template-columns: repeat(5, calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7));\n  grid-template-rows: calc(min(92vw - 0.4em - 20px, 320px) / 5 * 0.7);\n  margin-bottom: 4px;\n}\n.modal-overlay .modal .pane.settings .settings-table {\n  display: flex;\n  flex-flow: column nowrap;\n  font-weight: normal;\n  gap: 1em;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector {\n  display: flex;\n  flex-flow: column nowrap;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li {\n  padding: 0.3em 0.6em;\n  border-radius: 0.1em;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li::before {\n  content: \"\";\n  display: inline-block;\n  height: 0.8em;\n  width: 0.2em;\n  margin-right: 0.4em;\n  border-radius: 0.1em;\n  transition: background-color 0.2s;\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li.checked::before {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.settings .settings-table ul.language-selector li:hover {\n  background-color: var(--accent-color4);\n}\n.modal-overlay .modal .pane.settings .settings-table > div {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 1em 0;\n  border-bottom: 1px solid var(--border-color);\n  gap: 1.5em;\n}\n.modal-overlay .modal .pane.settings .check-box {\n  position: relative;\n  width: 3em;\n  height: 1.5em;\n  padding: 0.2em;\n  background-color: rgb(194, 194, 194);\n  justify-self: end;\n  border-radius: 999px;\n  cursor: pointer;\n}\n.modal-overlay .modal .pane.settings .check-box > span {\n  display: block;\n  width: 1.1em;\n  height: 1.1em;\n  background-color: white;\n  border-radius: 100%;\n  transition: margin-left 0.3s ease-in-out;\n}\n.modal-overlay .modal .pane.settings .check-box.checked {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.settings .check-box.checked > span {\n  margin-left: 1.4em;\n}\n.modal-overlay .modal .pane.reset #reset-yes-btn {\n  background-color: var(--accent-color1);\n}\n.modal-overlay .modal .pane.reset #reset-no-btn {\n  background-color: var(--accent-color2);\n}\n.modal-overlay .modal.open {\n  opacity: 1;\n  margin-top: 0px;\n}\n\n.error-msg {\n  position: absolute;\n  top: 5em;\n  left: 50%;\n  transform: translateX(-50%);\n  height: auto;\n  background-color: black;\n  color: #FFF;\n  width: max-content;\n  max-width: 90%;\n  padding: 0.5em 0.7em;\n  border-radius: 0.3em;\n  box-shadow: 0 0 0.4em rgb(0, 0, 0);\n  opacity: 0;\n  transition: opacity 0.5s;\n}\n\n.error-msg.visible {\n  opacity: 1;\n}\n\n*, body, ul, li {\n  margin: 0px;\n  padding: 0px;\n  border: 0px;\n}\n\nul {\n  list-style: none;\n}\n\nbody, * {\n  box-sizing: border-box;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 600;\n}\n\n* {\n  height: 100%;\n}\n\nbody {\n  background-color: var(--background-color);\n  color: var(--main-color);\n}\n\nbutton {\n  background-color: transparent;\n  cursor: pointer;\n}\n\n.text-btn {\n  color: var(--text-btn-color);\n  background-color: var(--accent-color3);\n  padding: 0.8em;\n  min-width: 12ch;\n  border-radius: 0.3em;\n}\n\n.icon-btn {\n  font-size: inherit;\n  width: 1.5em;\n  height: 1.5em;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: contain;\n  opacity: 0.7;\n  transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n  opacity: 1;\n  transform: translateY(-2px);\n}\n\n.container {\n  position: relative;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: center;\n  justify-content: space-between;\n  font-size: 16px;\n  height: calc(100% - max(25px, min(60px, 13vw)));\n}", "",{"version":3,"sources":["webpack://./src/styles/_vars.scss","webpack://./src/styles/main.scss","webpack://./src/styles/header.scss","webpack://./src/styles/puzzle.scss","webpack://./src/styles/keyboard.scss","webpack://./src/styles/modal.scss"],"names":[],"mappings":"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","sourcesContent":["$main-color: var(--main-color);\n$background-color: var(--background-color);\n$overlay-color: var(--overlay-color);\n$shadow-color: var(--shadow-color);\n$border-color: var(--border-color);\n$text-btn-color: var(--text-btn-color);\n\n$accent-color1: var(--accent-color1);\n$accent-color2: var(--accent-color2);\n$accent-color3: var(--accent-color3);\n$accent-color4: var(--accent-color4);\n\n$puzzle-current-color: var(--puzzle-current-color);\n$puzzle-active-color: var(--puzzle-active-color);\n\n\n// Default Theme\n\nbody {\n    --main-color: black;\n    --background-color: white;\n    --overlay-color: rgba(255, 255, 255, 0.6);\n    --shadow-color: rgba(0, 0, 0, 0.5);\n    --border-color: #CCC;\n    --text-btn-color: white;\n\n    --accent-color1: #6aaa64;\n    --accent-color2: #c9b458;\n    --accent-color3: rgb(120, 124, 126);\n    --accent-color4: rgb(229, 229, 229);\n\n    --puzzle-current-color: rgb(135, 138, 140);    \n    --puzzle-active-color: var(--background-color);\n}\n\n// Dark Theme \n\nbody.dark-theme {\n    --main-color: white;\n    --background-color: black;\n    --overlay-color: rgba(0, 0, 0, 0.6);\n    --shadow-color: rgba(255, 255, 255, 0.5);\n\n\n    // Invert colors for icon buttons\n    .icon-btn {\n        filter: invert(1);\n    }\n}\n\n// High Contrast Theme\n\nbody.high-contrast-theme {\n    --accent-color1: orange;\n    --accent-color2: steelblue;    \n}","@use 'vars';\n@use 'header';\n@use 'puzzle';\n@use 'keyboard';\n@use 'modal';\n\n// Reset\n*, body, ul, li {\n    margin: 0px;\n    padding: 0px;\n    border: 0px;\n}\nul {\n    list-style: none;\n}\nbody, * {\n    box-sizing: border-box;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 600;\n}\n\n* {\n    height: 100%;\n}\n\nbody {\n    background-color: vars.$background-color;\n    color: vars.$main-color;\n}\n\nbutton {\n    background-color: transparent;\n    cursor: pointer;\n}\n\n.text-btn {\n    color: vars.$text-btn-color;\n    background-color: vars.$accent-color3;\n    padding: 0.8em;\n    min-width: 12ch;\n    border-radius: 0.3em;\n}\n\n\n.icon-btn {\n    font-size: inherit;\n    width: 1.5em;\n    height: 1.5em;\n    background-repeat: no-repeat;\n    background-position: center;\n    background-size: contain;\n    opacity: 0.7;\n    transition: opacity 0.2s, transform 0.2s;\n}\n\n.icon-btn:hover {\n    opacity: 1;\n    transform: translateY(-2px);\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    justify-content: space-between;\n    font-size: 16px;\n    height: calc(100% - header.header-height());    \n}","$background: #fff;\n\n@function header-height() {\n    @return max(25px, min(60px, 13vw));\n}\n\nheader {\n    height: header-height();\n    font-size: calc(header-height() / 3);\n    display: flex;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;    \n    padding: 0 1em;\n    .menu {\n        display: flex;\n        position: relative;\n        align-items: center;\n        gap: 1em;\n        .github-btn {\n            background-image: url('../assets/github.svg');\n        }\n        .help-btn {\n            background-image: url('../assets/help.svg');\n        }\n        .reset-btn {\n            background-image: url('../assets/reset.svg');\n        }\n        .stats-btn {\n            background-image: url('../assets/chart.svg');\n            transform: rotate(-90deg);\n        }\n        .stats-btn:hover {\n            transform: none;\n        }\n        .settings-btn {\n            background-image: url('../assets/settings.svg');\n        }\n        .settings-btn:hover {\n            transform: rotate(200deg);\n        }\n    }\n    h1 {\n        font-size: 2em;\n        display: flex;\n        align-items: center;\n    }    \n}","@use \"vars\";\n\n//Sizes\n$puzzle-word-legnth: 5;\n$puzzle-max-width: 320px;\n$puzzle-border: 2px;\n$puzzle-gap: 0.1em;\n\n//Calculate flexible card size\n@function card-size() {\n    $res: calc(min(calc(\n        92vw - $puzzle-gap * ($puzzle-word-legnth - 1) - \n        $puzzle-border * $puzzle-word-legnth * 2) \n        , $puzzle-max-width));\n    @return calc($res / $puzzle-word-legnth);\n}\n//Calculate card font size\n@function card-font-size() {\n    @return calc(card-size() * 0.6);\n}\n\n.puzzle {\n    font-size: card-font-size();\n    display: grid;\n    grid-template-columns: repeat(5, card-size());\n    grid-template-rows: repeat(6, card-size());\n    justify-content: center;\n    align-content: center;\n    gap: $puzzle-gap;\n    \n    .card {\n        text-transform: uppercase;\n        display: flex;\n        justify-content: center;\n        align-items: center;                \n        border: $puzzle-border solid vars.$border-color; \n        transition: transform 0.08s ease-out;\n    }\n    \n    .card.current.in {\n        transform: scale(0.9);\n    }\n    .card.current.out {\n        transform: scale(1.1);\n    }    \n    .card.shift1 {\n        transform: translate(-0.3rem, 0);\n    }\n    .card.shift2 {\n        transform: translate(+0.3rem, 0);\n    }\n\n    .reveal {\n        transform: rotateY(180deg);\n    }\n\n    .current {\n        border-color: vars.$puzzle-current-color;\n        transition: transform 0.08s ease-in;\n    }\n    .not-present {\n        background-color: vars.$accent-color3;\n        border-color: vars.$accent-color3;\n    }\n    .present {\n        background-color: vars.$accent-color2;\n        border-color: vars.$accent-color2;\n    }\n    .correct {\n        background-color: vars.$accent-color1;\n        border-color: vars.$accent-color1;\n    }\n    \n    .not-present, .present, .correct {\n        color: vars.$puzzle-active-color;\n    }    \n}",":root {\n    --keyboard-max-keys: 10;\n}\n\n$key-gap: 0.3em;\n\n$key-background-color: #CCC;\n$key-active-background-color: #999;\n$key-hover-background-color: #DDD;\n\n$keyboard-max-key-width: 50px;\n$keyboard-max-key-height: 60px;\n\n@function key-width() {\n    @return min($keyboard-max-key-width, \n                (100vw - $key-gap * var(--keyboard-max-keys)) / var(--keyboard-max-keys));\n}\n@function key-width-special() {\n    @return calc(key-width() * 1.5);\n}\n@function key-height() {\n    @return min($keyboard-max-key-height, key-width() * 1.7);\n}\n@function keyboard-height() {\n    @return calc((key-height() + $key-gap) * 3);\n}\n@function keyboard-font-size() {\n    @return min(18px, key-width() / 2);\n}\n\n\n.keyboard {\n    margin-bottom: 1em;\n    display: flex;\n    flex-flow: column nowrap;\n    align-items: center;\n    gap: $key-gap;\n    height: keyboard-height();\n    font-size: keyboard-font-size();\n    .row {\n        display: flex;\n        flex-flow: row nowrap;\n        gap: $key-gap;\n        .key {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            cursor: pointer;\n            font-size: 1em;\n            text-transform: uppercase;\n            width: key-width();\n            height: key-height();\n            background-color: $key-background-color;\n            border-radius: 0.3em;\n            touch-action: manipulation;\n            outline: none;\n        }            \n        .key:hover {\n            background-color: $key-hover-background-color;\n        }\n        .key:active, .key.pressed {\n            background-color: $key-active-background-color;\n        }\n        .key.key-enter, .key.key-backspace {\n            background-repeat: no-repeat;\n            background-position: center;\n            background-size: 1em;\n            width: key-width-special();\n        }\n        .key.key-enter {    \n            background-image: url('../assets/enter.svg');\n        }        \n        .key.key-backspace {\n            background-image: url('../assets/backspace.svg');\n        }\n    }\n}","@use 'vars';\n@use 'puzzle';\n\n\n$letter-size: 2em;\n\n$light-gray: rgb(194, 194, 194);\n\n.modal-overlay {\n    display: none;\n    position: absolute; \n    top: 0;    \n    z-index: 2;\n    background-color: vars.$overlay-color;  \n    width: 100%;\n    height: 100%; \n    align-items: center;\n    justify-content: center;\n    overflow: hidden;\n    .modal {\n        display: flex;\n        flex-flow: column nowrap;\n        background-color: vars.$background-color;\n        box-shadow: 0 0 0.8em vars.$shadow-color;\n        height: auto;\n        padding: 1em;\n        border-radius: 0.2em;\n        z-index: 10;\n        margin-top: 120vh;\n        opacity: 0;\n        transition: margin-top 0.2s ease-in-out, \n                    opacity 0.2s ease-in-out;\n\n        .close-btn {\n            align-self: flex-end;\n            right: 0px;\n            background-image: url('../assets/close.svg');\n        }\n        .pane {\n            display: flex;\n            flex-flow: column nowrap;\n            min-width: max(40vw, 260px);\n            min-height: max(20vh, 200px);\n            max-width: 85vw;\n            max-height: 85vh;\n            padding-bottom: 1.5em;\n            overflow-y: auto;\n            h3 {\n                align-self: center;\n                text-transform: uppercase;\n                letter-spacing: 0.08em;\n                text-align: center;\n                margin-bottom: 2em;\n            }\n            h4 {\n                margin-bottom: 1em;\n            }\n            p {\n                font-weight: normal;\n                margin-bottom: 1em;\n            }\n            .hr {\n                width: 100%;\n                border-bottom: 1px solid vars.$border-color;\n                margin-bottom: 2em;\n            }\n\n        }\n        .pane.stats {\n            h3 {\n                margin-bottom: 1em;\n            }\n            .game-status-message {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                margin-bottom: 5em;\n            }\n            .score-table {\n                display: grid;\n                grid-template-columns: repeat(2, max-content);\n                grid-template-rows: repeat(2, max-content);\n                column-gap: 1em;\n                justify-items: center;\n                justify-content: center;\n                margin-bottom: 1em;\n                .score {\n                    font-size: 3.5em;\n                    font-weight: normal;\n                }\n                .score-label {\n                    font-size: 1rem;\n                    font-weight: normal;\n                }\n\n            }\n            .guess-dist {\n                display: grid;\n                grid-template-columns: max-content 1fr;\n                gap: 0.3em 0.5em;\n                font-size: 0.8em;\n                align-items: center;\n                margin: 0 1em;\n                .score {\n                    font-weight: normal;\n                    text-align: end;\n                }\n                .score-bar {\n                    padding: 0.1em 0.3em;\n                    width: fit-content;\n                    background-color: vars.$accent-color3;\n                    color: vars.$puzzle-active-color;\n                }\n            }\n        }\n\n        .pane.reset {\n            .yes-no {\n                display: flex;\n                gap: 2em;\n                justify-content: center;\n                align-items: center;\n                margin-top: 3em;\n            }\n        }\n\n\n        $shrink: 0.7;\n        @function card-size() {\n            @return calc(puzzle.card-size() * $shrink);\n        }\n        @function card-font-size() {\n            @return calc(puzzle.card-font-size() * $shrink);\n        }\n\n        .puzzle {\n            justify-content: start;\n            font-size: card-font-size();\n            grid-template-columns: repeat(5, card-size());   \n            grid-template-rows: card-size();\n            margin-bottom: 4px;        \n        } \n        \n        .pane.settings {\n            .settings-table {\n                display: flex;\n                flex-flow: column nowrap;\n                font-weight: normal;\n                gap: 1em;\n\n                ul.language-selector {\n                    display: flex;\n                    flex-flow: column nowrap;\n                    li {\n                        padding: 0.3em 0.6em;\n                        border-radius: 0.1em;\n                        cursor: pointer;\n                        transition: background-color 0.2s;\n                    }\n                    li::before {\n                        content: '';\n                        display: inline-block;\n                        height: 0.8em;\n                        width: 0.2em;\n                        margin-right: 0.4em;\n                        border-radius: 0.1em;\n                        transition: background-color 0.2s;\n                    }\n                    li.checked::before {\n                        background-color: vars.$accent-color1;\n                    }\n                    li:hover {\n                        background-color: vars.$accent-color4;\n                    }                    \n                }\n            }\n            .settings-table > div {\n                display: flex;\n                align-items: center;\n                justify-content: space-between;\n                padding: 1em 0;\n                border-bottom: 1px solid vars.$border-color;\n                gap: 1.5em;\n            }\n\n\n            .check-box {\n                position: relative;\n                width: 3em;\n                height: 1.5em;\n                padding: 0.2em;\n                background-color: $light-gray;\n                justify-self: end;\n                border-radius: 999px;\n                cursor: pointer;\n            }\n            .check-box > span {\n                display: block;\n                width: 1.1em;\n                height: 1.1em;\n                background-color: white;\n                border-radius: 100%;\n                transition: margin-left 0.3s ease-in-out;\n            }\n            .check-box.checked {\n                background-color: vars.$accent-color1;\n            }\n            .check-box.checked > span {\n                margin-left: 1.4em;\n            }\n        }\n        .pane.reset {\n            #reset-yes-btn {\n                background-color: vars.$accent-color1;\n            }\n            #reset-no-btn {\n                background-color: vars.$accent-color2;\n            }\n        }\n    }\n    .modal.open {\n        opacity: 1;\n        margin-top: 0px;\n    }\n}    \n\n.error-msg {\n    position: absolute;\n    top: 5em;\n    left: 50%;\n    transform: translateX(-50%);\n    height: auto;\n    background-color: black;\n    color: #FFF;\n    width: max-content;\n    max-width: 90%;\n    padding: 0.5em 0.7em;\n    border-radius: 0.3em;\n    box-shadow: 0 0 0.4em rgba(0, 0, 0, 1);\n    opacity: 0;\n    transition: opacity 0.5s;\n}\n\n.error-msg.visible {\n    opacity: 1; \n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1564,7 +1688,7 @@ module.exports = JSON.parse('["аарон","аббас","аббат","абвер
   \*******************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"en":{"locale":"en","name":"English","keys":["qwertyuiop","asdfghjkl","zxcvbnm"],"help":{"title":"How to play","desc":["Guess the <strong>WORDLE</strong> in six tries","Each guess must be a valid five-letter word. Hit the enter button to submit.","After each guess, the color of the tiles will change to show how close your guess was to the word."],"examplesTitle":"Examples","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Enjoy the game!"},"stats":{"title":"Statistics","played":"Played","won":"Won","guessDist":"Guess discribution"},"settings":{"title":"Settings","dark":"Dark theme","contrast":"High Conrast","lang":"Language"},"reset":{"title":"Reset game","question":"Are you sure you want to reset the game?","yes":"Yes","no":"No"}},"es":{"locale":"es","name":"Español","keys":["qwertyuiop","asdfghjklñ","zxcvbnm"],"help":{"title":"Cómo jugar","desc":["Adivina la <strong>WORDLE</strong> en seis intentos","Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.","Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."],"examplesTitle":"Ejemplos","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Disfruta el juego!"},"stats":{"title":"Estadísticas","played":"Jugadas","won":"Victorias","guessDist":"Distribución de conjeturas"},"settings":{"title":"Ajustes","dark":"Tema oscuro","contrast":"Alto contraste","lang":"Idioma"},"reset":{"title":"Reiniciar el juego","question":"¿Estás seguro de que quieres restablecer el juego?","yes":"Sí","no":"No"}},"ru":{"locale":"ru","name":"Русский","keys":["йцукенгшщзхъ","фывапролджэ","ячсмитьбюё"],"help":{"title":"Правила игры","desc":["Разгадай <strong>WORDLE</strong> за шесть попыток.","Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.","После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."],"examplesTitle":"Примеры","examples":{"correct":{"word":"вчера","highlight":0,"msg":"Буква <strong>А</strong> находится в разгадываемом слове на правильном месте."},"present":{"word":"шепот","highlight":2,"msg":"Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте."},"not-present":{"word":"весна","highlight":4,"msg":"Буквы <strong>A</strong> нет в разгадываемом слове."}},"enjoy":"Приятной игры!"},"stats":{"title":"Статистика","played":"Сыграно","won":"Побед","guessDist":"Распределение побед"},"settings":{"title":"Настройки","dark":"Темная тема","contrast":"Высококонтрастная тема","lang":"Язык"},"reset":{"title":"Сброс игры","question":"Вы действительно хотите начать игру сначала?","yes":"Да","no":"Нет"}}}');
+module.exports = JSON.parse('{"en":{"locale":"en","name":"English","keys":["qwertyuiop","asdfghjkl","zxcvbnm"],"help":{"title":"How to play","desc":["Guess the <strong>WORDLE</strong> in six tries","Each guess must be a valid five-letter word. Hit the enter button to submit.","After each guess, the color of the tiles will change to show how close your guess was to the word."],"examplesTitle":"Examples","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Enjoy the game!"},"stats":{"title":"Statistics","wonTitle":"Congratulations, you won!","loseTitle":"Sorry, you lost!","correctAnswer":"The correct answer is: ","played":"Played","won":"Won","guessDist":"Guess discribution"},"settings":{"title":"Settings","dark":"Dark theme","contrast":"High Conrast","lang":"Language"},"reset":{"title":"Reset game","question":"Are you sure you want to reset the game?","yes":"Yes","no":"No"}},"es":{"locale":"es","name":"Español","keys":["qwertyuiop","asdfghjklñ","zxcvbnm"],"help":{"title":"Cómo jugar","desc":["Adivina la <strong>WORDLE</strong> en seis intentos","Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.","Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."],"examplesTitle":"Ejemplos","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Disfruta el juego!"},"stats":{"title":"Estadísticas","wonTitle":"¡Felicitaciones, has ganado el juego!","loseTitle":"¡Lo siento, perdiste el juego!","correctAnswer":"La respuesta correcta es: ","played":"Jugadas","won":"Victorias","guessDist":"Distribución de conjeturas"},"settings":{"title":"Ajustes","dark":"Tema oscuro","contrast":"Alto contraste","lang":"Idioma"},"reset":{"title":"Reiniciar el juego","question":"¿Estás seguro de que quieres restablecer el juego?","yes":"Sí","no":"No"}},"ru":{"locale":"ru","name":"Русский","keys":["йцукенгшщзхъ","фывапролджэ","ячсмитьбюё"],"help":{"title":"Правила игры","desc":["Разгадай <strong>WORDLE</strong> за шесть попыток.","Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.","После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."],"examplesTitle":"Примеры","examples":{"correct":{"word":"вчера","highlight":0,"msg":"Буква <strong>А</strong> находится в разгадываемом слове на правильном месте."},"present":{"word":"шепот","highlight":2,"msg":"Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте."},"not-present":{"word":"весна","highlight":4,"msg":"Буквы <strong>A</strong> нет в разгадываемом слове."}},"enjoy":"Приятной игры!"},"stats":{"title":"Статистика","wonTitle":"Поздравляем, ты выиграл!","loseTitle":"К сожалению ты проиграл!","correctAnswer":"Правильный ответ: ","played":"Сыграно","won":"Побед","guessDist":"Распределение побед"},"settings":{"title":"Настройки","dark":"Темная тема","contrast":"Высококонтрастная тема","lang":"Язык"},"reset":{"title":"Сброс игры","question":"Вы действительно хотите начать игру сначала?","yes":"Да","no":"Нет"}}}');
 
 /***/ })
 
@@ -1725,4 +1849,4 @@ _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_I
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.47ff79015b93bd6d0045.js.map
+//# sourceMappingURL=bundle.d9dca971b72d749e3f54.js.map

@@ -32,6 +32,9 @@
         },
         "stats": {
             "title": "Statistics",
+            "wonTitle": "Congratulations, you won!",
+            "loseTitle": "Sorry, you lost!",
+            "correctAnswer": "The correct answer is: ",
             "played": "Played",
             "won": "Won",
             "guessDist": "Guess discribution"
@@ -82,6 +85,9 @@
         },
         "stats": {
             "title": "Estadísticas",
+            "wonTitle": "¡Felicitaciones, has ganado el juego!",
+            "loseTitle": "¡Lo siento, perdiste el juego!",
+            "correctAnswer": "La respuesta correcta es: ",            
             "played": "Jugadas",
             "won": "Victorias",
             "guessDist": "Distribución de conjeturas"
@@ -132,6 +138,9 @@
         },
         "stats": {
             "title": "Статистика",
+            "wonTitle": "Поздравляем, ты выиграл!",
+            "loseTitle": "К сожалению ты проиграл!",
+            "correctAnswer": "Правильный ответ: ",            
             "played": "Сыграно",
             "won": "Побед",
             "guessDist": "Распределение побед"

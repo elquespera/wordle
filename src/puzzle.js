@@ -110,8 +110,9 @@ class Puzzle {
         return this.dict().includes(word);
     }
 
-    checkLetters(row) {
-        this.matrix[row].forEach((letter, i) => {
+    async checkLetters(row) {          
+        for (let i = 0; i < this.matrix[row].length; i++) {
+            const letter = this.matrix[row][i];
             let className = 'not-present';
             if (this.solution.includes(letter)) {
                 if (this.solution[i] === letter) {
@@ -119,10 +120,11 @@ class Puzzle {
                 } else {
                     className = 'present';
                 }
-            }
+            }             
+            await revealCard(this._cardDivs[row][i]);
             this._cardDivs[row][i].classList.add(className);
             this._cardDivs[row][i].classList.remove('current');
-        });
+        }
     }
 
     checkStatus() {
@@ -171,7 +173,7 @@ class Puzzle {
         letter.classList.remove('in', 'out')
     }
 
-    keyPressed(key) {
+    async keyPressed(key) {
         const shake = (msg) => {
             this.shakeRow(this.lastRowNumber);
             modal.showError(msg);            
@@ -180,7 +182,7 @@ class Puzzle {
             case 'enter': 
                 if (this.lastRow.length === wordLength) {
                     if (this.wordExists(this.lastRow.join(''))) {
-                        this.checkLetters(this.lastRowNumber);
+                        await this.checkLetters(this.lastRowNumber);
                         this.matrix.push([]);
                         this.checkStatus();                                
                         this.update();                                    
@@ -214,6 +216,20 @@ class Puzzle {
     }
 }
 
+const revealCard = (card) => {
+    return new Promise(resolve => {
+        card.style.transition = 'none';                
+        card.style.transform = 'rotateX(180deg)';
+        setTimeout(() => {
+            card.style.transition = 'transform 1s ease-out';
+            card.style.transform = 'rotateX(0deg)';
+            setTimeout(() => {                
+                resolve('');     
+            }, 100);    
+        }, 50);        
+    });
+}      
+
 const puzzle = new Puzzle();
 
-export { puzzle }
+export { puzzle, wordLength, puzzleLength, revealCard}

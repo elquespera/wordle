@@ -28,6 +28,7 @@ const initSettings = () => {
             if (e.currentTarget.id !== currentLayout.locale) {
                 switchLanguage(layouts[e.currentTarget.id]);
                 checkStatus();
+                puzzle.reset();
             }
         });
     });

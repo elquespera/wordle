@@ -69,7 +69,13 @@ $light-gray: rgb(194, 194, 194);
         .pane.stats {
             h3 {
                 margin-bottom: 1em;
-            } 
+            }
+            .game-status-message {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 5em;
+            }
             .score-table {
                 display: grid;
                 grid-template-columns: repeat(2, max-content);
@@ -126,15 +132,15 @@ $light-gray: rgb(194, 194, 194);
         @function card-font-size() {
             @return calc(puzzle.card-font-size() * $shrink);
         }
-        .pane.help {
-            .puzzle {
-                justify-content: start;
-                font-size: card-font-size();
-                grid-template-columns: repeat(5, card-size());   
-                grid-template-rows: card-size();
-                margin-bottom: 4px;        
-            } 
-        }
+
+        .puzzle {
+            justify-content: start;
+            font-size: card-font-size();
+            grid-template-columns: repeat(5, card-size());   
+            grid-template-rows: card-size();
+            margin-bottom: 4px;        
+        } 
+        
         .pane.settings {
             .settings-table {
                 display: flex;

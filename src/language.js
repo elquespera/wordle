@@ -1,6 +1,7 @@
-import { $, newEl } from "./utils";
+import { newEl } from "./utils";
 import { initSettings } from "./settings";
 import { keyboard } from "./keyboard";
+import { puzzle, wordLength } from "./puzzle";
 import layouts from "./translations.json";
 
 const modalPages = ['help', 'stats', 'settings', 'reset'];
@@ -13,8 +14,20 @@ const switchLanguage = (layout = currentLayout) => {
     modalPages.forEach(pName => {
         const pane = document.querySelector('#' + pName);
         const paneFrag = new DocumentFragment();
-        paneFrag.append(newEl('h3', layout[pName].title));
 
+        if (pName === 'stats') {
+            const statusDiv = newEl('div', '', 'game-status-message');
+            const puzzleDiv = newEl('div', '', 'puzzle')
+            for (let i = 0; i < wordLength; i++) {
+                puzzleDiv.append(newEl('div', '', 'card'));
+            }
+            statusDiv.append(newEl('h3', ), 
+                             newEl('p', layout.stats.correctAnswer),
+                             puzzleDiv);
+            paneFrag.append(statusDiv);
+        }
+
+        paneFrag.append(newEl('h3', layout[pName].title));
         switch (pName) {
             case 'help':
                 paneFrag.append( 

@@ -49,6 +49,11 @@ $puzzle-gap: 0.1em;
     .card.shift2 {
         transform: translate(+0.3rem, 0);
     }
+
+    .reveal {
+        transform: rotateY(180deg);
+    }
+
     .current {
         border-color: vars.$puzzle-current-color;
         transition: transform 0.08s ease-in;
