@@ -1,11 +1,14 @@
 import { $ } from "./utils";
 import { layouts, currentLayout, switchLanguage } from "./language";
+import { puzzle } from "./puzzle";
+import modal from "./modal";
 
 const initSettings = () => {
     $('.check-box', document, true).forEach(checkbox => {
-        checkbox.addEventListener('click', e => {
-            e.currentTarget.classList.toggle('checked');
-        })
+        checkbox.addEventListener('click', e => {            
+            checkbox.classList.toggle('checked');
+            document.body.classList.toggle(checkbox.id, checkbox.classList.contains('checked'));            
+        });
     });
 
     const langs = $('.language-selector>li', document, true);
@@ -16,7 +19,7 @@ const initSettings = () => {
             } else {
                 item.classList.remove('checked')
             }
-        })
+        });
     }
     checkStatus();
     langs.forEach(item => {        
@@ -27,6 +30,13 @@ const initSettings = () => {
             }
         });
     });
+
+    //Reset dialog event bindings
+    $('#reset-yes-btn').addEventListener('click', () => {
+        puzzle.reset();
+        modal.hide();
+    });
+    $('#reset-no-btn').addEventListener('click', () => modal.hide());    
 }
 
 export { initSettings };

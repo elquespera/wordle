@@ -1,3 +1,4 @@
+@use 'themes';
 
 @use 'header';
 @use 'puzzle';
@@ -30,7 +31,7 @@ button {
 }
 
 .text-btn {
-    background-color: #CCC;
+    background-color: themes.$accent-color;
     padding: 0.8em;
     border-radius: 0.3em;
 }

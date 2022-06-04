@@ -48,13 +48,6 @@ class Modal {
         if (!this._open) {            
             //Calculate & display statistics
             switch(msg) {
-                case 'reset': {
-                    $('#reset-yes-btn').addEventListener('click', () => {
-                        puzzle.reset();
-                        this.hide();
-                    });
-                    $('#reset-no-btn').addEventListener('click', () => this.hide());
-                }
                 case 'stats':
                     $('.played.score').innerHTML = puzzle.stats.played;
                     $('.won.score').innerHTML = puzzle.wonCount;

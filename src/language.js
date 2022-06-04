@@ -148,7 +148,7 @@ const layouts = {
 let currentLayout = layouts.en;
 
 
-const switchLanguage = (layout = currentLayout) => {      
+const switchLanguage = (layout = currentLayout) => {   
     modalPages.forEach(pName => {
         const pane = document.querySelector('#' + pName);
         const paneFrag = new DocumentFragment();
@@ -198,10 +198,10 @@ const switchLanguage = (layout = currentLayout) => {
 
                 const darkMode = newEl('div');
                 darkMode.append(newEl('div', layout.settings.dark), 
-                                newEl('div', '<span></span>', 'check-box dark-mode'));
+                                newEl('div', '<span></span>', 'check-box dark-mode', 'dark-theme'));
                 const contrastMode = newEl('div');                                
                 contrastMode.append(newEl('div', layout.settings.contrast), 
-                             newEl('div', '<span></span>', 'check-box contrast-mode'));
+                             newEl('div', '<span></span>', 'check-box contrast-mode', 'high-contrast-theme'));
                 const language = newEl('div');
                 const ul = newEl('ul', '', 'language-selector');
                 Object.values(layouts).forEach(l => ul.append(newEl('li', l.name, '', l.locale)));
@@ -221,10 +221,10 @@ const switchLanguage = (layout = currentLayout) => {
             }
         }         
         pane.replaceChildren(paneFrag);
-        currentLayout = layout;
-        keyboard.switch(currentLayout);
-        initSettings();  
     });
+    currentLayout = layout;
+    keyboard.switch(currentLayout);
+    initSettings();  
 }
 
 const initLanguage = () => {
