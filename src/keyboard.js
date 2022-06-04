@@ -46,6 +46,11 @@ class Keyboard {
         document.querySelector('.keyboard').replaceChildren(keyboardFragment);
     }
 
+    //reset hightlighted keys styles
+    reset() {
+        this._keys.forEach(key => key.classList.remove('correct', 'present'))
+    }
+
     //Find Key Div
     findKeyDiv(key) {
         key = key.toLowerCase();

@@ -1,5 +1,6 @@
 import modal from "./modal";
 import { currentLayout } from "./language";
+import { keyboard } from "./keyboard";
 
 import words_en from "./assets/words/words-en.json";
 import words_es from "./assets/words/words-es.json";
@@ -85,6 +86,7 @@ class Puzzle {
             card.classList.remove('not-present', 'present', 'correct', 'current');        
         });
         this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
+        keyboard.reset();
     }
 
     update() {
@@ -120,7 +122,8 @@ class Puzzle {
                 } else {
                     className = 'present';
                 }
-            }             
+                keyboard.findKeyDiv(letter).classList.add(className);
+            }            
             await revealCard(this._cardDivs[row][i]);
             this._cardDivs[row][i].classList.add(className);
             this._cardDivs[row][i].classList.remove('current');
@@ -225,7 +228,7 @@ const revealCard = (card) => {
             card.style.transform = 'rotateX(0deg)';
             setTimeout(() => {                
                 resolve('');     
-            }, 100);    
+            }, 300);    
         }, 50);        
     });
 }      

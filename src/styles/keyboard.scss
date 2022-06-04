@@ -1,3 +1,5 @@
+@use 'vars';
+
 :root {
     --keyboard-max-keys: 10;
 }
@@ -73,5 +75,15 @@ $keyboard-max-key-height: 60px;
         .key.key-backspace {
             background-image: url('../assets/backspace.svg');
         }
+        .key.present {
+            background-color: vars.$accent-color2;
+        }
+        .key.correct {
+            background-color: vars.$accent-color1;
+        }        
+        .key.present, .key.correct {
+            color: vars.$puzzle-active-color;
+        }    
+    
     }
 }
