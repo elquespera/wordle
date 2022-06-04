@@ -91,6 +91,12 @@
             "dark": "Tema oscuro",
             "contrast": "Alto contraste",
             "lang": "Idioma"
+        },
+        "reset": {
+            "title": "Reiniciar el juego",
+            "question": "¿Estás seguro de que quieres restablecer el juego?",
+            "yes": "Sí",
+            "no": "No"
         }        
     },
     "ru": {
@@ -135,6 +141,12 @@
             "dark": "Темная тема",
             "contrast": "Высококонтрастная тема",
             "lang": "Язык"
-        }
+        },
+        "reset": {
+            "title": "Сброс игры",
+            "question": "Вы действительно хотите начать игру сначала?",
+            "yes": "Да",
+            "no": "Нет"
+        }        
     }
 }
