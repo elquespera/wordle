@@ -1,11 +1,10 @@
 @use 'puzzle';
+@use 'vars';
 
 $puzzle-border: #CCC;
 $not-present-backgroud: rgb(120, 124, 126);
 $active-color: #FFF;
 $letter-size: 2em;
-$background: #fff;
-$overlay: rgba(255, 255, 255, 0.6);
 
 $highlight-color: rgb(245, 121, 58);
 $light-gray: rgb(194, 194, 194);
@@ -15,7 +14,7 @@ $light-gray: rgb(194, 194, 194);
     position: absolute; 
     top: 0;    
     z-index: 2;
-    background-color: $overlay;  
+    background-color: vars.$overlay-color;  
     width: 100%;
     height: 100%; 
     align-items: center;
@@ -24,8 +23,8 @@ $light-gray: rgb(194, 194, 194);
     .modal {
         display: flex;
         flex-flow: column nowrap;
-        background-color: $background;
-        box-shadow: 0 0 0.8em rgba(0, 0, 0, 0.5);
+        background-color: vars.$background-color;
+        box-shadow: 0 0 0.8em vars.$shadow-color;
         height: auto;
         padding: 1em;
         border-radius: 0.2em;

@@ -1,0 +1,30 @@
+$main-color: var(--main-color);
+$background-color: var(--background-color);
+$accent-color: var(--accent-color);
+$overlay-color: var(--overlay-color);
+$shadow-color: var(--shadow-color);
+
+
+// Default Theme
+
+body {
+    --main-color: black;
+    --background-color: white;
+    --overlay-color: rgba(255, 255, 255, 0.6);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+// Dark Theme 
+
+body.dark-theme {
+    --main-color: white;
+    --background-color: black;
+    --overlay-color: rgba(0, 0, 0, 0.6);
+    --shadow-color: rgba(255, 255, 255, 0.5);
+
+
+    // Invert colors for icon buttons
+    .icon-btn {
+        filter: invert(1);
+    }
+}

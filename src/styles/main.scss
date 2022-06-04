@@ -1,4 +1,4 @@
-@use 'themes';
+@use 'vars';
 
 @use 'header';
 @use 'puzzle';
@@ -24,14 +24,18 @@ body, * {
     height: 100%;
 }
 
+body {
+    background-color: vars.$background-color;
+    color: vars.$main-color;
+}
 
 button {
     background-color: transparent;
+    color: vars.$main-color;
     cursor: pointer;
 }
 
 .text-btn {
-    background-color: themes.$accent-color;
     padding: 0.8em;
     border-radius: 0.3em;
 }
