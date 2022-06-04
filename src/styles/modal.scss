@@ -1,12 +1,9 @@
-@use 'puzzle';
 @use 'vars';
+@use 'puzzle';
 
-$puzzle-border: #CCC;
-$not-present-backgroud: rgb(120, 124, 126);
-$active-color: #FFF;
+
 $letter-size: 2em;
 
-$highlight-color: rgb(245, 121, 58);
 $light-gray: rgb(194, 194, 194);
 
 .modal-overlay {
@@ -64,7 +61,7 @@ $light-gray: rgb(194, 194, 194);
             }
             .hr {
                 width: 100%;
-                border-bottom: 1px solid $puzzle-border;
+                border-bottom: 1px solid vars.$border-color;
                 margin-bottom: 2em;
             }
 
@@ -105,8 +102,8 @@ $light-gray: rgb(194, 194, 194);
                 .score-bar {
                     padding: 0.1em 0.3em;
                     width: fit-content;
-                    background-color: $not-present-backgroud;
-                    color: $active-color;
+                    background-color: vars.$accent-color3;
+                    color: vars.$puzzle-active-color;
                 }
             }
         }
@@ -164,10 +161,10 @@ $light-gray: rgb(194, 194, 194);
                         transition: background-color 0.2s;
                     }
                     li.checked::before {
-                        background-color: $highlight-color;
+                        background-color: vars.$accent-color1;
                     }
                     li:hover {
-                        background-color: $light-gray;
+                        background-color: vars.$accent-color4;
                     }                    
                 }
             }
@@ -176,7 +173,7 @@ $light-gray: rgb(194, 194, 194);
                 align-items: center;
                 justify-content: space-between;
                 padding: 1em 0;
-                border-bottom: 1px solid $light-gray;
+                border-bottom: 1px solid vars.$border-color;
                 gap: 1.5em;
             }
 
@@ -200,10 +197,18 @@ $light-gray: rgb(194, 194, 194);
                 transition: margin-left 0.3s ease-in-out;
             }
             .check-box.checked {
-                background-color: $highlight-color;
+                background-color: vars.$accent-color1;
             }
             .check-box.checked > span {
                 margin-left: 1.4em;
+            }
+        }
+        .pane.reset {
+            #reset-yes-btn {
+                background-color: vars.$accent-color1;
+            }
+            #reset-no-btn {
+                background-color: vars.$accent-color2;
             }
         }
     }

@@ -1,16 +1,10 @@
+@use "vars";
+
 //Sizes
 $puzzle-word-legnth: 5;
 $puzzle-max-width: 320px;
 $puzzle-border: 2px;
 $puzzle-gap: 0.1em;
-
-//Colors
-$puzzle-border-color: #CCC;
-$not-present-color: rgb(120, 124, 126);
-$present-color: #c9b458;
-$correct-color: #6aaa64;
-$active-color: #FFF;
-$current-color: rgb(135, 138, 140);
 
 //Calculate flexible card size
 @function card-size() {
@@ -39,10 +33,10 @@ $current-color: rgb(135, 138, 140);
         display: flex;
         justify-content: center;
         align-items: center;                
-        border: $puzzle-border solid $puzzle-border-color; 
+        border: $puzzle-border solid vars.$border-color; 
         transition: transform 0.08s ease-out;
     }
-
+    
     .card.current.in {
         transform: scale(0.9);
     }
@@ -56,23 +50,23 @@ $current-color: rgb(135, 138, 140);
         transform: translate(+0.3rem, 0);
     }
     .current {
-        border-color: $current-color;
+        border-color: vars.$puzzle-current-color;
         transition: transform 0.08s ease-in;
     }
     .not-present {
-        background-color: $not-present-color;
-        border-color: $not-present-color;
+        background-color: vars.$accent-color3;
+        border-color: vars.$accent-color3;
     }
     .present {
-        background-color: $present-color;
-        border-color: $present-color;
+        background-color: vars.$accent-color2;
+        border-color: vars.$accent-color2;
     }
     .correct {
-        background-color: $correct-color;
-        border-color: $correct-color;
+        background-color: vars.$accent-color1;
+        border-color: vars.$accent-color1;
     }
     
     .not-present, .present, .correct {
-        color: $active-color;
+        color: vars.$puzzle-active-color;
     }    
 }

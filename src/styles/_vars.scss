@@ -1,8 +1,17 @@
 $main-color: var(--main-color);
 $background-color: var(--background-color);
-$accent-color: var(--accent-color);
 $overlay-color: var(--overlay-color);
 $shadow-color: var(--shadow-color);
+$border-color: var(--border-color);
+$text-btn-color: var(--text-btn-color);
+
+$accent-color1: var(--accent-color1);
+$accent-color2: var(--accent-color2);
+$accent-color3: var(--accent-color3);
+$accent-color4: var(--accent-color4);
+
+$puzzle-current-color: var(--puzzle-current-color);
+$puzzle-active-color: var(--puzzle-active-color);
 
 
 // Default Theme
@@ -12,6 +21,16 @@ body {
     --background-color: white;
     --overlay-color: rgba(255, 255, 255, 0.6);
     --shadow-color: rgba(0, 0, 0, 0.5);
+    --border-color: #CCC;
+    --text-btn-color: white;
+
+    --accent-color1: #6aaa64;
+    --accent-color2: #c9b458;
+    --accent-color3: rgb(120, 124, 126);
+    --accent-color4: rgb(229, 229, 229);
+
+    --puzzle-current-color: rgb(135, 138, 140);    
+    --puzzle-active-color: var(--background-color);
 }
 
 // Dark Theme 
@@ -27,4 +46,11 @@ body.dark-theme {
     .icon-btn {
         filter: invert(1);
     }
+}
+
+// High Contrast Theme
+
+body.high-contrast-theme {
+    --accent-color1: orange;
+    --accent-color2: steelblue;    
 }

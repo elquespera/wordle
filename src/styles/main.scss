@@ -1,5 +1,4 @@
 @use 'vars';
-
 @use 'header';
 @use 'puzzle';
 @use 'keyboard';
@@ -31,12 +30,14 @@ body {
 
 button {
     background-color: transparent;
-    color: vars.$main-color;
     cursor: pointer;
 }
 
 .text-btn {
+    color: vars.$text-btn-color;
+    background-color: vars.$accent-color3;
     padding: 0.8em;
+    min-width: 12ch;
     border-radius: 0.3em;
 }
 
