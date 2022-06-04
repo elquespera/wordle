@@ -1,9 +1,22 @@
 import modal from "./modal";
-import { keyboard } from "./keyboard";
+import { currentLayout } from "./language";
+
+import words_en from "./assets/words/words-en.json";
+import words_es from "./assets/words/words-es.json";
+import words_ru from "./assets/words/words-ru.json";
+
+const words = {
+    en: words_en,
+    es: words_es,
+    ru: words_ru
+}
+
+const wordLength = 5;
+const puzzleLength = 6;
 
 class Puzzle {
     _cardDivs = [];
-    _solution = 'space';
+    _solution;
     _currentSolution = [];
     _stats = {
         played: 20,
@@ -17,12 +30,12 @@ class Puzzle {
     constructor() {
         const puzzleFrag = new DocumentFragment();
         let row = [];
-        for (let i = 1; i <= 5*6; i++) {
+        for (let i = 1; i <= wordLength * puzzleLength; i++) {
             const card = document.createElement('div');
-            card.className = `card row-${Math.floor(i / 6)}`;
+            card.className = `card row-${Math.floor(i / puzzleLength)}`;
             puzzleFrag.appendChild(card);
             row.push(card);
-            if (row.length >= 5) {
+            if (row.length >= wordLength) {
                 this._cardDivs.push(row);
                 row = [];
             }
@@ -71,6 +84,7 @@ class Puzzle {
         this._cardDivs.flat().forEach(card => {
             card.classList.remove('not-present', 'present', 'correct', 'current');        
         });
+        this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
     }
 
     update() {
@@ -88,8 +102,12 @@ class Puzzle {
         }        
     }
 
-    isWordValid(word) {
-        return true;
+    dict() {
+        return words[currentLayout.locale];
+    }
+
+    wordExists(word) {
+        return this.dict().includes(word);
     }
 
     checkLetters(row) {
@@ -108,12 +126,13 @@ class Puzzle {
     }
 
     checkStatus() {
-        const lastRow = this._currentSolution[this._currentSolution.length - 1];
-        console.log(lastRow);
-        if (lastRow && lastRow.join('') === this.solution) {
-            this.addWin(this._currentSolution.length - 1);
+        if (this.lastRow.join('') === this.solution) {
+            this.addWin(this.lastRowNumber);
             this.reset();
-            modal.show('stats');
+            modal.show('stats', 'win');
+        } else if (this.lastRowNumber === puzzleLength) {
+            this.reset();
+            modal.show('stats', 'lose');
         }
     }
 
@@ -130,7 +149,7 @@ class Puzzle {
             });
         }
         row.forEach(x => x.classList.add('shift1'));
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < wordLength; i++) {
             await toggleClass();
         }
         row.forEach(x => x.classList.remove('shift1', 'shift2'));
@@ -153,20 +172,23 @@ class Puzzle {
     }
 
     keyPressed(key) {
+        const shake = (msg) => {
+            this.shakeRow(this.lastRowNumber);
+            modal.showError(msg);            
+        }
         switch (key) {
             case 'enter': 
-                if (this.lastRow && this.lastRow.length === 5) {
-                    if (this.isWordValid(this.lastRow.join(''))) {
-                        if (this.matrix.length < 6) {
-                            this.checkLetters(this.lastRowNumber);
-                            this.checkStatus();                                
-                            this.matrix.push([]);
-                            this.update();            
-                        }
-                    }
+                if (this.lastRow.length === wordLength) {
+                    if (this.wordExists(this.lastRow.join(''))) {
+                        this.checkLetters(this.lastRowNumber);
+                        this.matrix.push([]);
+                        this.checkStatus();                                
+                        this.update();                                    
+                    } else 
+                        shake("Word doesn't exist") 
+                    
                 } else {
-                    this.shakeRow(this.lastRowNumber);
-                    modal.showError('Not enough letters');
+                    shake('Not enough letters');
                 }
                 break;
             case 'backspace':
@@ -174,21 +196,19 @@ class Puzzle {
                     this.lastRow.pop();
                     this.update();
                 } else {
-                    this.shakeRow(this.lastRowNumber);
-                    modal.showError('No letters to erase');
+                    shake('No letters to erase');
                 }
                 break;
             default:
                 if (this.matrix.length === 0) {
                     this.matrix.push([]);
                 }
-                if (this.lastRow.length < 5) {
+                if (this.lastRow.length < wordLength) {
                     this.lastRow.push(key);
                     this.update();
                     this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
                 } else {
-                    modal.showError('Five letter max');
-                    this.shakeRow(this.lastRowNumber);
+                    shake('Five letter max');                    
                 }
         }
     }
