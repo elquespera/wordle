@@ -143,13 +143,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "currentLayout": () => (/* binding */ currentLayout),
 /* harmony export */   "initLanguage": () => (/* binding */ initLanguage),
-/* harmony export */   "layouts": () => (/* binding */ layouts),
+/* harmony export */   "layouts": () => (/* reexport default export from named module */ _translations_json__WEBPACK_IMPORTED_MODULE_3__),
 /* harmony export */   "modalPages": () => (/* binding */ modalPages),
 /* harmony export */   "switchLanguage": () => (/* binding */ switchLanguage)
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./settings */ "./src/settings.js");
 /* harmony import */ var _keyboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./keyboard */ "./src/keyboard.js");
+/* harmony import */ var _translations_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./translations.json */ "./src/translations.json");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -165,136 +166,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
 var modalPages = ['help', 'stats', 'settings', 'reset'];
-var layouts = {
-  en: {
-    locale: 'en',
-    name: 'English',
-    keys: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'],
-    help: {
-      title: 'How to play',
-      desc: ["Guess the <strong>WORDLE</strong> in six tries", "Each guess must be a valid five-letter word. Hit the enter button to submit.", "After each guess, the color of the tiles will change to show how close your guess was to the word."],
-      examplesTitle: 'Examples',
-      examples: {
-        correct: {
-          word: 'space',
-          highlight: 0,
-          msg: "The letter <strong>S</strong> is in the word and in the correct spot."
-        },
-        present: {
-          word: 'abide',
-          highlight: 2,
-          msg: "The letter <strong>I</strong> is in the word but in the wrong spot."
-        },
-        'not-present': {
-          word: 'wrong',
-          highlight: 4,
-          msg: "The letter <strong>N</strong> is not in the word in any spot."
-        }
-      },
-      enjoy: 'Enjoy the game!'
-    },
-    stats: {
-      title: 'Statistics',
-      played: 'Played',
-      won: 'Won',
-      guessDist: 'Guess discribution'
-    },
-    settings: {
-      title: 'Settings',
-      dark: 'Dark theme',
-      contrast: 'High Conrast',
-      lang: 'Language'
-    },
-    reset: {
-      title: 'Reset game',
-      question: 'Are you sure you want to reset the game?',
-      yes: 'Yes',
-      no: 'No'
-    }
-  },
-  es: {
-    locale: 'es',
-    name: 'Español',
-    keys: ['qwertyuiop', 'asdfghjklñ', 'zxcvbnm'],
-    help: {
-      title: 'Cómo jugar',
-      desc: ["Adivina la <strong>WORDLE</strong> en seis intentos", "Cada conjetura debe ser una palabra v\xE1lida de cinco letras. Pulse el bot\xF3n Intro para enviar.", "Despu\xE9s de cada suposici\xF3n, el color de las fichas cambiar\xE1 para mostrar qu\xE9 tan cerca estuvo su suposici\xF3n de la palabra."],
-      examplesTitle: 'Ejemplos',
-      examples: {
-        correct: {
-          word: 'space',
-          highlight: 0,
-          msg: "The letter <strong>S</strong> is in the word and in the correct spot."
-        },
-        present: {
-          word: 'abide',
-          highlight: 2,
-          msg: "The letter <strong>I</strong> is in the word but in the wrong spot."
-        },
-        'not-present': {
-          word: 'wrong',
-          highlight: 4,
-          msg: "The letter <strong>N</strong> is not in the word in any spot."
-        }
-      },
-      enjoy: 'Disfruta el juego!'
-    },
-    stats: {
-      title: 'Estadísticas',
-      played: 'Jugadas',
-      won: 'Victorias',
-      guessDist: 'Distribución de conjeturas'
-    },
-    settings: {
-      title: 'Ajustes',
-      dark: 'Tema oscuro',
-      contrast: 'Alto contraste',
-      lang: 'Idioma'
-    }
-  },
-  ru: {
-    locale: 'ru',
-    name: 'Русский',
-    keys: ['йцукенгшщзхъ', 'фывапролджэ', 'ячсмитьбюё'],
-    help: {
-      title: 'Правила игры',
-      desc: ["\u0420\u0430\u0437\u0433\u0430\u0434\u0430\u0439 <strong>WORDLE</strong> \u0437\u0430 \u0448\u0435\u0441\u0442\u044C \u043F\u043E\u043F\u044B\u0442\u043E\u043A.", "\u041A\u0430\u0436\u0434\u0430\u044F \u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u0434\u043E\u043B\u0436\u043D\u0430 \u0431\u044B\u0442\u044C \u0434\u043E\u043F\u0443\u0441\u0442\u0438\u043C\u044B\u043C \u0441\u043B\u043E\u0432\u043E\u043C \u0438\u0437 \u043F\u044F\u0442\u0438 \u0431\u0443\u043A\u0432. \u041D\u0430\u0436\u043C\u0438 \u0432\u0432\u043E\u0434 \u0434\u043B\u044F \u043F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u0438\u044F.", "\u041F\u043E\u0441\u043B\u0435 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u0440\u0435\u0434\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0446\u0432\u0435\u0442 \u0431\u0443\u043A\u0432 \u0431\u0443\u0434\u0435\u0442 \u043C\u0435\u043D\u044F\u0442\u044C\u0441\u044F, \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u044C, \u043D\u0430\u0441\u043A\u043E\u043B\u044C\u043A\u043E \u043F\u0440\u0435\u0434\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0431\u044B\u043B\u043E \u0431\u043B\u0438\u0437\u043A\u043E \u043A \u0441\u043B\u043E\u0432\u0443."],
-      examplesTitle: 'Примеры',
-      examples: {
-        correct: {
-          word: 'вчера',
-          highlight: 0,
-          msg: "\u0411\u0443\u043A\u0432\u0430 <strong>\u0410</strong> \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435 \u043D\u0430 \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u043C \u043C\u0435\u0441\u0442\u0435."
-        },
-        present: {
-          word: 'шепот',
-          highlight: 2,
-          msg: "\u0411\u0443\u043A\u0432\u0430 <strong>\u041F</strong> \u0435\u0441\u0442\u044C \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435, \u043D\u043E \u0432 \u0434\u0440\u0443\u0433\u043E\u043C \u043C\u0435\u0441\u0442\u0435."
-        },
-        'not-present': {
-          word: 'весна',
-          highlight: 4,
-          msg: "\u0411\u0443\u043A\u0432\u044B <strong>A</strong> \u043D\u0435\u0442 \u0432 \u0440\u0430\u0437\u0433\u0430\u0434\u044B\u0432\u0430\u0435\u043C\u043E\u043C \u0441\u043B\u043E\u0432\u0435."
-        }
-      },
-      enjoy: 'Приятной игры!'
-    },
-    stats: {
-      title: 'Статистика',
-      played: 'Сыграно',
-      won: 'Побед',
-      guessDist: 'Распределение побед'
-    },
-    settings: {
-      title: 'Настройки',
-      dark: 'Темная тема',
-      contrast: 'Высококонтрастная тема',
-      lang: 'Язык'
-    }
-  }
-};
-var currentLayout = layouts.en;
+var currentLayout = _translations_json__WEBPACK_IMPORTED_MODULE_3__.en;
 
 var switchLanguage = function switchLanguage() {
   var layout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : currentLayout;
@@ -345,7 +219,7 @@ var switchLanguage = function switchLanguage() {
           contrastMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.contrast), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box contrast-mode', 'high-contrast-theme'));
           var language = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
           var ul = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('ul', '', 'language-selector');
-          Object.values(layouts).forEach(function (l) {
+          Object.values(_translations_json__WEBPACK_IMPORTED_MODULE_3__).forEach(function (l) {
             return ul.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('li', l.name, '', l.locale));
           });
           language.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.lang), ul);
@@ -884,8 +758,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 /* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language */ "./src/language.js");
-/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
-/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modal */ "./src/modal.js");
+/* harmony import */ var _translations_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./translations.json */ "./src/translations.json");
+/* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modal */ "./src/modal.js");
+
 
 
 
@@ -914,18 +790,18 @@ var initSettings = function initSettings() {
   langs.forEach(function (item) {
     item.addEventListener('click', function (e) {
       if (e.currentTarget.id !== _language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.locale) {
-        (0,_language__WEBPACK_IMPORTED_MODULE_1__.switchLanguage)(_language__WEBPACK_IMPORTED_MODULE_1__.layouts[e.currentTarget.id]);
+        (0,_language__WEBPACK_IMPORTED_MODULE_1__.switchLanguage)(_translations_json__WEBPACK_IMPORTED_MODULE_2__[e.currentTarget.id]);
         checkStatus();
       }
     });
   }); //Reset dialog event bindings
 
   (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('#reset-yes-btn').addEventListener('click', function () {
-    _puzzle__WEBPACK_IMPORTED_MODULE_2__.puzzle.reset();
-    _modal__WEBPACK_IMPORTED_MODULE_3__["default"].hide();
+    _puzzle__WEBPACK_IMPORTED_MODULE_3__.puzzle.reset();
+    _modal__WEBPACK_IMPORTED_MODULE_4__["default"].hide();
   });
   (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('#reset-no-btn').addEventListener('click', function () {
-    return _modal__WEBPACK_IMPORTED_MODULE_3__["default"].hide();
+    return _modal__WEBPACK_IMPORTED_MODULE_4__["default"].hide();
   });
 };
 
@@ -1627,6 +1503,16 @@ module.exports = __webpack_require__.p + "reset.svg";
 
 module.exports = __webpack_require__.p + "settings.svg";
 
+/***/ }),
+
+/***/ "./src/translations.json":
+/*!*******************************!*\
+  !*** ./src/translations.json ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = JSON.parse('{"en":{"locale":"en","name":"English","keys":["qwertyuiop","asdfghjkl","zxcvbnm"],"help":{"title":"How to play","desc":["Guess the <strong>WORDLE</strong> in six tries","Each guess must be a valid five-letter word. Hit the enter button to submit.","After each guess, the color of the tiles will change to show how close your guess was to the word."],"examplesTitle":"Examples","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Enjoy the game!"},"stats":{"title":"Statistics","played":"Played","won":"Won","guessDist":"Guess discribution"},"settings":{"title":"Settings","dark":"Dark theme","contrast":"High Conrast","lang":"Language"},"reset":{"title":"Reset game","question":"Are you sure you want to reset the game?","yes":"Yes","no":"No"}},"es":{"locale":"es","name":"Español","keys":["qwertyuiop","asdfghjklñ","zxcvbnm"],"help":{"title":"Cómo jugar","desc":["Adivina la <strong>WORDLE</strong> en seis intentos","Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.","Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."],"examplesTitle":"Ejemplos","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Disfruta el juego!"},"stats":{"title":"Estadísticas","played":"Jugadas","won":"Victorias","guessDist":"Distribución de conjeturas"},"settings":{"title":"Ajustes","dark":"Tema oscuro","contrast":"Alto contraste","lang":"Idioma"}},"ru":{"locale":"ru","name":"Русский","keys":["йцукенгшщзхъ","фывапролджэ","ячсмитьбюё"],"help":{"title":"Правила игры","desc":["Разгадай <strong>WORDLE</strong> за шесть попыток.","Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.","После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."],"examplesTitle":"Примеры","examples":{"correct":{"word":"вчера","highlight":0,"msg":"Буква <strong>А</strong> находится в разгадываемом слове на правильном месте."},"present":{"word":"шепот","highlight":2,"msg":"Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте."},"not-present":{"word":"весна","highlight":4,"msg":"Буквы <strong>A</strong> нет в разгадываемом слове."}},"enjoy":"Приятной игры!"},"stats":{"title":"Статистика","played":"Сыграно","won":"Побед","guessDist":"Распределение побед"},"settings":{"title":"Настройки","dark":"Темная тема","contrast":"Высококонтрастная тема","lang":"Язык"}}}');
+
 /***/ })
 
 /******/ 	});
@@ -1786,4 +1672,4 @@ _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_I
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.d3fa8a0078ab7a564dc6.js.map
+//# sourceMappingURL=bundle.d669c0f9ac8a0fa5221b.js.map

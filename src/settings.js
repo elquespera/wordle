@@ -1,5 +1,6 @@
 import { $ } from "./utils";
-import { layouts, currentLayout, switchLanguage } from "./language";
+import { currentLayout, switchLanguage } from "./language";
+import layouts from "./translations.json";
 import { puzzle } from "./puzzle";
 import modal from "./modal";
 
