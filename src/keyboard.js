@@ -48,7 +48,7 @@ class Keyboard {
 
     //reset hightlighted keys styles
     reset() {
-        this._keys.forEach(key => key.classList.remove('correct', 'present'))
+        this._keys.forEach(key => key.classList.remove('correct', 'present', 'not-present'))
     }
 
     //Find Key Div

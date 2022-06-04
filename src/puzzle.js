@@ -81,11 +81,11 @@ class Puzzle {
     // Reset & update letters
     reset() {
         this._currentSolution = [];
+        this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
         this.update();
         this._cardDivs.flat().forEach(card => {
             card.classList.remove('not-present', 'present', 'correct', 'current');        
         });
-        this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
         keyboard.reset();
     }
 
@@ -122,8 +122,8 @@ class Puzzle {
                 } else {
                     className = 'present';
                 }
-                keyboard.findKeyDiv(letter).classList.add(className);
             }            
+            keyboard.findKeyDiv(letter).classList.add(className);
             await revealCard(this._cardDivs[row][i]);
             this._cardDivs[row][i].classList.add(className);
             this._cardDivs[row][i].classList.remove('current');
@@ -135,7 +135,7 @@ class Puzzle {
             this.addWin(this.lastRowNumber);
             this.reset();
             modal.show('stats', 'win');
-        } else if (this.lastRowNumber === puzzleLength) {
+        } else if (this.lastRowNumber >= puzzleLength) {
             this.reset();
             modal.show('stats', 'lose');
         }

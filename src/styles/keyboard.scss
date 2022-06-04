@@ -78,10 +78,13 @@ $keyboard-max-key-height: 60px;
         .key.present {
             background-color: vars.$accent-color2;
         }
+        .key.not-present {
+            background-color: vars.$accent-color3;
+        }
         .key.correct {
             background-color: vars.$accent-color1;
         }        
-        .key.present, .key.correct {
+        .key.present, .key.not-present, .key.correct {
             color: vars.$puzzle-active-color;
         }    
     
