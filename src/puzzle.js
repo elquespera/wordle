@@ -69,8 +69,7 @@ class Puzzle {
         this._currentSolution = [];
         this.update();
         this._cardDivs.flat().forEach(card => {
-            card.classList.remove('not-present', 'present', 'correct', 'current');
-            console.log(card.className);            
+            card.classList.remove('not-present', 'present', 'correct', 'current');        
         });
     }
 

@@ -26,12 +26,17 @@ body, * {
 
 button {
     background-color: transparent;
+    cursor: pointer;
+}
+
+.text-btn {
+    background-color: #CCC;
+    padding: 0.8em;
+    border-radius: 0.3em;
 }
 
 
-
 .icon-btn {
-    cursor: pointer;
     font-size: inherit;
     width: 1.5em;
     height: 1.5em;

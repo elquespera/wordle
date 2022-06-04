@@ -17,8 +17,14 @@ header {
         position: relative;
         align-items: center;
         gap: 1em;
+        .github-btn {
+            background-image: url('../assets/github.svg');
+        }
         .help-btn {
             background-image: url('../assets/help.svg');
+        }
+        .reset-btn {
+            background-image: url('../assets/reset.svg');
         }
         .stats-btn {
             background-image: url('../assets/chart.svg');
@@ -26,9 +32,6 @@ header {
         }
         .stats-btn:hover {
             transform: none;
-        }
-        .github-btn {
-            background-image: url('../assets/github.svg');
         }
         .settings-btn {
             background-image: url('../assets/settings.svg');

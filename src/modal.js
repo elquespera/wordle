@@ -47,16 +47,25 @@ class Modal {
 
         if (!this._open) {            
             //Calculate & display statistics
-            if (msg === 'stats') {
-                $('.played.score').innerHTML = puzzle.stats.played;
-                $('.won.score').innerHTML = puzzle.wonCount;
-                const scoreBins = $('.guess-dist>.score-bar', document, true);
-                scoreBins.forEach((bin, i) => {
-                    const count = puzzle.stats.dist[i] || 0;
-                    const width = count === 0 ? 'fit-content' : count / puzzle.maxWin * 100 + '%';
-                    bin.style.width = width;
-                    bin.innerHTML = count;                    
-                });
+            switch(msg) {
+                case 'reset': {
+                    $('#reset-yes-btn').addEventListener('click', () => {
+                        puzzle.reset();
+                        this.hide();
+                    });
+                    $('#reset-no-btn').addEventListener('click', () => this.hide());
+                }
+                case 'stats':
+                    $('.played.score').innerHTML = puzzle.stats.played;
+                    $('.won.score').innerHTML = puzzle.wonCount;
+                    const scoreBins = $('.guess-dist>.score-bar', document, true);
+                    scoreBins.forEach((bin, i) => {
+                        const count = puzzle.stats.dist[i] || 0;
+                        const width = count === 0 ? 'fit-content' : count / puzzle.maxWin * 100 + '%';
+                        bin.style.width = width;
+                        bin.innerHTML = count;                    
+                    });
+                    break;
             }
             modalPages.map(pname => $(`.${pname}`)).forEach(pane => {
                 pane.style.display = pane.id === msg ? 'flex' : 'none';

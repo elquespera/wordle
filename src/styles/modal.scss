@@ -111,6 +111,18 @@ $light-gray: rgb(194, 194, 194);
                 }
             }
         }
+
+        .pane.reset {
+            .yes-no {
+                display: flex;
+                gap: 2em;
+                justify-content: center;
+                align-items: center;
+                margin-top: 3em;
+            }
+        }
+
+
         $shrink: 0.7;
         @function card-size() {
             @return calc(puzzle.card-size() * $shrink);

@@ -2,7 +2,7 @@ import { $, newEl } from "./utils";
 import { initSettings } from "./settings";
 import { keyboard } from "./keyboard";
 
-const modalPages = ['help', 'stats', 'settings'];
+const modalPages = ['help', 'stats', 'settings', 'reset'];
 
 const layouts = {
     en: {
@@ -47,6 +47,12 @@ const layouts = {
             dark: 'Dark theme',
             contrast: 'High Conrast',
             lang: 'Language'
+        },
+        reset: {
+            title: 'Reset game',
+            question: 'Are you sure you want to reset the game?',
+            yes: 'Yes',
+            no: 'No'
         }
     },
     es: {
@@ -204,6 +210,13 @@ const switchLanguage = (layout = currentLayout) => {
                 table.append(darkMode, contrastMode, language);                 
                 paneFrag.append(table);
 
+                break;
+            }
+            case 'reset': {
+                const yesno = newEl('div', '', 'yes-no');
+                yesno.append(newEl('button', layout.reset.yes, 'text-btn', 'reset-yes-btn'),
+                             newEl('button', layout.reset.no, 'text-btn', 'reset-no-btn'));
+                paneFrag.append(newEl('p', layout.reset.question), yesno);
                 break;
             }
         }         
