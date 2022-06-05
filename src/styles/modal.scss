@@ -56,7 +56,6 @@ $light-gray: rgb(194, 194, 194);
                 margin-bottom: 1em;
             }
             p {
-                font-weight: normal;
                 margin-bottom: 1em;
             }
             .hr {
@@ -86,11 +85,9 @@ $light-gray: rgb(194, 194, 194);
                 margin-bottom: 1em;
                 .score {
                     font-size: 3.5em;
-                    font-weight: normal;
                 }
                 .score-label {
                     font-size: 1rem;
-                    font-weight: normal;
                 }
 
             }
@@ -102,7 +99,6 @@ $light-gray: rgb(194, 194, 194);
                 align-items: center;
                 margin: 0 1em;
                 .score {
-                    font-weight: normal;
                     text-align: end;
                 }
                 .score-bar {
@@ -145,7 +141,6 @@ $light-gray: rgb(194, 194, 194);
             .settings-table {
                 display: flex;
                 flex-flow: column nowrap;
-                font-weight: normal;
                 gap: 1em;
 
                 ul.language-selector {

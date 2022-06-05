@@ -4,6 +4,10 @@
 @use 'keyboard';
 @use 'modal';
 
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
+
 // Reset
 *, body, ul, li {
     margin: 0px;
@@ -15,7 +19,11 @@ ul {
 }
 body, * {
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-weight: vars.$default-font-weight;
+}
+
+h2, h3, h4 {
     font-weight: 600;
 }
 
@@ -31,6 +39,7 @@ body {
 button {
     background-color: transparent;
     cursor: pointer;
+    font-weight: vars.$default-font-weight;
 }
 
 .text-btn {
