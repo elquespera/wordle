@@ -82,6 +82,8 @@ class Puzzle {
     reset() {
         this._currentSolution = [];
         this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
+        console.log(this._solution);
+
         this.update();
         this._cardDivs.flat().forEach(card => {
             card.classList.remove('not-present', 'present', 'correct', 'current');        
@@ -131,10 +133,11 @@ class Puzzle {
     }
 
     checkStatus() {
+        console.log(this.lastRow);
         if (this.lastRow.join('') === this.solution) {
             this.addWin(this.lastRowNumber);
-            this.reset();
             modal.show('stats', 'win');
+            this.reset();
         } else if (this.lastRowNumber >= puzzleLength) {
             this.reset();
             modal.show('stats', 'lose');
@@ -186,9 +189,9 @@ class Puzzle {
                 if (this.lastRow.length === wordLength) {
                     if (this.wordExists(this.lastRow.join(''))) {
                         await this.checkLetters(this.lastRowNumber);
-                        this.matrix.push([]);
                         this.checkStatus();                                
                         this.update();                                    
+                        this.matrix.push([]);
                     } else 
                         shake("Word doesn't exist") 
                     
@@ -224,11 +227,13 @@ const revealCard = (card) => {
         card.style.transition = 'none';                
         card.style.transform = 'rotateX(180deg)';
         setTimeout(() => {
-            card.style.transition = 'transform 1s ease-out';
+            card.style.transition = 'transform 0.3s ease-out';
             card.style.transform = 'rotateX(0deg)';
-            setTimeout(() => {                
+            setTimeout(() => { 
+                card.style.transform = '';  
+                card.style.transition = '';             
                 resolve('');     
-            }, 300);    
+            }, 100);    
         }, 50);        
     });
 }      

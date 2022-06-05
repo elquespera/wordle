@@ -566,6 +566,7 @@ var Puzzle = /*#__PURE__*/function () {
     value: function reset() {
       this._currentSolution = [];
       this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
+      console.log(this._solution);
       this.update();
 
       this._cardDivs.flat().forEach(function (card) {
@@ -664,10 +665,12 @@ var Puzzle = /*#__PURE__*/function () {
   }, {
     key: "checkStatus",
     value: function checkStatus() {
+      console.log(this.lastRow);
+
       if (this.lastRow.join('') === this.solution) {
         this.addWin(this.lastRowNumber);
-        this.reset();
         _modal__WEBPACK_IMPORTED_MODULE_0__["default"].show('stats', 'win');
+        this.reset();
       } else if (this.lastRowNumber >= puzzleLength) {
         this.reset();
         _modal__WEBPACK_IMPORTED_MODULE_0__["default"].show('stats', 'lose');
@@ -824,9 +827,9 @@ var Puzzle = /*#__PURE__*/function () {
                 return this.checkLetters(this.lastRowNumber);
 
               case 8:
-                this.matrix.push([]);
                 this.checkStatus();
                 this.update();
+                this.matrix.push([]);
                 _context4.next = 14;
                 break;
 
@@ -890,11 +893,13 @@ var revealCard = function revealCard(card) {
     card.style.transition = 'none';
     card.style.transform = 'rotateX(180deg)';
     setTimeout(function () {
-      card.style.transition = 'transform 1s ease-out';
+      card.style.transition = 'transform 0.3s ease-out';
       card.style.transform = 'rotateX(0deg)';
       setTimeout(function () {
+        card.style.transform = '';
+        card.style.transition = '';
         resolve('');
-      }, 300);
+      }, 100);
     }, 50);
   });
 };
@@ -1863,4 +1868,4 @@ _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_I
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.89632d9ce86fb5bc28e9.js.map
+//# sourceMappingURL=bundle.1f8c1282509f60d8aaec.js.map
