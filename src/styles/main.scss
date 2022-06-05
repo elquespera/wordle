@@ -9,22 +9,25 @@
 
 
 // Reset
-*, body, ul, li {
+* {
     margin: 0px;
     padding: 0px;
     border: 0px;
+    box-sizing: border-box;
 }
+
 ul {
     list-style: none;
 }
-body, * {
+
+body {
     box-sizing: border-box;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     font-weight: vars.$default-font-weight;
 }
 
 h2, h3, h4 {
-    font-weight: 600;
+    font-weight: vars.$heading-font-weight;
 }
 
 * {
@@ -39,7 +42,7 @@ body {
 button {
     background-color: transparent;
     cursor: pointer;
-    font-weight: vars.$default-font-weight;
+    // font-weight: vars.$default-font-weight;
 }
 
 .text-btn {

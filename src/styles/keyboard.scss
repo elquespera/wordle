@@ -49,6 +49,7 @@ $keyboard-max-key-height: 60px;
             align-items: center;
             cursor: pointer;
             font-size: 1em;
+            font-weight: vars.$letter-font-weight;
             text-transform: uppercase;
             width: key-width();
             height: key-height();

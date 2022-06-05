@@ -21,6 +21,7 @@ $puzzle-gap: 0.1em;
 
 .puzzle {
     font-size: card-font-size();
+    font-weight: vars.$letter-font-weight;
     display: grid;
     grid-template-columns: repeat(5, card-size());
     grid-template-rows: repeat(6, card-size());
