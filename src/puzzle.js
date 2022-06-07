@@ -1,6 +1,7 @@
 import modal from "./modal";
 import { currentLayout } from "./language";
 import { keyboard } from "./keyboard";
+import * as storage from './storage'; 
 
 import words_en from "./assets/words/words-en.json";
 import words_es from "./assets/words/words-es.json";
@@ -12,6 +13,8 @@ const words = {
     ru: words_ru
 }
 
+const STATS_KEY = 'stats';
+
 const wordLength = 5;
 const puzzleLength = 6;
 
@@ -20,14 +23,10 @@ class Puzzle {
     _solution;
     _currentSolution = [];
     _stats = {
-        played: 20,
-        dist: {
-            1: 3,
-            3: 7,
-            4: 3,
-            5: 3
-        }
+        played: 0,
+        dist: {}
     }
+
     constructor() {
         const puzzleFrag = new DocumentFragment();
         let row = [];
@@ -42,6 +41,19 @@ class Puzzle {
             }
         }
         document.querySelector('#puzzle').replaceChildren(puzzleFrag);
+
+        // Attempt to retrieve stored statistics
+        let storedStats;
+        try {
+            storedStats = JSON.parse(storage.getItem(STATS_KEY));
+        }
+        catch {
+            storedStats = this._stats;
+        }
+        if (storedStats) {
+            if (storedStats.played && storedStats.dist)
+                this._stats = storedStats;
+        }
         this.reset();
     }
 
@@ -73,15 +85,26 @@ class Puzzle {
     }
     get maxWin() {
         return Object.values(this.stats.dist).reduce((t, v) => v > t ? v : t, 0);
-    }    
+    }
+
+    storeStats() {
+        storage.setItem(STATS_KEY, this.stats);
+    }
+
+    addGame() {
+        this.stats.played += 1;
+        storage.setItem(STATS_KEY, this.stats);
+    }
+
     addWin(bin) {
         this.stats.dist[bin] = (this.stats.dist[bin] || 0) + 1;
+        this.addGame();
     }
 
     // Reset & update letters
     reset() {
         this._currentSolution = [];
-        this._solution = this.dict()[Math.floor(Math.random() * this.dict().length)];
+        this._solution = this.dict[Math.floor(Math.random() * this.dict.length)];
         console.log(this._solution);
 
         this.update();
@@ -106,12 +129,12 @@ class Puzzle {
         }        
     }
 
-    dict() {
+    get dict() {
         return words[currentLayout.locale];
     }
 
     wordExists(word) {
-        return this.dict().includes(word);
+        return this.dict.includes(word);
     }
 
     async checkLetters(row) {          
@@ -138,9 +161,12 @@ class Puzzle {
             this.addWin(this.lastRowNumber);
             modal.show('stats', 'win');
             this.reset();
-        } else if (this.lastRowNumber >= puzzleLength) {
+            return true;
+        } else if (this.lastRowNumber >= puzzleLength - 1) {
+            this.addGame();
             this.reset();
             modal.show('stats', 'lose');
+            return true;            
         }
     }
 
@@ -189,9 +215,11 @@ class Puzzle {
                 if (this.lastRow.length === wordLength) {
                     if (this.wordExists(this.lastRow.join(''))) {
                         await this.checkLetters(this.lastRowNumber);
-                        this.checkStatus();                                
-                        this.update();                                    
-                        this.matrix.push([]);
+                        console.log(this.lastRow.join(''));
+                        if (!this.checkStatus()) {                                
+                            this.update();                                    
+                            this.matrix.push([]);
+                        }
                     } else 
                         shake("Word doesn't exist") 
                     
