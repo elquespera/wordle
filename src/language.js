@@ -3,9 +3,11 @@ import { initSettings } from "./settings";
 import { keyboard } from "./keyboard";
 import { puzzle, wordLength } from "./puzzle";
 import layouts from "./translations.json";
+import * as storage from "./storage.js";
 
 const modalPages = ['help', 'stats', 'settings', 'reset'];
 
+const LANG_KEY = 'lang';
 
 let currentLayout = layouts.en;
 
@@ -98,10 +100,14 @@ const switchLanguage = (layout = currentLayout) => {
     });
     currentLayout = layout;
     keyboard.switch(currentLayout);
+    storage.setItem(LANG_KEY, layout.locale);
     initSettings();  
 }
 
 const initLanguage = () => {
+    const userLanguage = () => navigator?.language?.slice(0, 2) || 'en';
+    const locale = storage.getItem(LANG_KEY);
+    currentLayout = layouts[locale] || layouts[userLanguage()] || layouts.en;
     switchLanguage(currentLayout);
 }
 

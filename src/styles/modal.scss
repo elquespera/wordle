@@ -234,7 +234,7 @@ $light-gray: rgb(194, 194, 194);
     max-width: 90%;
     padding: 0.5em 0.7em;
     border-radius: 0.3em;
-    box-shadow: 0 0 0.4em rgba(0, 0, 0, 1);
+    box-shadow: 0 0 0.4em vars.$shadow-color;
     opacity: 0;
     transition: opacity 0.5s;
 }
