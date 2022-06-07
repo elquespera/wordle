@@ -1,6 +1,6 @@
 const setItem = (itemKey, itemValue) => {
     if (window.localStorage && window.localStorage.setItem) {
-        window.localStorage.setItem(itemKey, itemValue);
+        window.localStorage.setItem(itemKey, JSON.stringify(itemValue));
     }
 }
 

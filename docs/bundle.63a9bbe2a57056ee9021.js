@@ -239,10 +239,20 @@ var switchLanguage = function switchLanguage() {
       case 'settings':
         {
           var table = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '', 'settings-table');
+
+          var checkTheme = function checkTheme(checkbox) {
+            if (_storage_js__WEBPACK_IMPORTED_MODULE_5__.getItem(checkbox.id) === 'true') {
+              checkbox.classList.add('checked');
+              document.body.classList.add(checkbox.id);
+            }
+          };
+
           var darkMode = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
           darkMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.dark), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box dark-mode', 'dark-theme'));
+          checkTheme((0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('#dark-theme', darkMode));
           var contrastMode = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
           contrastMode.append((0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', layout.settings.contrast), (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div', '<span></span>', 'check-box contrast-mode', 'high-contrast-theme'));
+          checkTheme((0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('#high-contrast-theme', contrastMode));
           var language = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('div');
           var ul = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.newEl)('ul', '', 'language-selector');
           Object.values(_translations_json__WEBPACK_IMPORTED_MODULE_4__).forEach(function (l) {
@@ -936,6 +946,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _translations_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./translations.json */ "./src/translations.json");
 /* harmony import */ var _puzzle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./puzzle */ "./src/puzzle.js");
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modal */ "./src/modal.js");
+/* harmony import */ var _storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./storage.js */ "./src/storage.js");
+
 
 
 
@@ -947,6 +959,7 @@ var initSettings = function initSettings() {
     checkbox.addEventListener('click', function (e) {
       checkbox.classList.toggle('checked');
       document.body.classList.toggle(checkbox.id, checkbox.classList.contains('checked'));
+      _storage_js__WEBPACK_IMPORTED_MODULE_5__.setItem(checkbox.id, checkbox.classList.contains('checked'));
     });
   });
   var langs = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.$)('.language-selector>li', document, true);
@@ -998,7 +1011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var setItem = function setItem(itemKey, itemValue) {
   if (window.localStorage && window.localStorage.setItem) {
-    window.localStorage.setItem(itemKey, itemValue);
+    window.localStorage.setItem(itemKey, JSON.stringify(itemValue));
   }
 };
 
@@ -1907,4 +1920,4 @@ _keyboard__WEBPACK_IMPORTED_MODULE_2__.keyboard.keyFunction = _puzzle__WEBPACK_I
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.aed29ef011e7fe602a3b.js.map
+//# sourceMappingURL=bundle.63a9bbe2a57056ee9021.js.map

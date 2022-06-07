@@ -3,12 +3,14 @@ import { currentLayout, switchLanguage } from "./language";
 import layouts from "./translations.json";
 import { puzzle } from "./puzzle";
 import modal from "./modal";
+import * as storage from "./storage.js";
 
 const initSettings = () => {
     $('.check-box', document, true).forEach(checkbox => {
-        checkbox.addEventListener('click', e => {            
+        checkbox.addEventListener('click', e => {
             checkbox.classList.toggle('checked');
-            document.body.classList.toggle(checkbox.id, checkbox.classList.contains('checked'));            
+            document.body.classList.toggle(checkbox.id, checkbox.classList.contains('checked'));   
+            storage.setItem(checkbox.id, checkbox.classList.contains('checked'));      
         });
     });
 

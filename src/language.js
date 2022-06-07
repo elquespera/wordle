@@ -1,4 +1,4 @@
-import { newEl } from "./utils";
+import { $, newEl } from "./utils";
 import { initSettings } from "./settings";
 import { keyboard } from "./keyboard";
 import { puzzle, wordLength } from "./puzzle";
@@ -72,12 +72,23 @@ const switchLanguage = (layout = currentLayout) => {
             case 'settings': {
                 const table = newEl('div', '', 'settings-table');
 
+                const checkTheme = (checkbox) => {
+                    if (storage.getItem(checkbox.id) === 'true') {
+                        checkbox.classList.add('checked');
+                        document.body.classList.add(checkbox.id);
+                    }
+                }
+
                 const darkMode = newEl('div');
                 darkMode.append(newEl('div', layout.settings.dark), 
                                 newEl('div', '<span></span>', 'check-box dark-mode', 'dark-theme'));
+                checkTheme($('#dark-theme', darkMode));
+                
                 const contrastMode = newEl('div');                                
                 contrastMode.append(newEl('div', layout.settings.contrast), 
                              newEl('div', '<span></span>', 'check-box contrast-mode', 'high-contrast-theme'));
+                checkTheme($('#high-contrast-theme', contrastMode));
+
                 const language = newEl('div');
                 const ul = newEl('ul', '', 'language-selector');
                 Object.values(layouts).forEach(l => ul.append(newEl('li', l.name, '', l.locale)));
