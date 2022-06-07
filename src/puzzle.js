@@ -14,6 +14,8 @@ const words = {
 }
 
 const STATS_KEY = 'stats';
+const SOLUTION_KEY = 'solution';
+const PUZZLE_KEY = 'puzzle';
 
 const wordLength = 5;
 const puzzleLength = 6;
@@ -42,19 +44,28 @@ class Puzzle {
         }
         document.querySelector('#puzzle').replaceChildren(puzzleFrag);
 
-        // Attempt to retrieve stored statistics
-        let storedStats;
-        try {
-            storedStats = JSON.parse(storage.getItem(STATS_KEY));
-        }
-        catch {
-            storedStats = this._stats;
-        }
-        if (storedStats) {
-            if (storedStats.played && storedStats.dist)
+        // Retrieve stored statistics
+        const storedStats = storage.getItem(STATS_KEY);
+        if (storedStats && storedStats.played && storedStats.dist) {
                 this._stats = storedStats;
         }
-        this.reset();
+    }
+
+    async checkStoredGame() {
+        // Retrieve store puzzle state
+        const storedSolution = storage.getItem(SOLUTION_KEY);
+        const storedPuzzle = storage.getItem(PUZZLE_KEY);
+        if (storedSolution && storedSolution.toString().length === wordLength &&
+            storedPuzzle && Array.isArray(storedPuzzle)) {
+            this._solution = storedSolution;
+            this._currentSolution = storedPuzzle;
+            this.update();
+            for (let i = 0; i < storedPuzzle.length; i++) {
+                await this.checkLetters(i, i === storedPuzzle.length - 1);
+            }
+            this._currentSolution.push([]);
+        } else 
+            this.reset();                  
     }
 
     get solution() {
@@ -93,7 +104,7 @@ class Puzzle {
 
     addGame() {
         this.stats.played += 1;
-        storage.setItem(STATS_KEY, this.stats);
+        storage.setItem(STATS_KEY, this.stats);        
     }
 
     addWin(bin) {
@@ -105,27 +116,29 @@ class Puzzle {
     reset() {
         this._currentSolution = [];
         this._solution = this.dict[Math.floor(Math.random() * this.dict.length)];
-        console.log(this._solution);
 
         this.update();
         this._cardDivs.flat().forEach(card => {
             card.classList.remove('not-present', 'present', 'correct', 'current');        
         });
         keyboard.reset();
+        storage.removeItem(SOLUTION_KEY);
+        storage.removeItem(PUZZLE_KEY);        
     }
 
     update() {
         this._cardDivs.forEach((row, i) => row.forEach((div, j) => {
             div.innerHTML = this.matrix[i] ? this.matrix[i][j] || '' : '';
         }));
-        if (this.matrix.length > 0 && this._cardDivs[this.lastRowNumber]) {
+
+        if (this.matrix.length > 0 && this._cardDivs[this.lastRowNumber]) {   
             this._cardDivs[this.lastRowNumber].forEach(card => {
                 if (card.innerHTML === '') {
                     card.classList.remove('current');
                 } else {
                     card.classList.add('current');
                 }
-            })
+            });
         }        
     }
 
@@ -137,7 +150,7 @@ class Puzzle {
         return this.dict.includes(word);
     }
 
-    async checkLetters(row) {          
+    async checkLetters(row, reveal = true) {          
         for (let i = 0; i < this.matrix[row].length; i++) {
             const letter = this.matrix[row][i];
             let className = 'not-present';
@@ -148,15 +161,15 @@ class Puzzle {
                     className = 'present';
                 }
             }            
-            keyboard.findKeyDiv(letter).classList.add(className);
-            await revealCard(this._cardDivs[row][i]);
+            keyboard.findKeyDiv(letter)?.classList.add(className);
+            if (reveal)
+                await revealCard(this._cardDivs[row][i]);
             this._cardDivs[row][i].classList.add(className);
             this._cardDivs[row][i].classList.remove('current');
         }
     }
 
     checkStatus() {
-        console.log(this.lastRow);
         if (this.lastRow.join('') === this.solution) {
             this.addWin(this.lastRowNumber);
             modal.show('stats', 'win');
@@ -167,6 +180,9 @@ class Puzzle {
             this.reset();
             modal.show('stats', 'lose');
             return true;            
+        } else {
+            storage.setItem(SOLUTION_KEY, this._solution);
+            storage.setItem(PUZZLE_KEY, this._currentSolution);
         }
     }
 
@@ -215,7 +231,6 @@ class Puzzle {
                 if (this.lastRow.length === wordLength) {
                     if (this.wordExists(this.lastRow.join(''))) {
                         await this.checkLetters(this.lastRowNumber);
-                        console.log(this.lastRow.join(''));
                         if (!this.checkStatus()) {                                
                             this.update();                                    
                             this.matrix.push([]);

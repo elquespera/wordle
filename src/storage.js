@@ -6,8 +6,22 @@ const setItem = (itemKey, itemValue) => {
 
 const getItem = (itemKey) => {
     if (window.localStorage && window.localStorage.getItem) {
-        return window.localStorage.getItem(itemKey);
+        const item = window.localStorage.getItem(itemKey);
+        try {
+            return JSON.parse(item);
+        } 
+        catch {
+            return undefined; 
+        }
+    } 
+    else
+        return undefined;
+}
+
+const removeItem = (itemKey) => {
+    if (window.localStorage && window.localStorage.getItem) {
+        window.localStorage.removeItem(itemKey);
     }
 }
 
-export { setItem, getItem }
+export { setItem, getItem, removeItem }

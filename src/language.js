@@ -73,7 +73,7 @@ const switchLanguage = (layout = currentLayout) => {
                 const table = newEl('div', '', 'settings-table');
 
                 const checkTheme = (checkbox) => {
-                    if (storage.getItem(checkbox.id) === 'true') {
+                    if (storage.getItem(checkbox.id)) {
                         checkbox.classList.add('checked');
                         document.body.classList.add(checkbox.id);
                     }

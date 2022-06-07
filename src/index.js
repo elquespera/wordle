@@ -5,7 +5,6 @@ import { initLanguage } from './language';
 
 
 keyboard.keyFunction = puzzle.keyPressed;
-// puzzle.keyboard = keyboard;
-// puzzle.modal.puzzle = puzzle;
-
 initLanguage();
+
+puzzle.checkStoredGame();
