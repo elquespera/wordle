@@ -50,6 +50,12 @@
             "question": "Are you sure you want to reset the game?",
             "yes": "Yes",
             "no": "No"
+        },
+        "errors": {
+            "maxFiveLetter": "Five letters max",
+            "wordDoesntExist": "Word doesn't exist",
+            "notEnoughLetters": "Not enough letters",
+            "noLettersToErase": "No letters to erase"
         }
     },
     "es": {
@@ -103,7 +109,13 @@
             "question": "¿Estás seguro de que quieres restablecer el juego?",
             "yes": "Sí",
             "no": "No"
-        }        
+        },
+        "errors": {
+            "maxFiveLetter": "Cinco letras como máximo",
+            "wordDoesntExist": "La palabra no existe",
+            "notEnoughLetters": "No hay suficientes letras",
+            "noLettersToErase": "No hay letras para borrar"
+        }                
     },
     "ru": {
         "locale": "ru",
@@ -156,6 +168,12 @@
             "question": "Вы действительно хотите начать игру сначала?",
             "yes": "Да",
             "no": "Нет"
-        }        
+        },
+        "errors": {
+            "maxFiveLetter": "Максимально пять букв",
+            "wordDoesntExist": "Слово не существует в словаре",
+            "notEnoughLetters": "Введите минимум пять букв",
+            "noLettersToErase": "Нет букв, которые нужно стереть"
+        }       
     }
 }

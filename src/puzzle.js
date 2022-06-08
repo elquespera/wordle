@@ -57,7 +57,7 @@ class Puzzle {
         const storedPuzzle = storage.getItem(PUZZLE_KEY);
         if (storedSolution && storedSolution.toString().length === wordLength &&
             storedPuzzle && Array.isArray(storedPuzzle)) {
-            this._solution = storedSolution;
+            this.solution = storedSolution;
             this._currentSolution = storedPuzzle;
             this.update();
             for (let i = 0; i < storedPuzzle.length; i++) {
@@ -70,6 +70,10 @@ class Puzzle {
 
     get solution() {
         return this._solution;
+    }
+    set solution(word) {
+        this._solution = word;
+        console.log(word);
     }
 
     // Current matrix operations
@@ -115,7 +119,7 @@ class Puzzle {
     // Reset & update letters
     reset() {
         this._currentSolution = [];
-        this._solution = this.dict[Math.floor(Math.random() * this.dict.length)];
+        this.solution = this.dict[Math.floor(Math.random() * this.dict.length)];
 
         this.update();
         this._cardDivs.flat().forEach(card => {
@@ -181,7 +185,7 @@ class Puzzle {
             modal.show('stats', 'lose');
             return true;            
         } else {
-            storage.setItem(SOLUTION_KEY, this._solution);
+            storage.setItem(SOLUTION_KEY, this.solution);
             storage.setItem(PUZZLE_KEY, this._currentSolution);
         }
     }
@@ -236,10 +240,10 @@ class Puzzle {
                             this.matrix.push([]);
                         }
                     } else 
-                        shake("Word doesn't exist") 
+                        shake(currentLayout.errors.wordDoesntExist); 
                     
                 } else {
-                    shake('Not enough letters');
+                    shake(currentLayout.errors.notEnoughLetters);
                 }
                 break;
             case 'backspace':
@@ -247,7 +251,7 @@ class Puzzle {
                     this.lastRow.pop();
                     this.update();
                 } else {
-                    shake('No letters to erase');
+                    shake(currentLayout.errors.noLettersToErase);
                 }
                 break;
             default:
@@ -259,7 +263,7 @@ class Puzzle {
                     this.update();
                     this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
                 } else {
-                    shake('Five letter max');                    
+                    shake(currentLayout.errors.maxFiveLetter);                    
                 }
         }
     }

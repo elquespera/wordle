@@ -554,7 +554,7 @@ var Puzzle = /*#__PURE__*/function () {
                   break;
                 }
 
-                this._solution = storedSolution;
+                this.solution = storedSolution;
                 this._currentSolution = storedPuzzle;
                 this.update();
                 i = 0;
@@ -600,6 +600,10 @@ var Puzzle = /*#__PURE__*/function () {
     key: "solution",
     get: function get() {
       return this._solution;
+    },
+    set: function set(word) {
+      this._solution = word;
+      console.log(word);
     } // Current matrix operations
 
   }, {
@@ -664,7 +668,7 @@ var Puzzle = /*#__PURE__*/function () {
     key: "reset",
     value: function reset() {
       this._currentSolution = [];
-      this._solution = this.dict[Math.floor(Math.random() * this.dict.length)];
+      this.solution = this.dict[Math.floor(Math.random() * this.dict.length)];
       this.update();
 
       this._cardDivs.flat().forEach(function (card) {
@@ -789,7 +793,7 @@ var Puzzle = /*#__PURE__*/function () {
         _modal__WEBPACK_IMPORTED_MODULE_0__["default"].show('stats', 'lose');
         return true;
       } else {
-        _storage__WEBPACK_IMPORTED_MODULE_3__.setItem(SOLUTION_KEY, this._solution);
+        _storage__WEBPACK_IMPORTED_MODULE_3__.setItem(SOLUTION_KEY, this.solution);
         _storage__WEBPACK_IMPORTED_MODULE_3__.setItem(PUZZLE_KEY, this._currentSolution);
       }
     }
@@ -953,14 +957,14 @@ var Puzzle = /*#__PURE__*/function () {
                 break;
 
               case 11:
-                shake("Word doesn't exist");
+                shake(_language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.errors.wordDoesntExist);
 
               case 12:
                 _context5.next = 15;
                 break;
 
               case 14:
-                shake('Not enough letters');
+                shake(_language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.errors.notEnoughLetters);
 
               case 15:
                 return _context5.abrupt("break", 20);
@@ -970,7 +974,7 @@ var Puzzle = /*#__PURE__*/function () {
                   this.lastRow.pop();
                   this.update();
                 } else {
-                  shake('No letters to erase');
+                  shake(_language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.errors.noLettersToErase);
                 }
 
                 return _context5.abrupt("break", 20);
@@ -985,7 +989,7 @@ var Puzzle = /*#__PURE__*/function () {
                   this.update();
                   this.animateLetter(this._cardDivs[this.lastRowNumber][this.lastRow.length - 1]);
                 } else {
-                  shake('Five letter max');
+                  shake(_language__WEBPACK_IMPORTED_MODULE_1__.currentLayout.errors.maxFiveLetter);
                 }
 
               case 20:
@@ -1869,7 +1873,7 @@ module.exports = JSON.parse('["аарон","аббас","аббат","абвер
   \*******************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"en":{"locale":"en","name":"English","keys":["qwertyuiop","asdfghjkl","zxcvbnm"],"help":{"title":"How to play","desc":["Guess the <strong>WORDLE</strong> in six tries","Each guess must be a valid five-letter word. Hit the enter button to submit.","After each guess, the color of the tiles will change to show how close your guess was to the word."],"examplesTitle":"Examples","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Enjoy the game!"},"stats":{"title":"Statistics","wonTitle":"Congratulations, you won!","loseTitle":"Sorry, you lost!","correctAnswer":"The correct answer is: ","played":"Played","won":"Won","guessDist":"Guess discribution"},"settings":{"title":"Settings","dark":"Dark theme","contrast":"High Conrast","lang":"Language"},"reset":{"title":"Reset game","question":"Are you sure you want to reset the game?","yes":"Yes","no":"No"}},"es":{"locale":"es","name":"Español","keys":["qwertyuiop","asdfghjklñ","zxcvbnm"],"help":{"title":"Cómo jugar","desc":["Adivina la <strong>WORDLE</strong> en seis intentos","Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.","Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."],"examplesTitle":"Ejemplos","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Disfruta el juego!"},"stats":{"title":"Estadísticas","wonTitle":"¡Felicitaciones, has ganado el juego!","loseTitle":"¡Lo siento, perdiste el juego!","correctAnswer":"La respuesta correcta es: ","played":"Jugadas","won":"Victorias","guessDist":"Distribución de conjeturas"},"settings":{"title":"Ajustes","dark":"Tema oscuro","contrast":"Alto contraste","lang":"Idioma"},"reset":{"title":"Reiniciar el juego","question":"¿Estás seguro de que quieres restablecer el juego?","yes":"Sí","no":"No"}},"ru":{"locale":"ru","name":"Русский","keys":["йцукенгшщзхъ","фывапролджэ","ячсмитьбюё"],"help":{"title":"Правила игры","desc":["Разгадай <strong>WORDLE</strong> за шесть попыток.","Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.","После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."],"examplesTitle":"Примеры","examples":{"correct":{"word":"вчера","highlight":0,"msg":"Буква <strong>А</strong> находится в разгадываемом слове на правильном месте."},"present":{"word":"шепот","highlight":2,"msg":"Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте."},"not-present":{"word":"весна","highlight":4,"msg":"Буквы <strong>A</strong> нет в разгадываемом слове."}},"enjoy":"Приятной игры!"},"stats":{"title":"Статистика","wonTitle":"Поздравляем, ты выиграл!","loseTitle":"К сожалению ты проиграл!","correctAnswer":"Правильный ответ: ","played":"Сыграно","won":"Побед","guessDist":"Распределение побед"},"settings":{"title":"Настройки","dark":"Темная тема","contrast":"Высококонтрастная тема","lang":"Язык"},"reset":{"title":"Сброс игры","question":"Вы действительно хотите начать игру сначала?","yes":"Да","no":"Нет"}}}');
+module.exports = JSON.parse('{"en":{"locale":"en","name":"English","keys":["qwertyuiop","asdfghjkl","zxcvbnm"],"help":{"title":"How to play","desc":["Guess the <strong>WORDLE</strong> in six tries","Each guess must be a valid five-letter word. Hit the enter button to submit.","After each guess, the color of the tiles will change to show how close your guess was to the word."],"examplesTitle":"Examples","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Enjoy the game!"},"stats":{"title":"Statistics","wonTitle":"Congratulations, you won!","loseTitle":"Sorry, you lost!","correctAnswer":"The correct answer is: ","played":"Played","won":"Won","guessDist":"Guess discribution"},"settings":{"title":"Settings","dark":"Dark theme","contrast":"High Conrast","lang":"Language"},"reset":{"title":"Reset game","question":"Are you sure you want to reset the game?","yes":"Yes","no":"No"},"errors":{"maxFiveLetter":"Five letters max","wordDoesntExist":"Word doesn\'t exist","notEnoughLetters":"Not enough letters","noLettersToErase":"No letters to erase"}},"es":{"locale":"es","name":"Español","keys":["qwertyuiop","asdfghjklñ","zxcvbnm"],"help":{"title":"Cómo jugar","desc":["Adivina la <strong>WORDLE</strong> en seis intentos","Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.","Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."],"examplesTitle":"Ejemplos","examples":{"correct":{"word":"space","highlight":0,"msg":"The letter <strong>S</strong> is in the word and in the correct spot."},"present":{"word":"abide","highlight":2,"msg":"The letter <strong>I</strong> is in the word but in the wrong spot."},"not-present":{"word":"wrong","highlight":4,"msg":"The letter <strong>N</strong> is not in the word in any spot."}},"enjoy":"Disfruta el juego!"},"stats":{"title":"Estadísticas","wonTitle":"¡Felicitaciones, has ganado el juego!","loseTitle":"¡Lo siento, perdiste el juego!","correctAnswer":"La respuesta correcta es: ","played":"Jugadas","won":"Victorias","guessDist":"Distribución de conjeturas"},"settings":{"title":"Ajustes","dark":"Tema oscuro","contrast":"Alto contraste","lang":"Idioma"},"reset":{"title":"Reiniciar el juego","question":"¿Estás seguro de que quieres restablecer el juego?","yes":"Sí","no":"No"},"errors":{"maxFiveLetter":"Cinco letras como máximo","wordDoesntExist":"La palabra no existe","notEnoughLetters":"No hay suficientes letras","noLettersToErase":"No hay letras para borrar"}},"ru":{"locale":"ru","name":"Русский","keys":["йцукенгшщзхъ","фывапролджэ","ячсмитьбюё"],"help":{"title":"Правила игры","desc":["Разгадай <strong>WORDLE</strong> за шесть попыток.","Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.","После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."],"examplesTitle":"Примеры","examples":{"correct":{"word":"вчера","highlight":0,"msg":"Буква <strong>А</strong> находится в разгадываемом слове на правильном месте."},"present":{"word":"шепот","highlight":2,"msg":"Буква <strong>П</strong> есть в разгадываемом слове, но в другом месте."},"not-present":{"word":"весна","highlight":4,"msg":"Буквы <strong>A</strong> нет в разгадываемом слове."}},"enjoy":"Приятной игры!"},"stats":{"title":"Статистика","wonTitle":"Поздравляем, ты выиграл!","loseTitle":"К сожалению ты проиграл!","correctAnswer":"Правильный ответ: ","played":"Сыграно","won":"Побед","guessDist":"Распределение побед"},"settings":{"title":"Настройки","dark":"Темная тема","contrast":"Высококонтрастная тема","lang":"Язык"},"reset":{"title":"Сброс игры","question":"Вы действительно хотите начать игру сначала?","yes":"Да","no":"Нет"},"errors":{"maxFiveLetter":"Максимально пять букв","wordDoesntExist":"Слово не существует в словаре","notEnoughLetters":"Введите минимум пять букв","noLettersToErase":"Нет букв, которые нужно стереть"}}}');
 
 /***/ })
 
@@ -2029,4 +2033,4 @@ _puzzle__WEBPACK_IMPORTED_MODULE_1__.puzzle.checkStoredGame();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.7d747e0a1ba6d3fc4580.js.map
+//# sourceMappingURL=bundle.863765017dc4dfc90634.js.map
