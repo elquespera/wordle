@@ -16,10 +16,7 @@ header {
         display: flex;
         position: relative;
         align-items: center;
-        gap: 1em;
-        .github-btn {
-            background-image: url('../assets/github.svg');
-        }
+        gap: 1em;        
         .help-btn {
             background-image: url('../assets/help.svg');
         }

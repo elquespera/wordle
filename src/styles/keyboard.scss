@@ -59,7 +59,7 @@ $keyboard-max-key-height: 60px;
             outline: none;
         }            
         .key:hover {
-            background-color: $key-hover-background-color;
+            opacity: 0.8;
         }
         .key:active, .key.pressed {
             background-color: $key-active-background-color;

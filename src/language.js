@@ -49,8 +49,12 @@ const switchLanguage = (layout = currentLayout) => {
                     });
                     paneFrag.append(item, newEl('p', example.msg));
                 });
+                const gitHubLink = newEl('a', '', 'icon-btn github-btn');
+                gitHubLink.href = `https://github.com/elquespera/wordle`;
+                gitHubLink.title = 'GitHub repo';
                 paneFrag.append(newEl('div', '', 'hr'), 
-                                newEl('h4', layout.help.enjoy));
+                                newEl('h4', layout.help.enjoy),
+                                gitHubLink);                             
                 break;
             case 'stats':
                 const scoreTable = newEl('div', '', 'score-table');
