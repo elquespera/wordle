@@ -6,6 +6,7 @@ import * as storage from './storage';
 import words_en from "./assets/words/words-en.json";
 import words_es from "./assets/words/words-es.json";
 import words_ru from "./assets/words/words-ru.json";
+import { $ } from "./utils";
 
 const words = {
     en: words_en,
@@ -74,6 +75,7 @@ class Puzzle {
     set solution(word) {
         this._solution = word;
         console.log(word);
+        $('#answer').innerHTML = word;
     }
 
     // Current matrix operations
