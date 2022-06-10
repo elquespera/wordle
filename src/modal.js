@@ -43,35 +43,38 @@ class Modal {
         }
     }
 
+    showStats(winStatus) {
+        const gameStatus = $('.game-status-message');
+        gameStatus.style.display = winStatus ? 'flex' : 'none';
+        if (winStatus) {
+            if (winStatus === 'win') {
+                $('h3', gameStatus).innerHTML = currentLayout.stats.wonTitle;
+            } else {
+                $('h3', gameStatus).innerHTML = currentLayout.stats.loseTitle;
+            }
+            $('.card', gameStatus, true).forEach((card, i) => {
+                card.innerHTML = puzzle._solution[i];
+            });
+        }
+        $('.played.score').innerHTML = puzzle.stats.played;
+        $('.won.score').innerHTML = puzzle.wonCount;
+        const scoreBins = $('.guess-dist>.score-bar', document, true);
+        scoreBins.forEach((bin, i) => {
+            const count = puzzle.stats.dist[i] || 0;
+            const width = count === 0 ? 'fit-content' : count / puzzle.maxWin * 100 + '%';
+            bin.style.width = width;
+            bin.innerHTML = count;                    
+        });
+    }
+
     show(msg = 'help', winStatus) {
 
         if (!this._open) {            
             //Calculate & display statistics and show win/loose msg
-            switch(msg) {
-                case 'stats':
-                    const gameStatus = $('.game-status-message');
-                    gameStatus.style.display = winStatus ? 'flex' : 'none';
-                    if (winStatus) {
-                        if (winStatus === 'win') {
-                            $('h3', gameStatus).innerHTML = currentLayout.stats.wonTitle;
-                        } else {
-                            $('h3', gameStatus).innerHTML = currentLayout.stats.loseTitle;
-                        }
-                        $('.card', gameStatus, true).forEach((card, i) => {
-                            card.innerHTML = puzzle._solution[i];
-                        });
-                    }
-                    $('.played.score').innerHTML = puzzle.stats.played;
-                    $('.won.score').innerHTML = puzzle.wonCount;
-                    const scoreBins = $('.guess-dist>.score-bar', document, true);
-                    scoreBins.forEach((bin, i) => {
-                        const count = puzzle.stats.dist[i] || 0;
-                        const width = count === 0 ? 'fit-content' : count / puzzle.maxWin * 100 + '%';
-                        bin.style.width = width;
-                        bin.innerHTML = count;                    
-                    });
-                    break;
+            if (msg === 'stats') {
+                this.showStats(winStatus);
             }
+            
             modalPages.map(pname => $(`.${pname}`)).forEach(pane => {
                 pane.style.display = pane.id === msg ? 'flex' : 'none';
             });

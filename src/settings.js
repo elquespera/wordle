@@ -40,7 +40,11 @@ const initSettings = () => {
         puzzle.reset();
         modal.hide();
     });
-    $('#reset-no-btn').addEventListener('click', () => modal.hide());    
+    $('#reset-no-btn').addEventListener('click', () => modal.hide()); 
+    $('#reset-stats-btn').addEventListener('click', () => {
+        puzzle.resetStats();
+        modal.showStats();
+    });  
 }
 
 export { initSettings };

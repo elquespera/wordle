@@ -30,10 +30,6 @@ class Puzzle {
     _cardDivs = [];
     _solution;
     _currentSolution = [];
-    _stats = {
-        played: 0,
-        dist: {}
-    }
 
     constructor() {
         const puzzleFrag = new DocumentFragment();
@@ -54,7 +50,8 @@ class Puzzle {
         const storedStats = storage.getItem(STATS_KEY);
         if (storedStats && storedStats.played && storedStats.dist) {
                 this._stats = storedStats;
-        }
+        } else
+            this.resetStats(); 
     }
 
     async checkStoredGame() {
@@ -103,6 +100,18 @@ class Puzzle {
         });
         return this._stats;
     }
+    resetStats() {
+        this._stats = {
+            played: 0,
+            dist: {}
+        }
+        this.storeStats();
+    }
+    
+    storeStats() {
+        storage.setItem(STATS_KEY, this.stats);
+    }
+
     get wonCount() {
         return Object.values(this.stats.dist).reduce((t, v) => t + v, 0);
     }
@@ -110,13 +119,9 @@ class Puzzle {
         return Object.values(this.stats.dist).reduce((t, v) => v > t ? v : t, 0);
     }
 
-    storeStats() {
-        storage.setItem(STATS_KEY, this.stats);
-    }
-
     addGame() {
         this.stats.played += 1;
-        storage.setItem(STATS_KEY, this.stats);        
+        this.storeStats();     
     }
 
     addWin(bin) {

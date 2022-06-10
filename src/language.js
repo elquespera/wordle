@@ -70,7 +70,9 @@ const switchLanguage = (layout = currentLayout) => {
                 paneFrag.append(
                     scoreTable, newEl('div', '', 'hr'),
                     newEl('h3', layout.stats.guessDist),
-                    guessDist
+                    guessDist,
+                    newEl('button', 'Reset stats', 'text-btn', 'reset-stats-btn'),
+                    newEl('p', 'This will erase your game history')
                 );
                 break;
             case 'settings': {
