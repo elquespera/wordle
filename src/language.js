@@ -71,8 +71,8 @@ const switchLanguage = (layout = currentLayout) => {
                     scoreTable, newEl('div', '', 'hr'),
                     newEl('h3', layout.stats.guessDist),
                     guessDist,
-                    newEl('button', 'Reset stats', 'text-btn', 'reset-stats-btn'),
-                    newEl('p', 'This will erase your game history')
+                    newEl('button', layout.stats.resetStats, 'text-btn', 'reset-stats-btn'),
+                    newEl('p', layout.stats.resetStatsHint)
                 );
                 break;
             case 'settings': {

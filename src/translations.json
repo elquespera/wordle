@@ -37,7 +37,9 @@
             "correctAnswer": "The correct answer is: ",
             "played": "Played",
             "won": "Won",
-            "guessDist": "Guess discribution"
+            "guessDist": "Guess discribution",
+            "resetStats": "Reset stats",
+            "resetStatsHint": "This will erase your game history"
         },
         "settings": {
             "title": "Settings",
@@ -96,7 +98,9 @@
             "correctAnswer": "La respuesta correcta es: ",            
             "played": "Jugadas",
             "won": "Victorias",
-            "guessDist": "Distribución de conjeturas"
+            "guessDist": "Distribución de conjeturas",
+            "resetStats": "Borrar estadísticas",
+            "resetStatsHint": "Esto borrará la historia de lost juegos."
         },
         "settings": {
             "title": "Ajustes",
@@ -155,7 +159,9 @@
             "correctAnswer": "Правильный ответ: ",            
             "played": "Сыграно",
             "won": "Побед",
-            "guessDist": "Распределение побед"
+            "guessDist": "Распределение побед",
+            "resetStats": "Сбросить статистику",
+            "resetStatsHint": "Это удалит статистику о предыдущих играх."            
         },
         "settings": {
             "title": "Настройки",
