@@ -179,6 +179,7 @@ $light-gray: rgb(194, 194, 194);
                         border-radius: 0.1em;
                         cursor: pointer;
                         transition: background-color 0.2s;
+                        white-space: nowrap;
                     }
                     li::before {
                         content: '';
