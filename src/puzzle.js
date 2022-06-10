@@ -13,7 +13,12 @@ const words = {
     es: words_es,
     ru: words_ru
 }
+// Random solutions come form top 10% 
+// of 5-letter words sorted by frequency
+const solutionBin = 0.05;
+const spanishVowelsMap = {'ü': 'u', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u'}
 
+// Local Storage keys
 const STATS_KEY = 'stats';
 const SOLUTION_KEY = 'solution';
 const PUZZLE_KEY = 'puzzle';
@@ -70,12 +75,15 @@ class Puzzle {
     }
 
     get solution() {
-        return this._solution;
+        return this._solution.split('')
+                .map(x => x in spanishVowelsMap ? spanishVowelsMap[x] : x)
+                .join('');
     }
+
     set solution(word) {
         this._solution = word;
         console.log(word);
-        $('#answer').innerHTML = word;
+        //$('#answer').innerHTML = word;
     }
 
     // Current matrix operations
@@ -121,7 +129,7 @@ class Puzzle {
     // Reset & update letters
     reset() {
         this._currentSolution = [];
-        this.solution = this.dict[Math.floor(Math.random() * this.dict.length)];
+        this.solution = this.dict[Math.floor(Math.random() * this.dict.length * solutionBin)];
 
         this.update();
         this._cardDivs.flat().forEach(card => {

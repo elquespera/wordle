@@ -58,7 +58,7 @@ class Modal {
                             $('h3', gameStatus).innerHTML = currentLayout.stats.loseTitle;
                         }
                         $('.card', gameStatus, true).forEach((card, i) => {
-                            card.innerHTML = puzzle.solution[i];
+                            card.innerHTML = puzzle._solution[i];
                         });
                     }
                     $('.played.score').innerHTML = puzzle.stats.played;
