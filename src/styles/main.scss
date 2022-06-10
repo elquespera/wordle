@@ -48,11 +48,11 @@ button {
 .text-btn {
     color: vars.$text-btn-color;
     background-color: vars.$accent-color3;
-    padding: 0.8em;
+    padding: 1em 2em 0.9em;
     min-width: 12ch;
     border-radius: 0.3em;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 700;               
     transform: scale(0.9);
     transition: transform 200ms;
     &:hover, &:active, &:focus {

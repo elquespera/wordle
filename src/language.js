@@ -98,7 +98,7 @@ const switchLanguage = (layout = currentLayout) => {
                 const language = newEl('div');
                 const ul = newEl('ul', '', 'language-selector');
                 Object.values(layouts).forEach(l => ul.append(newEl('li', l.name, '', l.locale)));
-                language.append(newEl('div', layout.settings.lang), ul)
+                language.append(newEl('div', `${layout.settings.lang}<p>${layout.settings.langHint}</p>`, 'lang-settings'), ul)
                                              
                 table.append(darkMode, contrastMode, language);                 
                 paneFrag.append(table);

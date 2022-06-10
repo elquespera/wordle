@@ -39,10 +39,8 @@ $light-gray: rgb(194, 194, 194);
         .pane {
             display: flex;
             flex-flow: column nowrap;
-            min-width: max(40vw, 260px);
-            min-height: max(20vh, 200px);
-            max-width: 85vw;
-            max-height: 85vh;
+            min-width: min(85vw, 25em);
+            max-width: min(85vw, 50em);
             padding-bottom: 1.5em;
             overflow-y: auto;
             h3 {
@@ -72,8 +70,7 @@ $light-gray: rgb(194, 194, 194);
                 background-image: url('../assets/github.svg');
             }
         }
-        .pane.stats {
-            max-width: 10em;
+        .pane.stats {            
             h3 {
                 margin-bottom: 1em;
             }
@@ -125,6 +122,7 @@ $light-gray: rgb(194, 194, 194);
             #reset-stats-btn + p {
                 font-size: 0.9em;
                 align-self: center;
+                text-align: center;
             }
 
             #reset-stats-btn + p::before {
@@ -133,12 +131,15 @@ $light-gray: rgb(194, 194, 194);
         }
 
         .pane.reset {
+            p {
+                text-align: center;
+            }
             .yes-no {
                 display: flex;
                 gap: 2em;
                 justify-content: center;
                 align-items: center;
-                margin-top: 3em;
+                margin-top: 2em;
             }
             #reset-yes-btn {
                 background-color: vars.$accent-color1;
@@ -197,6 +198,11 @@ $light-gray: rgb(194, 194, 194);
                     li:hover {
                         background-color: vars.$accent-color4;
                     }                    
+                }
+                .lang-settings > p {
+                    font-size: 0.9em;
+                    font-weight: 300;
+                    margin-top: 0.5em;
                 }
             }
             .settings-table > div {

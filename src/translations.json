@@ -45,7 +45,8 @@
             "title": "Settings",
             "dark": "Dark theme",
             "contrast": "High Conrast",
-            "lang": "Language"
+            "lang": "Language",
+            "langHint": "This will reset the current game!"
         },
         "reset": {
             "title": "Reset game",
@@ -68,25 +69,25 @@
             "title": "Cómo jugar",
             "desc": [
                 "Adivina la <strong>WORDLE</strong> en seis intentos",
-                "Cada conjetura debe ser una palabra válida de cinco letras. Pulse el botón Intro para enviar.",
-                "Después de cada suposición, el color de las fichas cambiará para mostrar qué tan cerca estuvo su suposición de la palabra."
+                "Cada conjetura debe ser una palabra válida de cinco letras. Pulse la tecla Enter para enviar.",
+                "Después de cada suposición, el color de las fichas cambiará para mostrar lo cerca que estaba la suposición de la palabra."
             ],
             "examplesTitle": "Ejemplos",
             "examples": {
                 "correct": {
-                    "word": "space",
+                    "word": "punto",
                     "highlight": 0,
-                    "msg": "The letter <strong>S</strong> is in the word and in the correct spot."                    
+                    "msg": "La letra <strong>P</strong> está en la palabra y en el lugar correcto."                    
                 },
                 "present": {
-                    "word": "abide",
+                    "word": "señal",
                     "highlight": 2,
-                    "msg": "The letter <strong>I</strong> is in the word but in the wrong spot."
+                    "msg": "La letra <strong>Ñ</strong> está en la palabra pero en el lugar incorrecto."
                 },
                 "not-present": {
-                    "word": "wrong",
-                    "highlight": 4,
-                    "msg": "The letter <strong>N</strong> is not in the word in any spot."
+                    "word": "libre",
+                    "highlight": 3,
+                    "msg": "La letra <strong>R</strong> no está en la palabra en ningún lugar."
                 } 
             },
             "enjoy": "Disfruta el juego!"
@@ -106,7 +107,8 @@
             "title": "Ajustes",
             "dark": "Tema oscuro",
             "contrast": "Alto contraste",
-            "lang": "Idioma"
+            "lang": "Idioma",
+            "langHint": "¡Esto reiniciará el juego actual!"
         },
         "reset": {
             "title": "Reiniciar el juego",
@@ -129,8 +131,8 @@
             "title": "Правила игры",
             "desc": [
                 "Разгадай <strong>WORDLE</strong> за шесть попыток.",
-                "Каждая догадка должна быть допустимым словом из пяти букв. Нажми ввод для подтверждения.",
-                "После каждого предположения цвет букв будет меняться, чтобы показать, насколько предположение было близко к слову."
+                "Каждая догадка должна быть существующим словом из пяти букв. Нажми ввод для подтверждения.",
+                "После каждого предположения цвет букв меняется и показывает, насколько предположение было близко к слову."
             ],
             "examplesTitle": "Примеры",
             "examples": {
@@ -167,7 +169,8 @@
             "title": "Настройки",
             "dark": "Темная тема",
             "contrast": "Высококонтрастная тема",
-            "lang": "Язык"
+            "lang": "Язык",
+            "langHint": "Это действие сбросит текущую игру!"
         },
         "reset": {
             "title": "Сброс игры",
