@@ -73,6 +73,7 @@ $light-gray: rgb(194, 194, 194);
             }
         }
         .pane.stats {
+            max-width: 10em;
             h3 {
                 margin-bottom: 1em;
             }
