@@ -808,8 +808,8 @@ var Puzzle = /*#__PURE__*/function () {
         return true;
       } else if (this.lastRowNumber >= puzzleLength - 1) {
         this.addGame();
-        this.reset();
         _modal__WEBPACK_IMPORTED_MODULE_0__["default"].show('stats', 'lose');
+        this.reset();
         return true;
       } else {
         _storage__WEBPACK_IMPORTED_MODULE_3__.setItem(SOLUTION_KEY, this.solution);
@@ -2052,4 +2052,4 @@ _puzzle__WEBPACK_IMPORTED_MODULE_1__.puzzle.checkStoredGame();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.db0a0da86334d61466e5.js.map
+//# sourceMappingURL=bundle.5a0a8177679e5bd996f2.js.map

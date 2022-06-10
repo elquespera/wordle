@@ -191,8 +191,8 @@ class Puzzle {
             return true;
         } else if (this.lastRowNumber >= puzzleLength - 1) {
             this.addGame();
-            this.reset();
             modal.show('stats', 'lose');
+            this.reset();
             return true;            
         } else {
             storage.setItem(SOLUTION_KEY, this.solution);
