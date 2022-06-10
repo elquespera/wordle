@@ -82,8 +82,6 @@ class Puzzle {
 
     set solution(word) {
         this._solution = word;
-        console.log(word);
-        //$('#answer').innerHTML = word;
     }
 
     // Current matrix operations

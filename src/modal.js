@@ -85,7 +85,7 @@ class Modal {
     showError(error) {
         const errorDiv = $('.error-msg');
         errorDiv.innerHTML = error;
-        errorDiv.style.transition = 'opacity 0.5s';
+        //errorDiv.style.transition = 'opacity 0.5s';
         errorDiv.classList.add('visible');
         setTimeout(() => errorDiv.classList.remove('visible'), 2000);
     }    

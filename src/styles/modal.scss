@@ -243,9 +243,9 @@ $light-gray: rgb(194, 194, 194);
     border-radius: 0.3em;
     box-shadow: 0 0 0.4em vars.$shadow-color;
     opacity: 0;
-    transition: opacity 0.5s;
 }
 
 .error-msg.visible {
+    transition: opacity 500ms;
     opacity: 1; 
 }
